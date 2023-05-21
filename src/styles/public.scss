@@ -1,0 +1,34 @@
+:root {
+  font-size: 4px;
+}
+html {
+  color: var(--text-c);
+}
+html.dark {
+  background-color: var(--dark-bg-c);
+  color: var(--dark-text-c);
+}
+body {
+  font-size: 14px;
+}
+/* 滚动条样式 */
+::-webkit-scrollbar {
+  width: 12px;
+  height: 12px;
+}
+::-webkit-scrollbar-thumb {
+  border: 4px solid transparent;
+  background-clip: padding-box;
+  background-color: #8888;
+  border-radius: 9999px;
+  &:hover {
+    background-color: #888b;
+  }
+}
+
+.hover-out {
+  transition: all .3s;
+  &:hover {
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  }
+}

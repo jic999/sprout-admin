@@ -1,0 +1,62 @@
+<script setup lang="ts">
+defineOptions({
+  name: 'Layout',
+})
+
+const appStore = useAppStore()
+</script>
+
+<template>
+  <n-layout has-sider position="absolute">
+    <!-- Sider -->
+    <n-layout-sider
+      bordered
+      :width="216"
+      :collapsed-width="60"
+      :collapsed="appStore.collapsed"
+      collapse-mode="width"
+      content-style="padding: 6px; height: 100vh;"
+    >
+      <AppSideMenu />
+    </n-layout-sider>
+    <n-layout>
+      <!-- Header -->
+      <n-layout-header position="static" class="px-12 h-54" bordered>
+        <AppHeader />
+      </n-layout-header>
+      <!-- Content -->
+      <n-layout-content
+        style="height: calc(100vh - 54px); overflow: auto;"
+        class="bg-$bg-c h-2000 dark:bg-$dark-bg-c"
+        bordered
+        content-style="padding: 12px;"
+      >
+        <RouterView v-slot="{ Component }">
+          <Transition name="page-transition" mode="out-in" appear>
+            <component :is="Component" />
+          </Transition>
+        </RouterView>
+        <AppFooter />
+      </n-layout-content>
+    </n-layout>
+  </n-layout>
+</template>
+
+<style lang="scss">
+.page-transition-enter-active,
+.page-transition-leave-active {
+  transition: all .3s;
+}
+.page-transition-leave-to {
+  opacity: 0;
+  transform: translateX(24px);
+}
+.page-transition-enter-from {
+  opacity: 0;
+  transform: translateX(-24px);
+}
+.page-transition-enter-to {
+  opacity: 1;
+  transform: translateX(0);
+}
+</style>

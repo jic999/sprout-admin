@@ -1,0 +1,12 @@
+{
+  "root": true,
+  "extends": ["@antfu", "@unocss"],
+  "rules": {
+    "no-console": "off",
+    "dot-notation": "off",
+    "antfu/top-level-function": "off",
+    "vue/no-lone-template": "off",
+    "vue/no-deprecated-html-element-is": "off",
+    "yoda": "off"
+  }
+}
