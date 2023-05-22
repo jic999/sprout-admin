@@ -78,8 +78,8 @@ export const useCrud = ({
       return
 
     const handler = {
-      create: () => apis.create(createParamsHandler(formData)),
-      update: () => apis.update(updateParamsHandler(formData)),
+      create: async () => apis.create(await createParamsHandler(formData)),
+      update: async () => apis.update(await updateParamsHandler(formData)),
     }
     try {
       formSwitch.loading()

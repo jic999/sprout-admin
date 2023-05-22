@@ -1,11 +1,13 @@
 export const todoList = [
-  { content: 'SmartForm 集成文件上传', completed: false },
-  { content: '退出登录接口逻辑完善', completed: false },
   { content: 'Role 鉴权', completed: false },
-  { content: '标签栏组件开发', completed: false },
+  { content: 'MD 编辑器', completed: false },
+  { content: 'Tagbar 开发', completed: false },
+  { content: 'CRUD组件 类型完善', completed: false },
   { content: 'Permission 鉴权', completed: false },
   { content: '响应式布局', completed: false },
   { content: '打包体积优化', completed: false },
+  { content: 'SmartForm 集成文件上传', completed: true },
+  { content: '退出登录接口逻辑完善', completed: true },
   { content: '夜间模式', completed: true },
   { content: 'loading bar', completed: true },
   { content: '工作台完善', completed: true },
@@ -14,6 +16,21 @@ export const todoList = [
   { content: 'SmartCrud 组件封装', completed: true },
   { content: 'SmartTable 组件封装', completed: true },
   { content: 'SmartForm 组件封装', completed: true },
+]
+
+export const greetingBarInfoList = [
+  {
+    title: '项目数',
+    content: 8,
+  },
+  {
+    title: '待办',
+    content: `${todoList.filter(item => !item.completed).length}/${todoList.length}`,
+  },
+  {
+    title: '消息',
+    content: 36,
+  },
 ]
 
 export const techStackList = [
@@ -58,20 +75,5 @@ export const techStackList = [
     img: 'https://pinia.vuejs.org/logo.svg',
     desc: '符合直觉的 Vue.js 状态管理库',
     url: 'https://pinia.vuejs.org/',
-  },
-]
-
-export const greetingBarInfoList = [
-  {
-    title: '项目数',
-    content: 8,
-  },
-  {
-    title: '待办',
-    content: '3/12',
-  },
-  {
-    title: '消息',
-    content: 36,
   },
 ]

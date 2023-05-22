@@ -1,17 +1,23 @@
 <script setup lang="ts">
-import type { DataTableColumns, InputNumberProps, InputProps, SwitchProps } from 'naive-ui'
+import type { DataTableColumns, FormItemRule, InputNumberProps, InputProps, SwitchProps, UploadFileInfo, UploadProps } from 'naive-ui'
 import { NTag } from 'naive-ui'
 import _ from 'lodash'
-import type { CrudParamsHandlers } from '@/types'
+import type { CrudParamsHandler, CrudParamsHandlers } from '@/types'
 import { defFormItems } from '@/types'
+import { getResourceUrl, getToken } from '@/utils'
 
 defineOptions({
   name: 'TableDemo3',
 })
 
-// TODO 文件上传
-
 /* Form */
+const ACTION = 'http://localhost:1666/file/upload'
+const avatarFinish = ({ file, event }: { file: UploadFileInfo; event?: ProgressEvent }) => {
+  const { code, data } = (event?.target as XMLHttpRequest).response
+  if (code !== SUCCESS_CODE)
+    window.$message.error('上传失败，请稍候再试')
+  file.url = getResourceUrl(data)
+}
 const formItems = defFormItems({
   id: {
     label: 'id',
@@ -39,6 +45,27 @@ const formItems = defFormItems({
       min: 2,
       trigger: 'blur',
       message: '请输入姓名，长度在2字符以上',
+    },
+  },
+  avatar: {
+    label: '头像',
+    value: [],
+    type: 'Upload',
+    attrs: {
+      listType: 'image-card',
+      action: ACTION,
+      headers: {
+        Authorization: getToken(),
+      },
+      onFinish: avatarFinish,
+      max: 1,
+    } as UploadProps,
+    rule: {
+      trigger: 'change',
+      validator(rule: FormItemRule, val: UploadFileInfo[]) {
+        if (val.length < 1)
+          return new Error('请上传头像')
+      },
     },
   },
   phone: {
@@ -76,6 +103,22 @@ const formItems = defFormItems({
     attrs: { disabled: true, placeholder: '自动' },
   },
 })
+const paramsHandler: CrudParamsHandlers<typeof formItems> = {
+  createParamsHandler: (params) => {
+    const _params = _.omit(params, ['id', 'createTime', 'updateTime'])
+    _params.avatar = _params.avatar[0]?.url
+    return _params
+  },
+  updateParamsHandler: (params) => {
+    const _params = _.omit(params, ['createTime', 'updateTime'])
+    _params.avatar = _params.avatar[0]?.url
+    return _params
+  },
+}
+const valuesHandler: CrudParamsHandler<typeof formItems> = (values) => {
+  return { ...values, avatar: values.avatar ? [{ url: values.avatar, status: 'finished' }] as UploadFileInfo[] : [] }
+}
+
 /* Table */
 const columns: DataTableColumns = [
   {
@@ -134,11 +177,6 @@ const columns: DataTableColumns = [
   },
 ]
 
-const paramsHandler: CrudParamsHandlers = {
-  createParamsHandler: (params: any) => _.omit(params, ['id', 'createTime', 'updateTime']),
-  updateParamsHandler: (params: any) => _.omit(params, ['createTime', 'updateTime']),
-}
-
 const queryFieldsOptions = [
   {
     label: '用户名',
@@ -158,9 +196,10 @@ const queryParams = ref({
 <template>
   <SmartCrud
     v-model:query-params="queryParams"
-    title="用户管理"
+    title="用户管理3"
     entity-name="用户"
     :params-handler="paramsHandler"
+    :values-handler="valuesHandler"
     :columns="columns"
     :form-items="formItems"
     :apis="userApi"

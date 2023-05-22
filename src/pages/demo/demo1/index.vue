@@ -174,12 +174,29 @@ const pagination = reactive({
 
 const isLoading = ref(false)
 const tableData = ref([])
-const searchKeyword = ref('')
+
+const queryFieldsOptions = [
+  {
+    label: '用户名',
+    value: 'username',
+  },
+  {
+    label: '姓名',
+    value: 'name',
+  },
+]
+const queryParams = ref({
+  field: 'username',
+  keyword: '',
+})
+const queryInputPlaceholder = computed(
+  () => `请输入${queryFieldsOptions?.find(item => item.value === queryParams.value.field)?.label || '关键词'}`,
+)
 
 async function handleQuery() {
   try {
     isLoading.value = true
-    const { code, data, msg } = await userApi.page({ pageNo: pagination.page, pageSize: pagination.pageSize, keyword: searchKeyword.value })
+    const { code, data, msg } = await userApi.page({ pageNo: pagination.page, pageSize: pagination.pageSize, ...queryParams.value })
     if (code !== SUCCESS_CODE)
       throw new Error(msg)
     tableData.value = data['records']
@@ -193,7 +210,7 @@ async function handleQuery() {
   }
 }
 function handleInit() {
-  searchKeyword.value = ''
+  queryParams.value.keyword = ''
   handleQuery()
 }
 
@@ -210,9 +227,11 @@ onMounted(() => {
           用户管理
         </h2>
       </n-space>
-      <n-space justify="space-between" py-16>
+      <!-- Search bar -->
+      <n-space justify="space-between" px-12 py-16 br-8 bg="$el-bg-c">
         <n-space>
-          <n-input v-model:value="searchKeyword" placeholder="请输入用户名" @keydown.enter="handleQuery" />
+          <n-select v-model:value="queryParams.field" w-100 :options="queryFieldsOptions" />
+          <n-input v-model:value="queryParams.keyword" :placeholder="queryInputPlaceholder" @keydown.enter="handleQuery" />
           <NButton secondary @click="handleInit">
             重置
           </NButton>
@@ -226,12 +245,14 @@ onMounted(() => {
           </NButton>
         </n-space>
       </n-space>
-      <n-data-table
-        :columns="columns"
-        :data="tableData"
-        :loading="isLoading"
-        :pagination="pagination"
-      />
+      <div mt-12 px-12 py-16 br-8 bg="$el-bg-c">
+        <n-data-table
+          :columns="columns"
+          :data="tableData"
+          :loading="isLoading"
+          :pagination="pagination"
+        />
+      </div>
     </div>
     <n-modal
       v-model:show="formVisible"

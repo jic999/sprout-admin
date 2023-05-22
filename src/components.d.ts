@@ -28,6 +28,7 @@ declare module '@vue/runtime-core' {
     NForm: typeof import('naive-ui')['NForm']
     NFormItem: typeof import('naive-ui')['NFormItem']
     NIcon: typeof import('naive-ui')['NIcon']
+    NImage: typeof import('naive-ui')['NImage']
     NInput: typeof import('naive-ui')['NInput']
     NInputNumber: typeof import('naive-ui')['NInputNumber']
     NLayout: typeof import('naive-ui')['NLayout']
@@ -54,6 +55,7 @@ declare module '@vue/runtime-core' {
     SmartCrud: typeof import('./components/crud/SmartCrud.vue')['default']
     SmartForm: typeof import('./components/crud/SmartForm.vue')['default']
     SmartTable: typeof import('./components/crud/SmartTable.vue')['default']
+    SmartUpload: typeof import('./components/upload/SmartUpload.vue')['default']
     TheIcon: typeof import('./components/icon/TheIcon.vue')['default']
     UnoIcon: typeof import('./components/icon/UnoIcon.vue')['default']
   }

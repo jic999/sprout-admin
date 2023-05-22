@@ -9,6 +9,7 @@ import type {
   RadioProps,
   SelectProps,
   SwitchProps,
+  UploadFileInfo,
   UploadProps,
 } from 'naive-ui'
 import type { InternalRowData } from 'naive-ui/es/data-table/src/interface'
@@ -17,7 +18,11 @@ import type { RequestResult } from '@/apis/request'
 
 /* useCrud */
 export declare type CrudRequest = (...args: any[]) => RequestResult
-export declare type CrudParamsHandler = (params: unknown) => any
+export declare type CrudParamsHandler<T extends object> = (params: CrudParams<T>) => any
+export interface CrudParamsHandlers<T extends object> {
+  createParamsHandler?: CrudParamsHandler<T>
+  updateParamsHandler?: CrudParamsHandler<T>
+}
 
 export interface UseCrudApis {
   create: CrudRequest
@@ -30,9 +35,9 @@ export interface UseCrudParams {
   apis: UseCrudApis
   refresh: Function
   validator: { validate: Function; restore?: Function }
-  createParamsHandler?: CrudParamsHandler
-  updateParamsHandler?: CrudParamsHandler
-  viewValuesHandler?: CrudParamsHandler
+  createParamsHandler?: CrudParamsHandler<any>
+  updateParamsHandler?: CrudParamsHandler<any>
+  viewValuesHandler?: CrudParamsHandler<any>
 }
 
 /* Components */
@@ -58,14 +63,10 @@ export declare type SmartFormItems<T extends Record<string, SmartFormItem>> = {
 
 // 定义一个类型函数，它接受一个值作为参数，并返回一个包含值属性的类型
 export type InferSmartFormItems<T> = T extends SmartFormItems<infer U> ? U : never
+export type CrudParams<T extends object> = Record<keyof T, any>
 
 // 使用类型函数来创建一个对象
 export const defFormItems = <T extends Record<string, SmartFormItem>>(value: T): SmartFormItems<T> => value
-
-export interface CrudParamsHandlers {
-  createParamsHandler?: CrudParamsHandler
-  updateParamsHandler?: CrudParamsHandler
-}
 
 export interface CrudApis {
   create: CrudRequest
@@ -73,4 +74,10 @@ export interface CrudApis {
   delete: CrudRequest
   list?: CrudRequest
   page?: CrudRequest
+}
+/* Upload */
+
+export declare interface UploadHandlerOptions {
+  file: Required<UploadFileInfo>
+  event?: ProgressEvent
 }

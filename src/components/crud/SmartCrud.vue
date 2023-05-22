@@ -35,12 +35,12 @@ const props = defineProps({
   },
   /* 参数处理器 发送请求前 对参数进行一些处理 */
   paramsHandler: {
-    type: Object as PropType<CrudParamsHandlers>,
+    type: Object as PropType<CrudParamsHandlers<any>>,
     default: undefined,
   },
   /* 展示值处理器 在对应值展示到表单上之前进行一些处理  */
   valuesHandler: {
-    type: Function as PropType<CrudParamsHandler>,
+    type: Function as PropType<CrudParamsHandler<any>>,
     default: undefined,
   },
   /* 是否完全自定义操作 为true时 不会显示默认的action列 */

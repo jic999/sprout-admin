@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import _ from 'lodash'
-import type { FormRules } from 'naive-ui'
+import { type FormRules } from 'naive-ui'
 import type { PropType } from 'vue'
 import type { SmartFormItem } from '@/types'
 

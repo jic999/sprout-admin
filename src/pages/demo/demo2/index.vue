@@ -2,7 +2,8 @@
 import type { DataTableColumns, InputNumberProps, SwitchProps } from 'naive-ui'
 import { NButton, NTag } from 'naive-ui'
 import _ from 'lodash'
-import type { CrudParamsHandler, SmartFormItems } from '@/types'
+import type { CrudParamsHandler } from '@/types'
+import { defFormItems } from '@/types'
 import { renderIcon } from '@/utils'
 
 defineOptions({
@@ -11,7 +12,7 @@ defineOptions({
 
 /* Form */
 const smartFormRef = ref()
-const formItems: SmartFormItems = {
+const formItems = defFormItems({
   id: {
     label: 'id',
     value: null,
@@ -68,7 +69,7 @@ const formItems: SmartFormItems = {
     type: 'Input',
     attrs: { disabled: true, placeholder: '自动' },
   },
-}
+})
 const excludeFields = ['id', 'createTime', 'updateTime']
 const formData = reactive(_.mapValues(formItems, item => item['value']))
 
@@ -193,8 +194,18 @@ const columns: DataTableColumns = [
     },
   },
 ]
-
+const queryFieldsOptions = [
+  {
+    label: '用户名',
+    value: 'username',
+  },
+  {
+    label: '姓名',
+    value: 'name',
+  },
+]
 const queryParams = ref({
+  field: 'username',
   keyword: '',
 })
 
@@ -214,8 +225,10 @@ function handleReset() {
           用户管理2
         </h2>
       </n-space>
-      <n-space justify="space-between" py-16>
+      <!-- Search bar -->
+      <n-space justify="space-between" px-12 py-16 br-8 bg="$el-bg-c">
         <n-space>
+          <n-select v-model:value="queryParams.field" w-100 :options="queryFieldsOptions" />
           <n-input v-model:value="queryParams.keyword" placeholder="请输入用户名" @keydown.enter="handleQuery" />
           <NButton secondary @click="handleReset">
             <template #icon>
@@ -236,14 +249,16 @@ function handleReset() {
           </NButton>
         </n-space>
       </n-space>
-      <SmartTable
-        ref="smartTableRef"
-        v-model:query-params="queryParams"
-        :get-data="userApi.page"
-        :table-attrs="{
-          columns,
-        }"
-      />
+      <div mt-12 px-12 py-16 br-8 bg="$el-bg-c">
+        <SmartTable
+          ref="smartTableRef"
+          v-model:query-params="queryParams"
+          :get-data="userApi.page"
+          :table-attrs="{
+            columns,
+          }"
+        />
+      </div>
     </div>
     <n-modal
       v-model:show="formVisible"

@@ -4,7 +4,7 @@ import type { CustomRoute } from '@/router/routes'
 export const route: CustomRoute = {
   path: '/demo',
   component: Layout,
-  redirect: '/demo/demo1',
+  redirect: '/demo/table',
   order: 2,
   meta: {
     title: '演示',
@@ -12,29 +12,41 @@ export const route: CustomRoute = {
   },
   children: [
     {
-      path: 'demo1',
-      name: 'Demo1',
-      component: () => import('./demo1/index.vue'),
+      path: 'table',
+      name: 'CommonTable',
+      redirect: '/demo/table/common-table',
       meta: {
-        title: 'Demo 1',
-        icon: 'carbon:code',
+        title: '表格',
+        icon: 'carbon:data-table',
       },
-    }, {
-      path: 'demo2',
-      name: 'Demo2',
-      component: () => import('./demo2/index.vue'),
-      meta: {
-        title: 'Demo 2',
-        icon: 'carbon:code',
-      },
-    }, {
-      path: 'demo3',
-      name: 'Demo3',
-      component: () => import('./demo3/index.vue'),
-      meta: {
-        title: 'Demo 3',
-        icon: 'carbon:code',
-      },
+      children: [
+        {
+          path: 'common-table',
+          name: 'CommonTable',
+          component: () => import('./demo1/index.vue'),
+          meta: {
+            title: '普通表格',
+            icon: 'carbon:data-table',
+          },
+        },
+        {
+          path: 'smart-table',
+          name: 'SmartTable',
+          component: () => import('./demo2/index.vue'),
+          meta: {
+            title: '智能表格',
+            icon: 'carbon:table-alias',
+          },
+        }, {
+          path: 'smart-crud',
+          name: 'SmartCrud',
+          component: () => import('./demo3/index.vue'),
+          meta: {
+            title: '全自动的',
+            icon: 'carbon:executable-program',
+          },
+        },
+      ],
     },
   ],
 }
