@@ -27,6 +27,7 @@ export const route: CustomRoute = {
           meta: {
             title: '普通表格',
             icon: 'carbon:data-table',
+            keepAlive: true,
           },
         },
         {
@@ -36,6 +37,7 @@ export const route: CustomRoute = {
           meta: {
             title: '智能表格',
             icon: 'carbon:table-alias',
+            keepAlive: true,
           },
         }, {
           path: 'smart-crud',
@@ -44,6 +46,7 @@ export const route: CustomRoute = {
           meta: {
             title: '全自动的',
             icon: 'carbon:executable-program',
+            keepAlive: true,
           },
         },
       ],

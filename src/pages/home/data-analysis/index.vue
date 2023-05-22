@@ -5,7 +5,6 @@ import DataAnalysis from './components/DataAnalysis.vue'
 
 <template>
   <div>
-    <h2>数据分析</h2>
     <DataDisplay />
     <DataAnalysis />
   </div>

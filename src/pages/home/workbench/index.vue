@@ -6,7 +6,6 @@ import TodoList from './components/TodoList.vue'
 
 <template>
   <div>
-    <h2>工作台</h2>
     <GreetingBar class="hover-out" />
     <TechStack />
     <TodoList />

@@ -179,7 +179,7 @@ function handleReset() {
 
 <template>
   <div>
-    <n-space class="px-12" justify="space-between" align="center">
+    <n-space justify="space-between" align="center">
       <h2 text-22 font-500>
         {{ title }}
       </h2>

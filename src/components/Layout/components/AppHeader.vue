@@ -36,7 +36,7 @@ function handleSelect(key: string) {
 </script>
 
 <template>
-  <div h-full flex items-center justify-between>
+  <div flex items-center justify-between border-b px-12 h-54>
     <!-- Left -->
     <div flex items-center gap-x-12>
       <TheIcon

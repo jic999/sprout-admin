@@ -7,7 +7,7 @@ import { defFormItems } from '@/types'
 import { getResourceUrl, getToken } from '@/utils'
 
 defineOptions({
-  name: 'TableDemo3',
+  name: 'SmartCrud',
 })
 
 /* Form */

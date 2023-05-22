@@ -4,6 +4,11 @@ defineOptions({
 })
 
 const appStore = useAppStore()
+const router = useRouter()
+
+const keepAliveRouteNames = computed(() => {
+  return router.getRoutes().filter(route => route.meta?.keepAlive).map(route => route.name)
+})
 </script>
 
 <template>
@@ -21,19 +26,22 @@ const appStore = useAppStore()
     </n-layout-sider>
     <n-layout>
       <!-- Header -->
-      <n-layout-header position="static" class="px-12 h-54" bordered>
+      <n-layout-header position="static" class="h-98" bordered>
         <AppHeader />
+        <TabBar />
       </n-layout-header>
       <!-- Content -->
       <n-layout-content
-        style="height: calc(100vh - 54px); overflow: auto;"
+        style="height: calc(100vh - 98px); overflow: auto;"
         class="bg-$bg-c h-2000 dark:bg-$dark-bg-c"
         bordered
         content-style="padding: 12px;"
       >
         <RouterView v-slot="{ Component }">
           <Transition name="page-transition" mode="out-in" appear>
-            <component :is="Component" />
+            <KeepAlive :include="keepAliveRouteNames">
+              <component :is="Component" />
+            </KeepAlive>
           </Transition>
         </RouterView>
         <AppFooter />

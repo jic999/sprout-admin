@@ -6,7 +6,7 @@ import type { CrudParamsHandler } from '@/types'
 import { renderIcon } from '@/utils'
 
 defineOptions({
-  name: 'TableDemo1',
+  name: 'CommonTable',
 })
 
 /* Modal Form */

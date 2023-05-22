@@ -7,7 +7,7 @@ import { defFormItems } from '@/types'
 import { renderIcon } from '@/utils'
 
 defineOptions({
-  name: 'TableDemo2',
+  name: 'SmartTable',
 })
 
 /* Form */

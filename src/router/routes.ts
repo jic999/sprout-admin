@@ -3,8 +3,8 @@ import type { RouteRecordRaw } from 'vue-router'
 export interface CustomRouteMeta {
   title: string
   icon?: string
-  customIcon?: string
   activeMenu?: string
+  keepAlive?: boolean
 }
 
 interface ExtendedInfo {

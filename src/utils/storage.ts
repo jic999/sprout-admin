@@ -12,7 +12,7 @@ class CustomStorage {
     return `${this.PREFIX_KEY}${key}`.toUpperCase()
   }
 
-  set(key: string, value: unknown, expire: number) {
+  set(key: string, value: unknown, expire?: number) {
     const stringData = JSON.stringify({
       value,
       time: Date.now(),
