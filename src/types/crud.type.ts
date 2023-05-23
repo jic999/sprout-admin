@@ -39,6 +39,11 @@ export interface UseCrudParams {
   updateParamsHandler?: CrudParamsHandler<any>
   viewValuesHandler?: CrudParamsHandler<any>
 }
+export interface SmartFormItemOption {
+  label: string
+  value: string
+  options?: SmartFormItemOption[]
+}
 
 /* Components */
 export declare type CrudExtendAction = (row: InternalRowData, i: number) => VNode[]
@@ -49,7 +54,7 @@ export interface SmartFormItem {
   attrs?: InputNumberProps | InputProps | SwitchProps | RadioProps | CheckboxProps | CheckboxGroupProps | SelectProps | CascaderProps | UploadProps
   formItemAttrs?: FormItemProps
   rule?: FormItemRule
-  options?: any
+  options?: SmartFormItemOption[]
 }
 
 // export interface SmartFormItems {

@@ -182,8 +182,7 @@ const queryFieldsOptions = [
   {
     label: '用户名',
     value: 'username',
-  },
-  {
+  }, {
     label: '姓名',
     value: 'name',
   },
@@ -199,11 +198,11 @@ const queryParams = ref({
     v-model:query-params="queryParams"
     title="用户管理3"
     entity-name="用户"
-    :params-handler="paramsHandler"
-    :values-handler="valuesHandler"
     :columns="columns"
     :form-items="formItems"
     :apis="userApi"
+    :params-handler="paramsHandler"
+    :values-handler="valuesHandler"
     :query-fields-options="queryFieldsOptions"
   />
 </template>

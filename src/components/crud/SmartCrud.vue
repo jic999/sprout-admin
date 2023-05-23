@@ -114,12 +114,6 @@ const {
   viewValuesHandler: props.valuesHandler,
 })
 
-const modalFooterStyle = {
-  display: 'flex',
-  justifyContent: 'end',
-  gap: '0 16px',
-}
-
 /* Table */
 const defaultColumns: DataTableColumns = [
   {
@@ -235,7 +229,6 @@ function handleReset() {
       preset="card"
       :title="formTitle"
       :auto-focus="false"
-      :footer-style="modalFooterStyle"
       w-600
     >
       <SmartForm
@@ -245,12 +238,14 @@ function handleReset() {
         :disabled="formAction === 'view'"
       />
       <template #footer>
-        <NButton @click="handleCancel">
-          取消
-        </NButton>
-        <NButton type="primary" :loading="formLoading" @click="handleCommit">
-          提交
-        </NButton>
+        <div flex justify-end gap-x-12>
+          <NButton @click="handleCancel">
+            取消
+          </NButton>
+          <NButton type="primary" :loading="formLoading" @click="handleCommit">
+            提交
+          </NButton>
+        </div>
       </template>
     </n-modal>
   </div>

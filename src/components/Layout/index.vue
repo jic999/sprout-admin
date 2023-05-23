@@ -35,7 +35,7 @@ const keepAliveRouteNames = computed(() => {
         style="height: calc(100vh - 98px); overflow: auto;"
         class="bg-$bg-c h-2000 dark:bg-$dark-bg-c"
         bordered
-        content-style="padding: 12px;"
+        content-style="padding: 0 12px 12px"
       >
         <RouterView v-slot="{ Component }">
           <Transition name="page-transition" mode="out-in" appear>

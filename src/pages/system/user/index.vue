@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import type { DataTableColumns, FormItemRule, InputNumberProps, InputProps, SwitchProps, UploadFileInfo, UploadProps } from 'naive-ui'
-import { NTag } from 'naive-ui'
+import { NButton, NTag } from 'naive-ui'
 import _ from 'lodash'
-import type { CrudParamsHandler, CrudParamsHandlers } from '@/types'
+import type { CrudExtendAction, CrudParamsHandler, CrudParamsHandlers } from '@/types'
 import { defFormItems } from '@/types'
-import { getResourceUrl, getToken } from '@/utils'
+import { getResourceUrl, getToken, renderIcon } from '@/utils'
 
 defineOptions({
   name: 'SystemUser',
@@ -192,18 +192,95 @@ const queryParams = ref({
   field: 'username',
   keyword: '',
 })
+
+/* 分配角色 */
+const roleModalVisible = ref(false)
+const roleOptions = ref<{ label: string; value: string }[]>([])
+const roleIds = ref<number[]>([])
+const roleModalLoading = ref(false)
+let currentRoleRow: any = null
+
+function toggleRoleModal(row: any) {
+  roleModalVisible.value = !roleModalVisible.value
+  currentRoleRow = row
+}
+async function handleRoleConfirm() {
+  roleModalLoading.value = true
+  try {
+    // TODO 分配角色
+    const params = { userId: currentRoleRow.id, roleIds: roleIds.value }
+    const { code, msg } = await roleApi.assign(params)
+    if (code !== 0)
+      throw new Error(msg)
+    window.$message.success('分配成功')
+    toggleRoleModal(currentRoleRow)
+  }
+  catch (error) {
+    window.$message.error((error as Error).message)
+  }
+  finally {
+    roleModalLoading.value = false
+  }
+}
+function handleRoleUpdate(val: number[]) {
+  roleIds.value = val
+}
+
+async function getRoleOptions() {
+  const { data } = await roleApi.list()
+  roleOptions.value = data.map((role: any) => ({ label: role.roleName, value: role.id }))
+}
+
+const extendActionsAfter: CrudExtendAction = (row: any) => {
+  return [
+    h(NButton, { size: 'tiny', type: 'info', secondary: true, onClick: () => toggleRoleModal(row) }, {
+      default: () => '分配角色',
+      icon: renderIcon('carbon:flow', { size: 14 }),
+    }),
+  ]
+}
+
+onMounted(() => {
+  getRoleOptions()
+})
 </script>
 
 <template>
-  <SmartCrud
-    v-model:query-params="queryParams"
-    title="用户管理"
-    entity-name="用户"
-    :params-handler="paramsHandler"
-    :values-handler="valuesHandler"
-    :columns="columns"
-    :form-items="formItems"
-    :apis="userApi"
-    :query-fields-options="queryFieldsOptions"
-  />
+  <div>
+    <SmartCrud
+      v-model:query-params="queryParams"
+      title="用户管理"
+      entity-name="用户"
+      :params-handler="paramsHandler"
+      :values-handler="valuesHandler"
+      :columns="columns"
+      :form-items="formItems"
+      :apis="userApi"
+      :query-fields-options="queryFieldsOptions"
+      :extend-actions-after="extendActionsAfter"
+    />
+    <n-modal
+      v-model:show="roleModalVisible"
+      class="w-600"
+      preset="card"
+      title="分配角色"
+      :show-icon="false"
+      :auto-focus="false"
+      @positive-click="handleRoleConfirm"
+    >
+      <n-checkbox-group class="grid grid-cols-4 py-24 gap-12" @update:value="handleRoleUpdate">
+        <n-checkbox v-for="role in roleOptions" :key="role.value" :value="role.value" :label="role.label" />
+      </n-checkbox-group>
+      <template #footer>
+        <div flex justify-end gap-x-12>
+          <NButton @click="toggleRoleModal">
+            取消
+          </NButton>
+          <NButton type="primary" :loading="roleModalLoading" @click="handleRoleConfirm">
+            提交
+          </NButton>
+        </div>
+      </template>
+    </n-modal>
+  </div>
 </template>

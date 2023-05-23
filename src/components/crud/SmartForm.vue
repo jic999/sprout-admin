@@ -42,8 +42,6 @@ defineExpose({
   restore: () => formRef.value?.restoreValidation(),
   getFormData,
 })
-
-console.log('formData.value :>> ', formData.value)
 </script>
 
 <template>
