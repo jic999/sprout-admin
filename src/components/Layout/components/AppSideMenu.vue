@@ -55,7 +55,7 @@ const activeMenu = computed(() => route.name)
 <template>
   <RouterLink class="mt-8 flex-center gap-x-8 py-8 text-16 italic text-$primary-c" :to="{ name: 'Workbench' }">
     <TheIcon icon="carbon:sprout" :size="24" />
-    <span v-if="!appStore.collapsed" whitespace-nowrap> Sprout Admin</span>
+    <span v-if="!appStore.collapsed" whitespace-nowrap>Sprout Admin</span>
   </RouterLink>
   <n-menu
     :value="activeMenu"

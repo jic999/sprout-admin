@@ -5,7 +5,7 @@ export const route: CustomRoute = {
   path: '/demo',
   component: Layout,
   redirect: '/demo/table',
-  order: 2,
+  order: 3,
   meta: {
     title: '演示',
     icon: 'carbon:code',
@@ -29,8 +29,7 @@ export const route: CustomRoute = {
             icon: 'carbon:data-table',
             keepAlive: true,
           },
-        },
-        {
+        }, {
           path: 'smart-table',
           name: 'SmartTable',
           component: () => import('./demo2/index.vue'),

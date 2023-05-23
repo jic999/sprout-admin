@@ -24,12 +24,8 @@ watch(() => route.fullPath, () => {
     icon: route.meta.icon as string || 'carbon:bookmark-filled',
   })
   currentIndex.value = tagList.value.length - 1
-}, { immediate: true })
-
-watch(tagList.value, () => {
-  console.log('tagList :>> ', tagList)
   sStorage.set('tagList', tagList.value)
-})
+}, { immediate: true })
 
 function handleChange(i: number) {
   currentIndex.value = i
@@ -41,6 +37,7 @@ function handleClose(i: number) {
   if (i < currentIndex.value || currentIndex.value >= tagList.value.length)
     currentIndex.value--
   router.push({ path: currentPath.value })
+  sStorage.set('tagList', tagList.value)
 }
 </script>
 

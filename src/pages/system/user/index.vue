@@ -7,7 +7,7 @@ import { defFormItems } from '@/types'
 import { getResourceUrl, getToken } from '@/utils'
 
 defineOptions({
-  name: 'SmartCrud',
+  name: 'SystemUser',
 })
 
 /* Form */
@@ -197,7 +197,7 @@ const queryParams = ref({
 <template>
   <SmartCrud
     v-model:query-params="queryParams"
-    title="用户管理3"
+    title="用户管理"
     entity-name="用户"
     :params-handler="paramsHandler"
     :values-handler="valuesHandler"
