@@ -21,9 +21,9 @@ export const route: CustomRoute = {
       },
       children: [
         {
-          path: 'common-table',
-          name: 'CommonTable',
-          component: () => import('./demo1/index.vue'),
+          path: 'ordinary-table',
+          name: 'OrdinaryTable',
+          component: () => import('./table/ordinary-table/index.vue'),
           meta: {
             title: '普通表格',
             icon: 'carbon:data-table',
@@ -32,7 +32,7 @@ export const route: CustomRoute = {
         }, {
           path: 'smart-table',
           name: 'SmartTable',
-          component: () => import('./demo2/index.vue'),
+          component: () => import('./table/smart-table/index.vue'),
           meta: {
             title: '智能表格',
             icon: 'carbon:table-alias',
@@ -41,7 +41,7 @@ export const route: CustomRoute = {
         }, {
           path: 'smart-crud',
           name: 'SmartCrud',
-          component: () => import('./demo3/index.vue'),
+          component: () => import('./table/smart-crud/index.vue'),
           meta: {
             title: '全自动的',
             icon: 'carbon:executable-program',
@@ -49,6 +49,15 @@ export const route: CustomRoute = {
           },
         },
       ],
+    },
+    {
+      path: 'md-editor',
+      name: 'MdEditor',
+      component: () => import('./md-editor/index.vue'),
+      meta: {
+        title: 'MD编辑器',
+        icon: 'carbon:edit',
+      },
     },
   ],
 }
