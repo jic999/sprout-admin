@@ -9,12 +9,12 @@ export {}
 
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
-    AppFooter: typeof import('./components/Layout/components/AppFooter.vue')['default']
-    AppHeader: typeof import('./components/Layout/components/AppHeader.vue')['default']
+    AppFooter: typeof import('./components/layout/components/AppFooter.vue')['default']
+    AppHeader: typeof import('./components/layout/components/AppHeader.vue')['default']
     AppProvider: typeof import('./components/AppProvider/index.vue')['default']
-    AppSideMenu: typeof import('./components/Layout/components/AppSideMenu.vue')['default']
+    AppSideMenu: typeof import('./components/layout/components/AppSideMenu.vue')['default']
     FileUpload: typeof import('./components/upload/FileUpload.vue')['default']
-    Layout: typeof import('./components/Layout/index.vue')['default']
+    Layout: typeof import('./components/layout/index.vue')['default']
     NBreadcrumb: typeof import('naive-ui')['NBreadcrumb']
     NBreadcrumbItem: typeof import('naive-ui')['NBreadcrumbItem']
     NButton: typeof import('naive-ui')['NButton']
@@ -57,7 +57,7 @@ declare module '@vue/runtime-core' {
     SmartForm: typeof import('./components/crud/SmartForm.vue')['default']
     SmartTable: typeof import('./components/crud/SmartTable.vue')['default']
     SmartUpload: typeof import('./components/upload/SmartUpload.vue')['default']
-    TabBar: typeof import('./components/Layout/components/TabBar.vue')['default']
+    TabBar: typeof import('./components/layout/components/TabBar.vue')['default']
     TheIcon: typeof import('./components/icon/TheIcon.vue')['default']
     UnoIcon: typeof import('./components/icon/UnoIcon.vue')['default']
   }

@@ -46,7 +46,7 @@ function handleClose(i: number) {
     <n-tag
       v-for="(tag, i) in tagList"
       :key="tag.fullPath"
-      class="cursor-pointer"
+      class="tag-bar__tag cursor-pointer"
       hover="text-$primary-c"
       :type="i === currentIndex ? 'primary' : 'default'"
       :closable="tagList.length > 1"

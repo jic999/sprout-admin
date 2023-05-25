@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { DataTableColumns, InputNumberProps } from 'naive-ui'
+import { type DataTableColumns, type InputNumberProps, NTag } from 'naive-ui'
 import _ from 'lodash'
 import type { CrudParamsHandlers } from '@/types'
 import { defFormItems } from '@/types'
@@ -27,7 +27,7 @@ const formItems = defFormItems({
     },
   },
   roleCode: {
-    label: '角色表示',
+    label: '角色标识',
     value: '',
     type: 'Input',
     rule: {
@@ -74,6 +74,9 @@ const columns: DataTableColumns = [
   }, {
     title: '角色名称',
     key: 'roleName',
+    render(row: any) {
+      return h(NTag, { type: 'primary' }, () => row.roleName)
+    },
   }, {
     title: '角色标识',
     key: 'roleCode',

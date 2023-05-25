@@ -53,7 +53,7 @@ const keepAliveRouteNames = computed(() => {
 <style lang="scss">
 .page-transition-enter-active,
 .page-transition-leave-active {
-  transition: all .3s;
+  transition: all .2s;
 }
 .page-transition-leave-to {
   opacity: 0;

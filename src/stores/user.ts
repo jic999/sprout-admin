@@ -19,7 +19,7 @@ export const useUserStore = defineStore('user', () => {
   })
 
   function setUserInfo(info: UserInfo) {
-    Object.assign(userInfo, info)
+    Object.assign(userInfo, { ...info, roles: info.roles || [], permissions: info.permissions || [] })
   }
   async function getUserInfo() {
     try {

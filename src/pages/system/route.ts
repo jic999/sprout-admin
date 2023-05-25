@@ -1,10 +1,11 @@
-import Layout from '@/components/Layout/index.vue'
+import Layout from '@/components/layout/index.vue'
 import type { CustomRoute } from '@/router/routes'
 
 export const route: CustomRoute = {
   path: '/system',
   component: Layout,
   order: 2,
+  roles: ['SUPER_ADMIN', 'SYSTEM_ADMIN'],
   meta: {
     title: '系统管理',
     icon: 'carbon:settings',
@@ -14,6 +15,7 @@ export const route: CustomRoute = {
       path: 'sys-user',
       name: 'SystemUser',
       component: () => import('./user/index.vue'),
+      roles: ['SUPER_ADMIN'],
       meta: {
         title: '用户管理',
         icon: 'carbon:user',
@@ -29,5 +31,5 @@ export const route: CustomRoute = {
         keepAlive: true,
       },
     },
-  ],
+  ] as CustomRoute[],
 }

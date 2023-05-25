@@ -1,9 +1,10 @@
 import type { App } from 'vue'
 import type { RouteRecordNormalized } from 'vue-router'
 import { createRouter, createWebHistory } from 'vue-router'
+import type { CustomRoute } from './routes'
 import { dynamicRoutes, staticRoutes } from './routes'
 import { setupRouteGuard } from './guards'
-import { getToken } from '@/utils'
+import { getToken, hasRole } from '@/utils'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -23,10 +24,13 @@ export async function addDynamicRoutes() {
 
     // 若无用户信息 getUserInfo
     !userStore.userInfo.id && (await userStore.getUserInfo())
-
     // TODO 根据 permission添加路由
-    dynamicRoutes.forEach((route) => {
-      router.addRoute(route)
+    dynamicRoutes.forEach((route: CustomRoute) => {
+      if (
+        !route.roles
+        || hasRole(route.roles, userStore.userInfo.roles)
+      )
+        router.addRoute(route)
     })
   }
   catch (error) {

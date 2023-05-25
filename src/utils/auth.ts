@@ -14,3 +14,7 @@ export function setToken(token: string) {
 export function removeToken() {
   lStorage.remove(TOKEN_CODE)
 }
+
+export function hasRole(needRoles: string[], withRoles: string[]) {
+  return needRoles.some(role => withRoles.findIndex(withRole => withRole === role) !== -1)
+}

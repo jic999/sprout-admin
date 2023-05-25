@@ -1,4 +1,4 @@
-import Layout from '@/components/Layout/index.vue'
+import Layout from '@/components/layout/index.vue'
 import type { CustomRoute } from '@/router/routes'
 
 export const route: CustomRoute = {

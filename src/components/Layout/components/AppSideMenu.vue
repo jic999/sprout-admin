@@ -1,19 +1,21 @@
 <script setup lang="ts">
 import type { CustomRoute } from '@/router/routes'
 import { dynamicRoutes, staticRoutes } from '@/router/routes'
-import { renderIcon } from '@/utils'
+import { hasRole, renderIcon } from '@/utils'
 
 const route = useRoute()
 const router = useRouter()
 
 const appStore = useAppStore()
+const userStore = useUserStore()
 
 const routes = staticRoutes.concat(dynamicRoutes)
 
 const menuOptions = computed(() => getMenuOptions(routes as CustomRoute[]))
 
 function getMenuOptions(routes: CustomRoute[]) {
-  return routes.filter((route: any) => !route.isHidden)
+  return routes.filter(
+    (route: CustomRoute) => !route.isHidden && (!route.roles || hasRole(route.roles, userStore.userInfo.roles)))
     .map((route: any) => getMenuItem(route))
     .sort((a, b) => a.order - b.order)
 }

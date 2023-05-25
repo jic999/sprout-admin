@@ -13,6 +13,7 @@ interface ExtendedInfo {
   isHidden?: boolean // 不显示在菜单中
   isSingle?: boolean
   order?: number
+  roles?: string[]
 }
 
 export declare type CustomRoute = RouteRecordRaw & ExtendedInfo
