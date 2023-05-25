@@ -232,7 +232,7 @@ onMounted(() => {
 <template>
   <div mt-12 flex flex-wrap br-8 gap-12>
     <div w-full flex gap-12>
-      <div id="BarChart" class="hover-out home-chart" flex-grow-1 h-400 w-50p />
+      <div id="BarChart" class="home-chart hover-out" flex-grow-1 h-400 w-50p />
       <div id="LineChart" class="hover-out home-chart" flex-grow-1 h-400 w-50p />
     </div>
     <div w-full flex gap-12>

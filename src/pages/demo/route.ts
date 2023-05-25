@@ -57,6 +57,7 @@ export const route: CustomRoute = {
       meta: {
         title: 'MD编辑器',
         icon: 'carbon:edit',
+        keepAlive: true,
       },
     },
   ],
