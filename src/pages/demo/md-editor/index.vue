@@ -3,17 +3,17 @@ import { MdEditor } from 'md-editor-v3'
 import 'md-editor-v3/lib/style.css'
 import _ from 'lodash'
 import { lStorage } from '@/utils'
-import { MdEnum } from '@/enums'
+import { StorageKeyEnum } from '@/enums'
 
 defineOptions({
   name: 'MdEditor',
 })
 
-const content = ref<string>(lStorage.get(MdEnum.StorageKey) || '')
+const content = ref<string>(lStorage.get(StorageKeyEnum.MdContent) || '')
 const isSaving = ref(false)
 
 const handleChange = _.debounce((val: string) => {
-  lStorage.set(MdEnum.StorageKey, val)
+  lStorage.set(StorageKeyEnum.MdContent, val)
   content.value = val
 }, 1000)
 

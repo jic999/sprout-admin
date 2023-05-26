@@ -1,6 +1,7 @@
 export const todoList = [
+  { content: 'Axios 错误处理', completed: false },
   { content: 'MD render', completed: false },
-  { content: 'CRUD组件 类型完善', completed: false },
+  { content: 'CRUD组件类型完善', completed: false },
   { content: 'Permission 鉴权', completed: false },
   { content: '图表完善', completed: false },
   { content: '响应式布局', completed: false },

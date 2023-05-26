@@ -208,12 +208,11 @@ async function showRoleModal(row: any) {
 
   const { data } = await roleApi.rolesByUserId(row.id)
   roleIds.value = data.map((item: any) => item.id)
-  console.log('data :>> ', data)
-  console.log('roleIds.value :>> ', roleIds.value)
   roleModalLoading.value = false
 }
 function closeRoleModal() {
   roleModalVisible.value = false
+  roleIds.value = []
 }
 async function handleRoleConfirm() {
   roleBtnLoading.value = true
@@ -266,30 +265,31 @@ onMounted(() => {
       :query-fields-options="queryFieldsOptions"
       :extend-actions-after="extendActionsAfter"
     />
-    <n-spin :show="roleModalLoading">
-      <n-modal
-        v-model:show="roleModalVisible"
-        class="w-600"
-        preset="card"
-        title="分配角色"
-        :show-icon="false"
-        :auto-focus="false"
-        @positive-click="handleRoleConfirm"
-      >
+    <n-modal
+      v-model:show="roleModalVisible"
+      class="w-600"
+      preset="card"
+      title="分配角色"
+      :show-icon="false"
+      :auto-focus="false"
+      @positive-click="handleRoleConfirm"
+    >
+      <n-spin :show="roleModalLoading">
         <n-checkbox-group v-model:value="roleIds" class="grid grid-cols-4 py-24 gap-12">
           <n-checkbox v-for="role in roleOptions" :key="role.value" :value="role.value" :label="role.label" />
         </n-checkbox-group>
-        <template #footer>
-          <div flex justify-end gap-x-12>
-            <NButton @click="closeRoleModal">
-              取消
-            </NButton>
-            <NButton type="primary" :loading="roleBtnLoading" @click="handleRoleConfirm">
-              提交
-            </NButton>
-          </div>
-        </template>
-      </n-modal>
-    </n-spin>
+      </n-spin>
+
+      <template #footer>
+        <div flex justify-end gap-x-12>
+          <NButton @click="closeRoleModal">
+            取消
+          </NButton>
+          <NButton type="primary" :loading="roleBtnLoading" :disabled="roleModalLoading" @click="handleRoleConfirm">
+            提交
+          </NButton>
+        </div>
+      </template>
+    </n-modal>
   </div>
 </template>

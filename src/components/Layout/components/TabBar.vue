@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { sStorage } from '@/utils'
+import { StorageKeyEnum } from '@/enums'
 
 interface TagInfo {
   name: string
@@ -10,7 +11,7 @@ interface TagInfo {
 const route = useRoute()
 const router = useRouter()
 
-const tagList = ref<TagInfo[]>(sStorage.get('tagList') || [])
+const tagList = ref<TagInfo[]>(sStorage.get(StorageKeyEnum.TagBarData) || [])
 const currentIndex = ref(0)
 const currentPath = computed(() => tagList.value[currentIndex.value].fullPath)
 
@@ -24,7 +25,7 @@ watch(() => route.fullPath, () => {
     icon: route.meta.icon as string || 'carbon:bookmark-filled',
   })
   currentIndex.value = tagList.value.length - 1
-  sStorage.set('tagList', tagList.value)
+  sStorage.set(StorageKeyEnum.TagBarData, tagList.value)
 }, { immediate: true })
 
 function handleChange(i: number) {
@@ -37,7 +38,7 @@ function handleClose(i: number) {
   if (i < currentIndex.value || currentIndex.value >= tagList.value.length)
     currentIndex.value--
   router.push({ path: currentPath.value })
-  sStorage.set('tagList', tagList.value)
+  sStorage.set(StorageKeyEnum.TagBarData, tagList.value)
 }
 </script>
 

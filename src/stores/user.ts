@@ -1,5 +1,6 @@
+import { StorageKeyEnum } from '@/enums'
 import { resetRouter } from '@/router'
-import { removeToken } from '@/utils'
+import { removeToken, sStorage } from '@/utils'
 
 export interface UserInfo {
   id: number
@@ -39,6 +40,7 @@ export const useUserStore = defineStore('user', () => {
         throw new Error(msg)
       removeToken()
       resetRouter()
+      sStorage.remove(StorageKeyEnum.TagBarData)
       window.$notification.success({ content: '退出登录成功', duration: 1500 })
     }
     catch (error) {
