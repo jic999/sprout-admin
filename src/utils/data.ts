@@ -1,6 +1,4 @@
 export const todoList = [
-  { content: 'Role 鉴权', completed: false },
-  { content: 'MD 编辑器', completed: false },
   { content: 'MD render', completed: false },
   { content: 'CRUD组件 类型完善', completed: false },
   { content: 'Permission 鉴权', completed: false },
@@ -8,6 +6,8 @@ export const todoList = [
   { content: '响应式布局', completed: false },
   { content: '文档编写', completed: false },
   { content: '打包体积优化', completed: false },
+  { content: 'Role 鉴权', completed: true },
+  { content: 'MD 编辑器', completed: true },
   { content: 'Tagbar 开发', completed: true },
   { content: 'SmartForm 集成文件上传', completed: true },
   { content: '退出登录接口逻辑完善', completed: true },

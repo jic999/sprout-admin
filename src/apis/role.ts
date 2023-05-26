@@ -20,4 +20,7 @@ export const roleApi = {
   assign(params: any): RequestResult {
     return req.post('/system/role/assign', params)
   },
+  rolesByUserId(id: number): RequestResult {
+    return req.get(`/system/role/roles-by-userid?userId=${id}`)
+  },
 }

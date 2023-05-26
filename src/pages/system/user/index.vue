@@ -197,15 +197,26 @@ const queryParams = ref({
 const roleModalVisible = ref(false)
 const roleOptions = ref<{ label: string; value: string }[]>([])
 const roleIds = ref<number[]>([])
+const roleBtnLoading = ref(false)
 const roleModalLoading = ref(false)
 let currentRoleRow: any = null
 
-function toggleRoleModal(row: any) {
-  roleModalVisible.value = !roleModalVisible.value
+async function showRoleModal(row: any) {
+  roleModalVisible.value = true
+  roleModalLoading.value = true
   currentRoleRow = row
+
+  const { data } = await roleApi.rolesByUserId(row.id)
+  roleIds.value = data.map((item: any) => item.id)
+  console.log('data :>> ', data)
+  console.log('roleIds.value :>> ', roleIds.value)
+  roleModalLoading.value = false
+}
+function closeRoleModal() {
+  roleModalVisible.value = false
 }
 async function handleRoleConfirm() {
-  roleModalLoading.value = true
+  roleBtnLoading.value = true
   try {
     // TODO 分配角色
     const params = { userId: currentRoleRow.id, roleIds: roleIds.value }
@@ -213,19 +224,15 @@ async function handleRoleConfirm() {
     if (code !== 0)
       throw new Error(msg)
     window.$message.success('分配成功')
-    toggleRoleModal(currentRoleRow)
+    closeRoleModal()
   }
   catch (error) {
     window.$message.error((error as Error).message)
   }
   finally {
-    roleModalLoading.value = false
+    roleBtnLoading.value = false
   }
 }
-function handleRoleUpdate(val: number[]) {
-  roleIds.value = val
-}
-
 async function getRoleOptions() {
   const { data } = await roleApi.list()
   roleOptions.value = data.map((role: any) => ({ label: role.roleName, value: role.id }))
@@ -233,7 +240,7 @@ async function getRoleOptions() {
 
 const extendActionsAfter: CrudExtendAction = (row: any) => {
   return [
-    h(NButton, { size: 'tiny', type: 'info', secondary: true, onClick: () => toggleRoleModal(row) }, {
+    h(NButton, { size: 'tiny', type: 'info', secondary: true, onClick: () => showRoleModal(row) }, {
       default: () => '分配角色',
       icon: renderIcon('carbon:flow', { size: 14 }),
     }),
@@ -259,28 +266,30 @@ onMounted(() => {
       :query-fields-options="queryFieldsOptions"
       :extend-actions-after="extendActionsAfter"
     />
-    <n-modal
-      v-model:show="roleModalVisible"
-      class="w-600"
-      preset="card"
-      title="分配角色"
-      :show-icon="false"
-      :auto-focus="false"
-      @positive-click="handleRoleConfirm"
-    >
-      <n-checkbox-group class="grid grid-cols-4 py-24 gap-12" @update:value="handleRoleUpdate">
-        <n-checkbox v-for="role in roleOptions" :key="role.value" :value="role.value" :label="role.label" />
-      </n-checkbox-group>
-      <template #footer>
-        <div flex justify-end gap-x-12>
-          <NButton @click="toggleRoleModal">
-            取消
-          </NButton>
-          <NButton type="primary" :loading="roleModalLoading" @click="handleRoleConfirm">
-            提交
-          </NButton>
-        </div>
-      </template>
-    </n-modal>
+    <n-spin :show="roleModalLoading">
+      <n-modal
+        v-model:show="roleModalVisible"
+        class="w-600"
+        preset="card"
+        title="分配角色"
+        :show-icon="false"
+        :auto-focus="false"
+        @positive-click="handleRoleConfirm"
+      >
+        <n-checkbox-group v-model:value="roleIds" class="grid grid-cols-4 py-24 gap-12">
+          <n-checkbox v-for="role in roleOptions" :key="role.value" :value="role.value" :label="role.label" />
+        </n-checkbox-group>
+        <template #footer>
+          <div flex justify-end gap-x-12>
+            <NButton @click="closeRoleModal">
+              取消
+            </NButton>
+            <NButton type="primary" :loading="roleBtnLoading" @click="handleRoleConfirm">
+              提交
+            </NButton>
+          </div>
+        </template>
+      </n-modal>
+    </n-spin>
   </div>
 </template>
