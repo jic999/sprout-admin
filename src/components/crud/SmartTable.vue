@@ -19,6 +19,11 @@ const props = defineProps({
     type: Object,
     default: () => ({}),
   },
+  /* 数据展示前 进行一些处理 */
+  viewDataHandler: {
+    type: Function as PropType<(data: any) => any>,
+    default: (data: any) => data,
+  },
   /* n-data-table参数 */
   tableAttrs: {
     type: Object as PropType<DataTableProps>,
@@ -65,11 +70,11 @@ async function handleQuery() {
     if (code !== SUCCESS_CODE)
       throw new Error(msg)
     if (props.isPagination) {
-      tableData.value = data[PAGE_FIELD]
+      tableData.value = props.viewDataHandler(data[PAGE_FIELD])
       pagination.itemCount = data[TOTAL_FIELD]
     }
     else {
-      tableData.value = data
+      tableData.value = props.viewDataHandler(data)
       pagination.itemCount = data.length
     }
   }

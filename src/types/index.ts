@@ -1,1 +1,2 @@
-export * from './crud.type'
+export * from './components'
+export * from './crud'

@@ -62,7 +62,7 @@ function handleSelect(key: string) {
     <div flex items-center gap-16>
       <div flex items-center gap-x-12>
         <div i-carbon:moon dark:i-carbon:sun icon-btn @click="toggleDark()" />
-        <a href="https://github.com/jic999" target="_blank" i-carbon:logo-github icon-btn />
+        <a href="https://github.com/jic999/sprout-admin" target="_blank" i-carbon:logo-github icon-btn />
         <div
           :class="isFullscreen ? 'i-carbon:minimize' : 'i-carbon:maximize'"
           icon-btn

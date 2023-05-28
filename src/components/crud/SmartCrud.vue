@@ -4,7 +4,7 @@ import type { DataTableColumn, DataTableColumns, SelectOption } from 'naive-ui'
 import { NButton } from 'naive-ui'
 import _ from 'lodash'
 import type { InternalRowData } from 'naive-ui/es/data-table/src/interface'
-import type { CrudApis, CrudExtendAction, CrudParamsHandler, CrudParamsHandlers, SmartCrudItems, SmartFormItem, SmartFormItems } from '@/types'
+import type { CrudApis, CrudExtendAction, CrudParamsHandler, CrudParamsHandlers, SmartCrudItems, SmartFormItem, SmartFormItems, SmartFormProps, SmartTableProps } from '@/types'
 import { renderIcon } from '@/utils'
 
 const props = defineProps({
@@ -48,6 +48,7 @@ const props = defineProps({
     type: Function as PropType<CrudParamsHandler<any>>,
     default: undefined,
   },
+  /* viewObjectHandler */
   /* 是否完全自定义操作 为true时 不会显示默认的action列 */
   isCustomActions: {
     type: Boolean,
@@ -80,6 +81,14 @@ const props = defineProps({
   extendActionsAfter: {
     type: Function as PropType<CrudExtendAction>,
     default: () => [],
+  },
+  tableAttrs: {
+    type: Object as PropType<SmartTableProps>,
+    default: undefined,
+  },
+  formAttrs: {
+    type: Object as PropType<SmartFormProps>,
+    default: undefined,
   },
 })
 const emits = defineEmits(['update:queryParams'])
