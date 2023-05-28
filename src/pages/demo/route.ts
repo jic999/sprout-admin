@@ -14,7 +14,7 @@ export const route: CustomRoute = {
     {
       path: 'table',
       name: 'CommonTable',
-      redirect: '/demo/table/common-table',
+      redirect: '/demo/table/ordinary-table',
       meta: {
         title: '表格',
         icon: 'carbon:data-table',
@@ -44,6 +44,15 @@ export const route: CustomRoute = {
           component: () => import('./table/smart-crud/index.vue'),
           meta: {
             title: '全自动的',
+            icon: 'carbon:executable-program',
+            keepAlive: true,
+          },
+        }, {
+          path: 'smart-crud-plus',
+          name: 'SmartCrudPlus',
+          component: () => import('./table/smart-crud-plus/index.vue'),
+          meta: {
+            title: '加强版',
             icon: 'carbon:executable-program',
             keepAlive: true,
           },

@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import type { PropType } from 'vue'
-import type { DataTableColumns, SelectOption } from 'naive-ui'
+import type { DataTableColumn, DataTableColumns, SelectOption } from 'naive-ui'
 import { NButton } from 'naive-ui'
 import _ from 'lodash'
 import type { InternalRowData } from 'naive-ui/es/data-table/src/interface'
-import type { CrudApis, CrudExtendAction, CrudParamsHandler, CrudParamsHandlers, SmartFormItems } from '@/types'
+import type { CrudApis, CrudExtendAction, CrudParamsHandler, CrudParamsHandlers, SmartCrudItems, SmartFormItem, SmartFormItems } from '@/types'
 import { renderIcon } from '@/utils'
 
 const props = defineProps({
@@ -20,13 +20,18 @@ const props = defineProps({
   },
   /* 表格列项 */
   columns: {
-    type: Object as PropType<DataTableColumns>,
-    required: true,
+    type: Array as PropType<DataTableColumns>,
+    default: () => [],
   },
   /* 表单项 */
   formItems: {
     type: Object as PropType<SmartFormItems<any>>,
-    required: true,
+    default: () => {},
+  },
+  /* crudItems */
+  crudItems: {
+    type: Object as PropType<SmartCrudItems<any>>,
+    default: undefined,
   },
   /* Apis crud接口 */
   apis: {
@@ -79,13 +84,38 @@ const props = defineProps({
 })
 const emits = defineEmits(['update:queryParams'])
 
+const crudFormItems = computed(() => props.crudItems
+  ? Object.keys(props.crudItems).reduce((result, key) => {
+    const crudItem = props.crudItems![key]
+    result[key] = {
+      label: crudItem.title,
+      ...crudItem.formItem,
+    } as SmartFormItem
+    return result
+  }, {} as SmartFormItems<any>)
+  : undefined,
+)
+const crudTableColumns = computed(() => props.crudItems
+  ? Object.keys(props.crudItems).reduce((result, key) => {
+    const crudItem = props.crudItems![key]
+    result.push({
+      title: crudItem.title,
+      key,
+      ...crudItem.tableColumn,
+    } as DataTableColumn)
+    return result
+  }, [] as DataTableColumns)
+  : undefined,
+)
+
 /* Form */
 const smartFormRef = ref()
-
-const formData = reactive(_.mapValues(props.formItems, item => item['value']))
-
-/* table */
 const smartTableRef = ref()
+
+const formData = reactive(
+  _.mapValues(crudFormItems.value || props.formItems, item => item['value']),
+)
+
 const {
   formTitle,
   formAction,
@@ -153,7 +183,15 @@ const defaultColumns: DataTableColumns = [
   },
 ]
 
-const _columns = computed<DataTableColumns>(() => props.isCustomActions ? props.columns : [...props.columns, ...defaultColumns])
+const _columns = computed<DataTableColumns>(
+  () => props.isCustomActions
+    ? (crudTableColumns.value || props.columns)
+    : (
+        crudTableColumns.value
+          ? [...crudTableColumns.value, ...defaultColumns]
+          : [...props.columns, ...defaultColumns]
+      ),
+)
 
 const queryParams = computed({
   get: () => props.queryParams,
@@ -234,7 +272,7 @@ function handleReset() {
       <SmartForm
         ref="smartFormRef"
         v-model:model-value="formData"
-        :form-items="formItems"
+        :form-items="crudFormItems"
         :disabled="formAction === 'view'"
       />
       <template #footer>

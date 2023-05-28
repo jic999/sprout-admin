@@ -4,6 +4,7 @@ import type { CustomRoute } from '@/router/routes'
 export const route: CustomRoute = {
   path: '/system',
   component: Layout,
+  redirect: '/system/sys-user',
   order: 2,
   roles: ['SUPER_ADMIN', 'SYSTEM_ADMIN'],
   meta: {
@@ -28,6 +29,15 @@ export const route: CustomRoute = {
       meta: {
         title: '角色管理',
         icon: 'carbon:user-role',
+        keepAlive: true,
+      },
+    }, {
+      path: 'sys-menu',
+      name: 'SystemMenu',
+      component: () => import('./menu/index.vue'),
+      meta: {
+        title: '菜单管理',
+        icon: 'carbon:menu',
         keepAlive: true,
       },
     },

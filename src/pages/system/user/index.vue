@@ -206,7 +206,7 @@ async function showRoleModal(row: any) {
   roleModalLoading.value = true
   currentRoleRow = row
 
-  const { data } = await roleApi.rolesByUserId(row.id)
+  const { data } = await userApi.roles(row.id)
   roleIds.value = data.map((item: any) => item.id)
   roleModalLoading.value = false
 }
@@ -219,7 +219,7 @@ async function handleRoleConfirm() {
   try {
     // TODO 分配角色
     const params = { userId: currentRoleRow.id, roleIds: roleIds.value }
-    const { code, msg } = await roleApi.assign(params)
+    const { code, msg } = await userApi.assignRoles(params)
     if (code !== 0)
       throw new Error(msg)
     window.$message.success('分配成功')

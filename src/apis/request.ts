@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { VITE_API_BASE_URL, getToken } from '@/utils'
+import { ENV, getToken } from '@/utils'
 
 export interface Result {
   code: number
@@ -12,7 +12,7 @@ export const SUCCESS_CODE = 0
 export declare type RequestResult = Promise<Result>
 
 export const req = axios.create({
-  baseURL: VITE_API_BASE_URL,
+  baseURL: ENV.VITE_API_BASE_URL,
   timeout: 5000,
 })
 

@@ -17,10 +17,4 @@ export const roleApi = {
   page(params: any): RequestResult {
     return req.get(`/system/role/page?${objToQueryStr(params)}`)
   },
-  assign(params: any): RequestResult {
-    return req.post('/system/role/assign', params)
-  },
-  rolesByUserId(id: number): RequestResult {
-    return req.get(`/system/role/roles-by-userid?userId=${id}`)
-  },
 }

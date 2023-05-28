@@ -12,7 +12,7 @@ import type {
   UploadFileInfo,
   UploadProps,
 } from 'naive-ui'
-import type { InternalRowData } from 'naive-ui/es/data-table/src/interface'
+import type { InternalRowData, TableColumn } from 'naive-ui/es/data-table/src/interface'
 import type { VNode } from 'vue'
 import type { RequestResult } from '@/apis/request'
 
@@ -46,12 +46,14 @@ export interface SmartFormItemOption {
 }
 
 /* Components */
+export declare type SmartFormItemType = 'NumberInput' | 'Input' | 'Switch' | 'Radio' | 'Checkbox' | 'CheckboxGroup' | 'Select' | 'Cascader' | 'Upload'
+export declare type SmartFormItemAttrs = InputNumberProps | InputProps | SwitchProps | RadioProps | CheckboxProps | CheckboxGroupProps | SelectProps | CascaderProps | UploadProps
 export declare type CrudExtendAction = (row: InternalRowData, i: number) => VNode[]
 export interface SmartFormItem {
-  type: 'NumberInput' | 'Input' | 'Switch' | 'Radio' | 'Checkbox' | 'CheckboxGroup' | 'Select' | 'Cascader' | 'Upload'
+  type: SmartFormItemType
   label: string
   value: any
-  attrs?: InputNumberProps | InputProps | SwitchProps | RadioProps | CheckboxProps | CheckboxGroupProps | SelectProps | CascaderProps | UploadProps
+  attrs?: SmartFormItemAttrs
   formItemAttrs?: FormItemProps
   rule?: FormItemRule
   options?: SmartFormItemOption[]
@@ -86,3 +88,22 @@ export declare interface UploadHandlerOptions {
   file: Required<UploadFileInfo>
   event?: ProgressEvent
 }
+
+/* CRUD */
+export interface CrudItemFormItem {
+  value: any
+  type: SmartFormItemType
+  attrs?: SmartFormItemAttrs
+  rule?: FormItemRule
+  options?: SmartFormItemOption[]
+}
+export declare type CrudItemTableColumn = TableColumn
+export interface SmartCrudItem {
+  title: string
+  formItem: CrudItemFormItem
+  tableColumn?: Partial<CrudItemTableColumn>
+}
+export declare type SmartCrudItems<T extends Record<string, SmartCrudItem>> = {
+  [key in keyof T]: SmartCrudItem
+}
+export const defCrudItems = <T extends Record<string, SmartCrudItem>>(value: T): SmartCrudItems<T> => value

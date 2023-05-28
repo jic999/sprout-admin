@@ -43,12 +43,14 @@ const pagination = reactive({
   showSizePicker: true,
   pageSizes: [5, 10, 15, 20, 25],
   itemCount: 0,
-  onChange: (page: number) => {
+  onUpdatePage: (page: number) => {
     pagination.page = page
+    handleQuery()
   },
   onUpdatePageSize: (pageSize: number) => {
     pagination.pageSize = pageSize
     pagination.page = 1
+    handleQuery()
   },
 })
 
@@ -95,15 +97,20 @@ const defaultTableAttrs = computed<DataTableProps>(() => ({
   data: tableData.value,
   loading: isLoading.value,
   ...props.tableAttrs,
-  /**
-   * 分页
-   * - 若开启分页且未传 pagination 则使用默认
-   * - 若开启分页且传入 pagination 进行覆盖
-   */
-  pagination: props.isPagination
-    ? (props.tableAttrs.pagination ? { ...pagination, ...props.tableAttrs.pagination } : pagination)
-    : undefined,
+  // ? 若直接传给table-attrs 部分参数似乎没有效果
+  // pagination: props.isPagination
+  //   ? (props.tableAttrs.pagination ? { ...pagination, ...props.tableAttrs.pagination } : pagination)
+  //   : undefined,
 }))
+/**
+  * 分页
+  * - 若开启分页且未传 pagination 则使用默认
+  * - 若开启分页且传入 pagination 进行覆盖
+  */
+const paginationAttrs = computed(() => props.isPagination
+  ? (props.tableAttrs.pagination ? { ...pagination, ...props.tableAttrs.pagination } : pagination)
+  : undefined,
+)
 
 onMounted(() => {
   handleQuery()
@@ -118,4 +125,7 @@ defineExpose({
 
 <template>
   <n-data-table v-bind="defaultTableAttrs" />
+  <div v-if="paginationAttrs" mt-12 flex justify-end>
+    <n-pagination v-bind="paginationAttrs" />
+  </div>
 </template>

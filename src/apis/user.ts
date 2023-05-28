@@ -17,4 +17,10 @@ export const userApi = {
   page(params: any): RequestResult {
     return req.get(`/system/user/page?${objToQueryStr(params)}`)
   },
+  assignRoles(params: any): RequestResult {
+    return req.post('/system/user/assign-roles', params)
+  },
+  roles(id: number): RequestResult {
+    return req.get(`/system/user/roles?userId=${id}`)
+  },
 }
