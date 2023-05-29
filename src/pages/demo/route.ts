@@ -1,5 +1,5 @@
 import Layout from '@/components/layout/index.vue'
-import type { CustomRoute } from '@/router/routes'
+import type { CustomRoute } from '@/types'
 
 export const route = {
   path: '/demo',

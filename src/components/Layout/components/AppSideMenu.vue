@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import type { CustomRoute } from '@/router/routes'
-import { dynamicRoutes } from '@/router/routes'
+import type { CustomRoute } from '@/types'
+import { dynamicRoutes } from '@/router'
 import { hasRole, renderIcon } from '@/utils'
 
 const route = useRoute()

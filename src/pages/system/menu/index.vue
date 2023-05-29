@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { CascaderOption, SelectOption } from 'naive-ui'
 import { NSwitch, NTag } from 'naive-ui'
+import type { MenuItem, MenuTreeNode } from '@/types'
 import { defCrudItems } from '@/types'
 import TheIcon from '@/components/icon/TheIcon.vue'
 import { routeComponents } from '@/router/routes'
@@ -8,27 +9,6 @@ import { routeComponents } from '@/router/routes'
 defineOptions({
   name: 'SystemMenu',
 })
-
-interface MenuItem {
-  id: number
-  createTime: string
-  updateTime: string
-  parentId: number
-  name: string
-  path: string
-  component: string
-  title: string
-  perms: string
-  redirect: string
-  icon: string
-  orderNum: number
-  keepAlive: number
-  status: number
-}
-
-interface TreeNode extends MenuItem {
-  children?: TreeNode[]
-}
 
 const componentOptions = routeComponents.map(item => ({ label: item.name, value: item.name }))
 
@@ -201,7 +181,7 @@ const crudItems = reactive(defCrudItems({
   },
 }))
 
-function buildMenuTree(parentMenu: TreeNode, data: MenuItem[]) {
+function buildMenuTree(parentMenu: MenuTreeNode, data: MenuItem[]) {
   data.forEach((item) => {
     if (item.parentId === parentMenu.id) {
       buildMenuTree(item, data)
@@ -212,9 +192,9 @@ function buildMenuTree(parentMenu: TreeNode, data: MenuItem[]) {
   })
 }
 function getMenuList(data: MenuItem[]) {
-  const result: TreeNode[] = []
+  const result: MenuTreeNode[] = []
   data.sort((a, b) => a.orderNum - b.orderNum)
-  data.filter(item => item.parentId === 0)
+    .filter(item => item.parentId === 0)
     .forEach((parentMenu) => {
       buildMenuTree(parentMenu, data)
       result.push(parentMenu)
