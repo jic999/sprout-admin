@@ -1,4 +1,5 @@
 import type {
+  CascaderOption,
   CascaderProps,
   CheckboxGroupProps,
   CheckboxProps,
@@ -7,19 +8,23 @@ import type {
   InputNumberProps,
   InputProps,
   RadioProps,
+  SelectGroupOption,
+  SelectOption,
   SelectProps,
+  SelectRenderOption,
   SwitchProps,
+  TreeSelectOption,
   UploadProps,
 } from 'naive-ui'
 
 export type SmartFormItemType = 'NumberInput' | 'Input' | 'Switch' | 'Radio' | 'Checkbox' | 'CheckboxGroup' | 'Select' | 'Cascader' | 'Upload'
 export type SmartFormItemAttrs = InputNumberProps | InputProps | SwitchProps | RadioProps | CheckboxProps | CheckboxGroupProps | SelectProps | CascaderProps | UploadProps
 
-export interface SmartFormItemOption {
-  label: string
-  value: string
-  options?: SmartFormItemOption[]
-}
+export type SmartFormItemOption = CascaderOption
+| SelectOption
+| TreeSelectOption
+| SelectGroupOption
+| SelectRenderOption
 export interface SmartFormItem {
   type: SmartFormItemType
   label: string

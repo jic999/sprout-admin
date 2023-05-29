@@ -69,6 +69,21 @@ const props = defineProps({
     type: Boolean,
     default: true,
   },
+  excludeColumns: {
+    type: Array as PropType<String[]>,
+    default: () => [],
+  },
+  /**
+   * form 钩子
+   */
+  beforeFormShow: {
+    type: Function,
+    default: undefined,
+  },
+  afterFormShow: {
+    type: Function,
+    default: undefined,
+  },
   /**
    * 想沿用默认actions 但要扩展更多行为时可用
    * - extendActionsBefore 在默认按钮前
@@ -82,11 +97,11 @@ const props = defineProps({
     type: Function as PropType<CrudExtendAction>,
     default: () => [],
   },
-  tableAttrs: {
+  smartTable: {
     type: Object as PropType<SmartTableProps>,
     default: undefined,
   },
-  formAttrs: {
+  smartForm: {
     type: Object as PropType<SmartFormProps>,
     default: undefined,
   },
@@ -106,12 +121,14 @@ const crudFormItems = computed(() => props.crudItems
 )
 const crudTableColumns = computed(() => props.crudItems
   ? Object.keys(props.crudItems).reduce((result, key) => {
-    const crudItem = props.crudItems![key]
-    result.push({
-      title: crudItem.title,
-      key,
-      ...crudItem.tableColumn,
-    } as DataTableColumn)
+    if (!props.excludeColumns.includes(key)) {
+      const crudItem = props.crudItems![key]
+      result.push({
+        title: crudItem.title,
+        key,
+        ...crudItem.tableColumn,
+      } as DataTableColumn)
+    }
     return result
   }, [] as DataTableColumns)
   : undefined,
@@ -151,6 +168,8 @@ const {
   createParamsHandler: props.paramsHandler?.createParamsHandler,
   updateParamsHandler: props.paramsHandler?.updateParamsHandler,
   viewValuesHandler: props.valuesHandler,
+  beforeFormShow: props.beforeFormShow,
+  afterFormShow: props.afterFormShow,
 })
 
 /* Table */
@@ -265,8 +284,11 @@ function handleReset() {
       <SmartTable
         ref="smartTableRef"
         v-model:query-params="queryParams"
+        :is-pagination="isPagination"
         :get-data="isPagination ? apis.page : apis.list"
+        v-bind="smartTable"
         :table-attrs="{
+          ...smartTable?.tableAttrs,
           columns: _columns,
         }"
       />
@@ -281,7 +303,7 @@ function handleReset() {
       <SmartForm
         ref="smartFormRef"
         v-model:model-value="formData"
-        :form-items="crudFormItems"
+        :form-items="crudFormItems || formItems"
         :disabled="formAction === 'view'"
       />
       <template #footer>

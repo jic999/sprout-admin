@@ -118,7 +118,6 @@ defineExpose({
           <n-cascader
             v-model:value="formData[key]"
             :options="item.options"
-            children-field="options"
             v-bind="item.attrs"
           />
         </template>

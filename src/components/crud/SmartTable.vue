@@ -70,13 +70,14 @@ async function handleQuery() {
     if (code !== SUCCESS_CODE)
       throw new Error(msg)
     if (props.isPagination) {
-      tableData.value = props.viewDataHandler(data[PAGE_FIELD])
+      tableData.value = data[PAGE_FIELD]
       pagination.itemCount = data[TOTAL_FIELD]
     }
     else {
-      tableData.value = props.viewDataHandler(data)
+      tableData.value = data
       pagination.itemCount = data.length
     }
+    tableData.value = props.viewDataHandler(tableData.value)
   }
   catch (error: any) {
     window.$message.error(error.message)

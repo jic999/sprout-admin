@@ -17,4 +17,7 @@ export const menuApi = {
   page(params: any): RequestResult {
     return req.get(`/system/menu/page?${objToQueryStr(params)}`)
   },
+  optionsById(id: number): RequestResult {
+    return req.get(`/system/menu/options/${id}`)
+  },
 }

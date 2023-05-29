@@ -25,6 +25,8 @@ export interface UseCrudParams {
   createParamsHandler?: CrudParamsHandler<any>
   updateParamsHandler?: CrudParamsHandler<any>
   viewValuesHandler?: CrudParamsHandler<any>
+  beforeFormShow?: Function
+  afterFormShow?: Function
 }
 
 export interface UploadHandlerOptions {

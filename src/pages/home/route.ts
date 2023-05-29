@@ -4,7 +4,7 @@ import type { CustomRoute } from '@/router/routes'
 export const route: CustomRoute = {
   path: '/',
   component: Layout,
-  redirect: 'workbench',
+  redirect: '/workbench',
   order: 1,
   meta: {
     title: '主页',

@@ -17,6 +17,8 @@ export const useCrud = ({
   createParamsHandler = (params: any) => params,
   updateParamsHandler = (params: any) => params,
   viewValuesHandler = (values: any) => values,
+  beforeFormShow,
+  afterFormShow,
 }: UseCrudParams) => {
   const formVisible = ref(false)
   const formLoading = ref(false)
@@ -25,24 +27,28 @@ export const useCrud = ({
 
   const defaultFormData = { ...formData }
   const formSwitch = {
-    open: () => formVisible.value = true,
+    open: (row?: any) => {
+      beforeFormShow && beforeFormShow({ row, action: formAction.value })
+      formVisible.value = true
+      afterFormShow && nextTick(() => afterFormShow({ row, action: formAction.value }))
+    },
     close: () => formVisible.value = false,
     loading: () => formLoading.value = true,
     stop: () => formLoading.value = false,
   }
   function handleView(row: any) {
-    formSwitch.open()
     formAction.value = 'view'
+    formSwitch.open(row)
     Object.assign(formData, viewValuesHandler(row))
   }
   function handleUpdate(row: any) {
-    formSwitch.open()
     formAction.value = 'update'
+    formSwitch.open(row)
     Object.assign(formData, viewValuesHandler(row))
   }
   function handleCreate() {
-    formSwitch.open()
     formAction.value = 'create'
+    formSwitch.open()
     Object.assign(formData, defaultFormData)
   }
   function handleDelete(id: Number | String) {
