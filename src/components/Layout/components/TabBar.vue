@@ -16,6 +16,8 @@ const currentIndex = ref(0)
 const currentPath = computed(() => tagList.value[currentIndex.value].fullPath)
 
 watch(() => route.fullPath, () => {
+  if (route.meta.noTag)
+    return
   const index = tagList.value.findIndex(item => item.fullPath === route.fullPath)
   if (index !== -1)
     return currentIndex.value = index

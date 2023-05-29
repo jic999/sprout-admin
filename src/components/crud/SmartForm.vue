@@ -111,6 +111,7 @@ defineExpose({
           <n-select
             v-model:value="formData[key]"
             :options="item.options"
+            :placeholder="`请选择${item.label}`"
             v-bind="item.attrs"
           />
         </template>
@@ -118,6 +119,7 @@ defineExpose({
           <n-cascader
             v-model:value="formData[key]"
             :options="item.options"
+            :placeholder="`请选择${item.label}`"
             v-bind="item.attrs"
           />
         </template>

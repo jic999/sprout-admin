@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { CustomRoute } from '@/router/routes'
-import { dynamicRoutes, staticRoutes } from '@/router/routes'
+import { dynamicRoutes } from '@/router/routes'
 import { hasRole, renderIcon } from '@/utils'
 
 const route = useRoute()
@@ -9,13 +9,13 @@ const router = useRouter()
 const appStore = useAppStore()
 const userStore = useUserStore()
 
-const routes = staticRoutes.concat(dynamicRoutes)
+const routes = dynamicRoutes
 
 const menuOptions = computed(() => getMenuOptions(routes as CustomRoute[]))
 
 function getMenuOptions(routes: CustomRoute[]) {
   return routes.filter(
-    (route: CustomRoute) => !route.isHidden && (!route.roles || hasRole(route.roles, userStore.userInfo.roles)))
+    (route: CustomRoute) => (!route.roles || hasRole(route.roles, userStore.userInfo.roles)))
     .map((route: any) => getMenuItem(route))
     .sort((a, b) => a.order - b.order)
 }
@@ -32,8 +32,11 @@ function getMenuItem(route: CustomRoute) {
     return menuItem
   // 有子路由 判断isSingle
   // - isSingle 则所有子路由都不显示在menu中
-  //   返回首个子路由的信息
+  //   - 判断组件 不为 Layout 返回本身信息
+  //   - 若为Layout返回首个子路由的信息
   if (route.isSingle) {
+    if (route.component?.name !== 'Layout')
+      return menuItem
     const theRoute = route.children[0]
     return {
       ...menuItem,
@@ -43,6 +46,7 @@ function getMenuItem(route: CustomRoute) {
     }
   }
   // - !isSingle 筛选路由 继续获取
+  // - 否则 继续获取子菜单
   (menuItem as any).children = getMenuOptions(route.children)
   return menuItem
 }
@@ -51,7 +55,7 @@ function handleMenuChange(key: string) {
   router.push({ name: key })
 }
 
-const activeMenu = computed(() => route.name)
+const activeMenu = computed(() => route.meta.activeMenu || route.name)
 </script>
 
 <template>

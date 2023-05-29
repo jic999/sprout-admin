@@ -1,8 +1,13 @@
 <script setup lang="ts">
-import type { CascaderOption } from 'naive-ui'
+import type { CascaderOption, SelectOption } from 'naive-ui'
 import { NSwitch, NTag } from 'naive-ui'
 import { defCrudItems } from '@/types'
 import TheIcon from '@/components/icon/TheIcon.vue'
+import { routeComponents } from '@/router/routes'
+
+defineOptions({
+  name: 'SystemMenu',
+})
 
 interface MenuItem {
   id: number
@@ -24,6 +29,8 @@ interface MenuItem {
 interface TreeNode extends MenuItem {
   children?: TreeNode[]
 }
+
+const componentOptions = routeComponents.map(item => ({ label: item.name, value: item.name }))
 
 const crudItems = reactive(defCrudItems({
   id: {
@@ -50,6 +57,8 @@ const crudItems = reactive(defCrudItems({
       attrs: {
         valueField: 'id',
         labelField: 'title',
+        clearable: true,
+        placeholder: '选择上级菜单，一级菜单无需选择',
       },
     },
   },
@@ -58,6 +67,7 @@ const crudItems = reactive(defCrudItems({
     formItem: {
       type: 'Input',
       value: '',
+      attrs: { placeholder: '请输入名称，首字母需大写' },
     },
   },
   path: {
@@ -65,6 +75,7 @@ const crudItems = reactive(defCrudItems({
     formItem: {
       type: 'Input',
       value: '',
+      attrs: { placeholder: '一级菜单带 /，其他不带' },
     },
   },
   icon: {
@@ -82,11 +93,13 @@ const crudItems = reactive(defCrudItems({
   component: {
     title: '组件',
     formItem: {
-      type: 'Input',
-      value: '',
+      type: 'Select',
+      value: null,
+      options: componentOptions as SelectOption[],
+      attrs: { clearable: true },
     },
   },
-  perms: {
+  perm: {
     title: '权限标识',
     formItem: {
       type: 'Input',
@@ -98,6 +111,7 @@ const crudItems = reactive(defCrudItems({
     formItem: {
       type: 'Input',
       value: '',
+      attrs: { placeholder: '完整路径' },
     },
   },
   orderNum: {
@@ -132,6 +146,40 @@ const crudItems = reactive(defCrudItems({
         if (row.status === 0)
           return h(NTag, { type: 'success' }, () => '启用')
         return h(NTag, { type: 'warning' }, () => '禁用')
+      },
+    },
+  },
+  isSingle: {
+    title: '强制单项',
+    formItem: {
+      value: 0,
+      type: 'Switch',
+      attrs: { checkedValue: 1, uncheckedValue: 0 },
+    },
+    tableColumn: {
+      render(row: any) {
+        return h(NSwitch, { value: row.isSingle, checkedValue: 1, defaultValue: 0 })
+      },
+    },
+  },
+  activeMenu: {
+    title: '激活菜单',
+    formItem: {
+      value: null,
+      type: 'Input',
+      attrs: { placeholder: '可选' },
+    },
+  },
+  noTag: {
+    title: '隐藏标签',
+    formItem: {
+      value: 0,
+      type: 'Switch',
+      attrs: { checkedValue: 1, uncheckedValue: 0 },
+    },
+    tableColumn: {
+      render(row: any) {
+        return h(NSwitch, { value: row.noTag, checkedValue: 1, defaultValue: 0 })
       },
     },
   },
@@ -184,10 +232,10 @@ async function beforeFormShow({ row, action }: any) {
   if (row && action === 'update') {
     const { data } = await menuApi.optionsById(row.id)
     const options = getMenuList(data)
-    crudItems.parentId.formItem.options = [{ title: '无', id: 0 }, ...options] as CascaderOption[]
+    crudItems.parentId.formItem.options = options as unknown as CascaderOption[]
   }
   else {
-    crudItems.parentId.formItem.options = [{ title: '无', id: 0 }, ...menuOptions!] as CascaderOption[]
+    crudItems.parentId.formItem.options = menuOptions as unknown as CascaderOption[]
   }
 }
 onMounted(() => {
@@ -208,6 +256,7 @@ onMounted(() => {
       viewDataHandler,
       tableAttrs: {
         rowKey: (row: any) => row.id,
+        scrollX: 2000,
       },
     }"
   />

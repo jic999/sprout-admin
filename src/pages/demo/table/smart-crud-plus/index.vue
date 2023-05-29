@@ -178,14 +178,24 @@ const queryParams = ref({
 </script>
 
 <template>
-  <SmartCrud
-    v-model:query-params="queryParams"
-    title="用户管理4"
-    entity-name="用户"
-    :crud-items="crudItems"
-    :apis="userApi"
-    :params-handler="paramsHandler"
-    :values-handler="valuesHandler"
-    :query-fields-options="queryFieldsOptions"
-  />
+  <div>
+    <SmartCrud
+      v-if="$route.name === 'SmartCrudPlus'"
+      v-model:query-params="queryParams"
+      title="用户管理4"
+      entity-name="用户"
+      :crud-items="crudItems"
+      :apis="userApi"
+      :params-handler="paramsHandler"
+      :values-handler="valuesHandler"
+      :query-fields-options="queryFieldsOptions"
+    >
+      <template #BeforeAddBtn>
+        <n-button secondary @click="$router.push({ name: 'SmartCrudPlusTest' })">
+          测试页
+        </n-button>
+      </template>
+    </SmartCrud>
+    <RouterView />
+  </div>
 </template>

@@ -2,6 +2,10 @@
 import { setToken } from '@/utils'
 import { addDynamicRoutes } from '@/router'
 
+defineOptions({
+  name: 'Login',
+})
+
 const loginParams = reactive({
   username: '',
   password: '',

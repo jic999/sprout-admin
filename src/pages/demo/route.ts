@@ -1,7 +1,7 @@
 import Layout from '@/components/layout/index.vue'
 import type { CustomRoute } from '@/router/routes'
 
-export const route: CustomRoute = {
+export const route = {
   path: '/demo',
   component: Layout,
   redirect: '/demo/table',
@@ -13,7 +13,7 @@ export const route: CustomRoute = {
   children: [
     {
       path: 'table',
-      name: 'CommonTable',
+      name: 'Table',
       redirect: '/demo/table/ordinary-table',
       meta: {
         title: '表格',
@@ -56,6 +56,21 @@ export const route: CustomRoute = {
             icon: 'carbon:executable-program',
             keepAlive: true,
           },
+          isSingle: true,
+          children: [
+            {
+              path: 'test',
+              name: 'SmartCrudPlusTest',
+              component: () => import('./table/smart-crud-plus/test/index.vue'),
+              meta: {
+                title: '测试页',
+                icon: 'carbon:executable-program',
+                keepAlive: true,
+                activeMenu: 'SmartCrudPlus',
+                noTag: true,
+              },
+            },
+          ],
         },
       ],
     },
@@ -70,4 +85,4 @@ export const route: CustomRoute = {
       },
     },
   ],
-}
+} as CustomRoute
