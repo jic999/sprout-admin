@@ -1,8 +1,9 @@
 <script setup lang="ts">
-import { type DataTableColumns, type InputNumberProps, NTag } from 'naive-ui'
+import { type DataTableColumns, type InputNumberProps, NButton, NTag } from 'naive-ui'
 import _ from 'lodash'
-import type { CrudParamsHandlers } from '@/types'
+import type { CrudExtendAction, CrudParamsHandlers } from '@/types'
 import { defFormItems } from '@/types'
+import { filterPermMenus, getMenuList, renderIcon } from '@/utils'
 
 defineOptions({
   name: 'SystemRole',
@@ -104,17 +105,109 @@ const queryParams = ref({
   field: 'roleName',
   keyword: '',
 })
+
+/* 分配权限 */
+const menuModalVisible = ref(false)
+const menuIds = ref<number[]>([])
+const menuBtnLoading = ref(false)
+const menuModalLoading = ref(false)
+let currentMenuRow: any = null
+
+const menuOptions = ref()
+
+async function showRoleModal(row: any) {
+  menuModalVisible.value = true
+  menuModalLoading.value = true
+  currentMenuRow = row
+
+  const { data } = await roleApi.menus(row.id)
+  menuIds.value = data.map((item: any) => item.id)
+  menuModalLoading.value = false
+}
+function closeRoleModal() {
+  menuModalVisible.value = false
+  menuIds.value = []
+}
+async function handleRoleConfirm() {
+  menuBtnLoading.value = true
+  try {
+    const params = { roleId: currentMenuRow.id, menuIds: menuIds.value }
+    const { code, msg } = await roleApi.assignMenus(params)
+    if (code !== 0)
+      throw new Error(msg)
+    window.$message.success('分配成功')
+    closeRoleModal()
+  }
+  catch (error) {
+    window.$message.error((error as Error).message)
+  }
+  finally {
+    menuBtnLoading.value = false
+  }
+}
+async function getMenuOptions() {
+  const { data } = await menuApi.list()
+  const permMenus = getMenuList(filterPermMenus(data))
+  menuOptions.value = permMenus
+}
+
+const extendActionsAfter: CrudExtendAction = (row: any) => {
+  return [
+    h(NButton, { size: 'tiny', type: 'info', secondary: true, onClick: () => showRoleModal(row) }, {
+      default: () => '分配权限',
+      icon: renderIcon('carbon:flow', { size: 14 }),
+    }),
+  ]
+}
+
+onMounted(() => {
+  getMenuOptions()
+})
 </script>
 
 <template>
-  <SmartCrud
-    v-model:query-params="queryParams"
-    title="角色管理"
-    entity-name="角色"
-    :columns="columns"
-    :form-items="formItems"
-    :apis="roleApi"
-    :params-handler="paramsHandler"
-    :query-fields-options="queryFieldsOptions"
-  />
+  <div>
+    <SmartCrud
+      v-model:query-params="queryParams"
+      title="角色管理"
+      entity-name="角色"
+      :columns="columns"
+      :form-items="formItems"
+      :apis="roleApi"
+      :params-handler="paramsHandler"
+      :query-fields-options="queryFieldsOptions"
+      :extend-actions-after="extendActionsAfter"
+    />
+    <n-modal
+      v-model:show="menuModalVisible"
+      class="w-600"
+      preset="card"
+      title="分配权限"
+      :show-icon="false"
+      :auto-focus="false"
+      @positive-click="handleRoleConfirm"
+    >
+      <n-spin :show="menuModalLoading">
+        <n-tree
+          v-model:checked-keys="menuIds"
+          :data="menuOptions"
+          label-field="title"
+          key-field="id"
+          check-strategy="child"
+          default-expand-all multiple cascade checkable clearable
+        />
+      </n-spin>
+
+      <template #footer>
+        <div flex justify-end gap-x-12>
+          <NButton @click="closeRoleModal">
+            取消
+          </NButton>
+          <NButton type="primary" :loading="menuBtnLoading" :disabled="menuModalLoading" @click="handleRoleConfirm">
+            提交
+          </NButton>
+        </div>
+      </template>
+    </n-modal>
+  </div>
 </template>

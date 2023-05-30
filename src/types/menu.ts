@@ -7,7 +7,7 @@ export interface MenuItem {
   path: string
   component: string
   title: string
-  perms: string
+  perm: string
   redirect: string
   icon: string
   orderNum: number

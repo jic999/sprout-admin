@@ -1,10 +1,11 @@
 <script setup lang="ts">
 import type { CascaderOption, SelectOption } from 'naive-ui'
 import { NSwitch, NTag } from 'naive-ui'
-import type { CrudExcludeFormFields, MenuItem, MenuTreeNode } from '@/types'
+import type { CrudExcludeFormFields, MenuItem } from '@/types'
 import { defCrudItems } from '@/types'
 import TheIcon from '@/components/icon/TheIcon.vue'
-import { routeComponents } from '@/router/routes'
+import { routeComponents } from '@/router'
+import { getMenuList } from '@/utils'
 
 defineOptions({
   name: 'SystemMenu',
@@ -83,7 +84,8 @@ const crudItems = reactive(defCrudItems({
     title: '权限标识',
     formItem: {
       type: 'Input',
-      value: '',
+      value: null,
+      attrs: { placeholder: '权限标识，若为空则无需权限即可访问' },
     },
   },
   redirect: {
@@ -181,27 +183,6 @@ const crudItems = reactive(defCrudItems({
   },
 }))
 
-function buildMenuTree(parentMenu: MenuTreeNode, data: MenuItem[]) {
-  data.forEach((item) => {
-    if (item.parentId === parentMenu.id) {
-      buildMenuTree(item, data)
-      if (!parentMenu.children)
-        parentMenu.children = []
-      parentMenu.children.push(item)
-    }
-  })
-}
-function getMenuList(data: MenuItem[]) {
-  const result: MenuTreeNode[] = []
-  data.sort((a, b) => a.orderNum - b.orderNum)
-    .filter(item => item.parentId === 0)
-    .forEach((parentMenu) => {
-      buildMenuTree(parentMenu, data)
-      result.push(parentMenu)
-    })
-  return result
-}
-
 let menuOptions: MenuItem[] | null = null
 function viewDataHandler(data: MenuItem[]) {
   const result = getMenuList(data)
@@ -231,8 +212,8 @@ function afterCommit() {
   console.log('afterCommit')
 }
 function commitSuccess() {
-  window.location.reload()
   console.log('commitSuccess')
+  // window.location.reload()
 }
 function commitFail() {
   console.log('commitFail')
@@ -252,7 +233,7 @@ function commitFail() {
       viewDataHandler,
       tableAttrs: {
         rowKey: (row: any) => row.id,
-        scrollX: 2000,
+        scrollX: 2208,
       },
     }"
     @before-form-show="beforeFormShow"

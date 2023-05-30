@@ -25,6 +25,7 @@ export const routeComponents = [
 ]
 
 type RouteTreeNode = CustomRoute & { id: number }
+
 export function menuToRoute(menu: MenuItem) {
   return {
     id: menu.id,
@@ -34,7 +35,7 @@ export function menuToRoute(menu: MenuItem) {
     redirect: menu.redirect,
     order: menu.orderNum,
     isSingle: menu.isSingle === 1,
-    perms: menu.perms,
+    perms: menu.perm,
     meta: {
       title: menu.title,
       icon: menu.icon,

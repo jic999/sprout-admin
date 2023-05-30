@@ -17,4 +17,10 @@ export const roleApi = {
   page(params: any): RequestResult {
     return req.get(`/system/role/page?${objToQueryStr(params)}`)
   },
+  assignMenus(params: any): RequestResult {
+    return req.post('/system/role/assign-menus', params)
+  },
+  menus(id: number): RequestResult {
+    return req.get(`/system/role/menus?roleId=${id}`)
+  },
 }

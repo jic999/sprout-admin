@@ -51,6 +51,8 @@ declare module '@vue/runtime-core' {
     NSwitch: typeof import('naive-ui')['NSwitch']
     NTag: typeof import('naive-ui')['NTag']
     NText: typeof import('naive-ui')['NText']
+    NTree: typeof import('naive-ui')['NTree']
+    NTreeSelect: typeof import('naive-ui')['NTreeSelect']
     NUpload: typeof import('naive-ui')['NUpload']
     NUploadDragger: typeof import('naive-ui')['NUploadDragger']
     RouterLink: typeof import('vue-router')['RouterLink']
