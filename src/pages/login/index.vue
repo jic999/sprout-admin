@@ -38,7 +38,7 @@ async function handleLogin() {
 
 <template>
   <div flex items-center h-100vh style="background: bottom/cover url('/img/login_bg.jpg');">
-    <div mx-auto flex flex-wrap justify-center border px-48 py-24 op-80 shadow-xl bg-fff w-320>
+    <div mx-auto flex flex-wrap justify-center px-48 py-24 op-80 shadow-xl bg-fff w-320>
       <h3 text="20 $primary-c" italic>
         Sprout Admin
       </h3>

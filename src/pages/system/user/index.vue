@@ -1,8 +1,7 @@
 <script setup lang="ts">
 import type { DataTableColumns, FormItemRule, InputNumberProps, InputProps, SwitchProps, UploadFileInfo, UploadProps } from 'naive-ui'
 import { NButton, NTag } from 'naive-ui'
-import _ from 'lodash'
-import type { CrudExtendAction, CrudParamsHandler, CrudParamsHandlers } from '@/types'
+import type { CrudExcludeFormFields, CrudExtendAction, CrudParamsHandler, CrudParamsHandlers } from '@/types'
 import { defFormItems } from '@/types'
 import { getResourceUrl, getToken, renderIcon } from '@/utils'
 
@@ -106,15 +105,17 @@ const formItems = defFormItems({
 })
 const paramsHandler: CrudParamsHandlers<typeof formItems> = {
   createParamsHandler: (params) => {
-    const _params = _.omit(params, ['id', 'createTime', 'updateTime'])
-    _params.avatar = _params.avatar[0]?.url
-    return _params
+    params.avatar = params.avatar[0]?.url
+    return params
   },
   updateParamsHandler: (params) => {
-    const _params = _.omit(params, ['createTime', 'updateTime'])
-    _params.avatar = _params.avatar[0]?.url
-    return _params
+    params.avatar = params.avatar[0]?.url
+    return params
   },
+}
+const excludeFields: CrudExcludeFormFields = {
+  create: ['id', 'createTime', 'updateTime'],
+  update: ['createTime', 'updateTime'],
 }
 const valuesHandler: CrudParamsHandler<typeof formItems> = (values) => {
   return { ...values, avatar: values.avatar ? [{ url: values.avatar, status: 'finished' }] as UploadFileInfo[] : [] }
@@ -261,6 +262,7 @@ onMounted(() => {
       :values-handler="valuesHandler"
       :columns="columns"
       :form-items="formItems"
+      :exclude-fields="excludeFields"
       :apis="userApi"
       :query-fields-options="queryFieldsOptions"
       :extend-actions-after="extendActionsAfter"

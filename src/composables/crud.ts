@@ -1,3 +1,4 @@
+import _ from 'lodash'
 import type { UseCrudParams } from '@/types'
 
 const ACTIONS_TEXT = {
@@ -14,11 +15,16 @@ export const useCrud = ({
   apis,
   refresh,
   validator,
+  excludeFields = {},
   createParamsHandler = (params: any) => params,
   updateParamsHandler = (params: any) => params,
   viewValuesHandler = (values: any) => values,
   beforeFormShow,
   afterFormShow,
+  beforeCommit,
+  commitSuccess,
+  commitFail,
+  afterCommit,
 }: UseCrudParams) => {
   const formVisible = ref(false)
   const formLoading = ref(false)
@@ -60,17 +66,21 @@ export const useCrud = ({
       autoFocus: false,
       onPositiveClick: async () => {
         const msgLoading = window.$message.loading('删除中', { duration: 0 })
+        beforeCommit && beforeCommit()
         try {
           const { code, msg } = await apis.delete(id)
           if (code !== SUCCESS_CODE)
             throw new Error(msg)
           window.$message.success('删除成功')
           refresh()
+          commitSuccess && commitSuccess()
         }
         catch (error: any) {
           window.$message.error(error.message || '删除失败，请稍后再试')
+          commitFail && commitFail()
         }
         finally {
+          afterCommit && afterCommit()
           msgLoading.destroy()
         }
       },
@@ -84,9 +94,10 @@ export const useCrud = ({
       return
 
     const handler = {
-      create: async () => apis.create(await createParamsHandler(formData)),
-      update: async () => apis.update(await updateParamsHandler(formData)),
+      create: async () => apis.create(await createParamsHandler(omitFields(formData, excludeFields.create))),
+      update: async () => apis.update(await updateParamsHandler(omitFields(formData, excludeFields.update))),
     }
+    beforeCommit && beforeCommit()
     try {
       formSwitch.loading()
       const { code, msg } = await handler[formAction.value as keyof typeof handler]()
@@ -95,16 +106,24 @@ export const useCrud = ({
       refresh()
       window.$message.success('提交成功')
       handleCancel()
+      commitSuccess && commitSuccess()
     }
     catch (error: any) {
       window.$message.error(error.message || '提交失败')
+      commitFail && commitFail()
     }
     finally {
       formSwitch.stop()
+      afterCommit && afterCommit()
     }
   }
   function handleCancel() {
     formSwitch.close()
+  }
+  function omitFields(data: object, fields: string[] | undefined) {
+    if (!fields || fields.length === 0)
+      return data
+    return _.omit(data, fields)
   }
 
   return {

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { CascaderOption, SelectOption } from 'naive-ui'
 import { NSwitch, NTag } from 'naive-ui'
-import type { MenuItem, MenuTreeNode } from '@/types'
+import type { CrudExcludeFormFields, MenuItem, MenuTreeNode } from '@/types'
 import { defCrudItems } from '@/types'
 import TheIcon from '@/components/icon/TheIcon.vue'
 import { routeComponents } from '@/router/routes'
@@ -218,9 +218,25 @@ async function beforeFormShow({ row, action }: any) {
     crudItems.parentId.formItem.options = menuOptions as unknown as CascaderOption[]
   }
 }
-onMounted(() => {
 
-})
+const excludeFields: CrudExcludeFormFields = {
+  create: ['id', 'createTime', 'updateTime'],
+  update: ['createTime', 'updateTime'],
+}
+
+function beforeCommit() {
+  console.log('beforeCommit')
+}
+function afterCommit() {
+  console.log('afterCommit')
+}
+function commitSuccess() {
+  window.location.reload()
+  console.log('commitSuccess')
+}
+function commitFail() {
+  console.log('commitFail')
+}
 </script>
 
 <template>
@@ -231,7 +247,7 @@ onMounted(() => {
     :apis="menuApi"
     :is-pagination="false"
     :exclude-columns="['parentId']"
-    :before-form-show="beforeFormShow"
+    :exclude-fields="excludeFields"
     :smart-table="{
       viewDataHandler,
       tableAttrs: {
@@ -239,5 +255,10 @@ onMounted(() => {
         scrollX: 2000,
       },
     }"
+    @before-form-show="beforeFormShow"
+    @before-commit="beforeCommit"
+    @after-commit="afterCommit"
+    @commit-success="commitSuccess"
+    @commit-fail="commitFail"
   />
 </template>

@@ -59,7 +59,7 @@ const activeMenu = computed(() => route.meta.activeMenu || route.name)
 </script>
 
 <template>
-  <RouterLink class="mt-8 flex-center gap-x-8 py-8 text-16 italic text-$primary-c" :to="{ name: 'Workbench' }">
+  <RouterLink class="mt-8 flex-center gap-x-8 py-8 text-16 italic text-$primary-c" :to="{ path: '/' }">
     <TheIcon icon="carbon:sprout" :size="24" />
     <span v-if="!appStore.collapsed" whitespace-nowrap>Sprout Admin</span>
   </RouterLink>

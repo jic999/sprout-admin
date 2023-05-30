@@ -16,17 +16,26 @@ export interface UseCrudApis {
   update: CrudRequest
   delete: CrudRequest
 }
+export interface CrudExcludeFormFields {
+  create?: string[]
+  update?: string[]
+}
 export interface UseCrudParams {
   title: string
   formData: object
   apis: UseCrudApis
   refresh: Function
   validator: { validate: Function; restore?: Function }
+  excludeFields?: CrudExcludeFormFields
   createParamsHandler?: CrudParamsHandler<any>
   updateParamsHandler?: CrudParamsHandler<any>
   viewValuesHandler?: CrudParamsHandler<any>
   beforeFormShow?: Function
   afterFormShow?: Function
+  beforeCommit?: Function
+  afterCommit?: Function
+  commitSuccess?: Function
+  commitFail?: Function
 }
 
 export interface UploadHandlerOptions {

@@ -4,7 +4,7 @@ import type { DataTableColumn, DataTableColumns, SelectOption } from 'naive-ui'
 import { NButton } from 'naive-ui'
 import _ from 'lodash'
 import type { InternalRowData } from 'naive-ui/es/data-table/src/interface'
-import type { CrudApis, CrudExtendAction, CrudParamsHandler, CrudParamsHandlers, SmartCrudItems, SmartFormItem, SmartFormItems, SmartFormProps, SmartTableProps } from '@/types'
+import type { CrudApis, CrudExcludeFormFields, CrudExtendAction, CrudParamsHandler, CrudParamsHandlers, SmartCrudItems, SmartFormItem, SmartFormItems, SmartFormProps, SmartTableProps } from '@/types'
 import { renderIcon } from '@/utils'
 
 const props = defineProps({
@@ -69,19 +69,13 @@ const props = defineProps({
     type: Boolean,
     default: true,
   },
+  /* 排除无需展示的表单列 */
   excludeColumns: {
     type: Array as PropType<String[]>,
     default: () => [],
   },
-  /**
-   * form 钩子
-   */
-  beforeFormShow: {
-    type: Function,
-    default: undefined,
-  },
-  afterFormShow: {
-    type: Function,
+  excludeFields: {
+    type: Object as PropType<CrudExcludeFormFields>,
     default: undefined,
   },
   /**
@@ -106,7 +100,15 @@ const props = defineProps({
     default: undefined,
   },
 })
-const emits = defineEmits(['update:queryParams'])
+const emits = defineEmits([
+  'update:queryParams',
+  'beforeFormShow',
+  'afterFormShow',
+  'beforeCommit',
+  'afterCommit',
+  'commitSuccess',
+  'commitFail',
+])
 
 const crudFormItems = computed(() => props.crudItems
   ? Object.keys(props.crudItems).reduce((result, key) => {
@@ -162,14 +164,19 @@ const {
     delete: props.apis.delete,
   },
   refresh: () => smartTableRef.value.refresh(),
+  excludeFields: props.excludeFields,
   validator: {
     validate: () => smartFormRef.value.validate(),
   },
   createParamsHandler: props.paramsHandler?.createParamsHandler,
   updateParamsHandler: props.paramsHandler?.updateParamsHandler,
   viewValuesHandler: props.valuesHandler,
-  beforeFormShow: props.beforeFormShow,
-  afterFormShow: props.afterFormShow,
+  beforeFormShow: (args: any) => emits('beforeFormShow', args),
+  afterFormShow: (args: any) => emits('afterFormShow', args),
+  beforeCommit: (args: any) => emits('beforeCommit', args),
+  afterCommit: (args: any) => emits('afterCommit', args),
+  commitSuccess: (args: any) => emits('commitSuccess', args),
+  commitFail: (args: any) => emits('commitFail', args),
 })
 
 /* Table */
