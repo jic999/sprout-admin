@@ -1,15 +1,16 @@
 import type { App } from 'vue'
 import type { RouteRecordNormalized } from 'vue-router'
 import { createRouter, createWebHistory } from 'vue-router'
-import { getDynamicRoutes, staticRoutes } from './routes'
+import { NOT_FOUND_ROUTE, getDynamicRoutes, staticRoutes } from './routes'
 import { setupRouteGuard } from './guards'
 import type { CustomRoute } from '@/types'
 import { getToken } from '@/utils'
 
 export * from './routes'
+
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
-  routes: [...staticRoutes],
+  routes: [...staticRoutes, NOT_FOUND_ROUTE],
 })
 
 export const dynamicRoutes: CustomRoute[] = []

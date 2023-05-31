@@ -12,7 +12,21 @@ export const staticRoutes: CustomRoute[] = [
       title: '登录',
     },
   },
+  {
+    name: '404',
+    path: '/404',
+    component: () => import('@/pages/404/index.vue'),
+    meta: {
+      title: '404',
+    },
+  },
 ]
+
+export const NOT_FOUND_ROUTE = {
+  name: 'NotFound',
+  path: '/:pathMatch(.*)*',
+  redirect: '/404',
+}
 
 // const modules = import.meta.glob('@/pages/**/route.ts', { eager: true })
 // export const dynamicRoutes = Object.keys(modules)
