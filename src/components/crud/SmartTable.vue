@@ -57,6 +57,7 @@ const pagination = reactive({
     pagination.page = 1
     handleQuery()
   },
+  ...props.tableAttrs?.pagination,
 })
 
 async function handleQuery() {
@@ -114,7 +115,7 @@ const defaultTableAttrs = computed<DataTableProps>(() => ({
   * - 若开启分页且传入 pagination 进行覆盖
   */
 const paginationAttrs = computed(() => props.isPagination
-  ? (props.tableAttrs.pagination ? { ...pagination, ...props.tableAttrs.pagination } : pagination)
+  ? pagination
   : undefined,
 )
 
@@ -130,7 +131,7 @@ defineExpose({
 </script>
 
 <template>
-  <n-data-table v-bind="defaultTableAttrs" />
+  <n-data-table v-bind="defaultTableAttrs" :pagination="false" />
   <div v-if="paginationAttrs" mt-12 flex justify-end>
     <n-pagination v-bind="paginationAttrs" />
   </div>

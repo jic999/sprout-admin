@@ -1,5 +1,5 @@
-import { req } from './request'
-import type { RequestResult } from './request'
+import { req } from '../request'
+import type { RequestResult } from '../request'
 
 export const authApi = {
   login(loginParams: any): RequestResult {

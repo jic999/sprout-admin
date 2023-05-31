@@ -190,7 +190,7 @@ const extendActionsAfter: CrudExtendAction = (row: any) => {
           label-field="title"
           key-field="id"
           check-strategy="child"
-          cascade checkable clearable multiple default-expand-all
+          clearable cascade checkable multiple default-expand-all
         />
       </n-spin>
 

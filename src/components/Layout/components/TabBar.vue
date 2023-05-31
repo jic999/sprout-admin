@@ -24,7 +24,7 @@ watch(() => route.fullPath, () => {
   tagList.value.push({
     fullPath: route.fullPath,
     name: route.meta.title as string || route.name as string,
-    icon: route.meta.icon as string || 'carbon:bookmark-filled',
+    icon: route.meta.icon as string || 'carbon:bookmark',
   })
   currentIndex.value = tagList.value.length - 1
   sStorage.set(StorageKeyEnum.TagBarData, tagList.value)

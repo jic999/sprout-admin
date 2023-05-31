@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import type { CascaderOption, SelectOption } from 'naive-ui'
 import { NSwitch, NTag } from 'naive-ui'
+import { icons as epIcons } from '@iconify-json/ep'
+import { icons as cbIcons } from '@iconify-json/carbon'
 import type { CrudExcludeFormFields, MenuItem } from '@/types'
 import { defCrudItems } from '@/types'
 import TheIcon from '@/components/icon/TheIcon.vue'
@@ -12,6 +14,16 @@ defineOptions({
 })
 
 const componentOptions = routeComponents.map(item => ({ label: item.name, value: item.name }))
+
+const iconOptions = Object.keys(epIcons.icons).map(icon => ({ icon: `ep:${icon}` }))
+  .concat(Object.keys(cbIcons.icons).map(icon => ({ icon: `carbon:${icon}` })))
+
+function renderIconSelectLabel(option: any) {
+  return h('div', { class: 'flex items-center gap-x-12' }, [
+    h(TheIcon, { icon: option.icon, size: 20 }),
+    h('div', { innerText: option.icon }),
+  ])
+}
 
 const crudItems = reactive(defCrudItems({
   id: {
@@ -62,8 +74,15 @@ const crudItems = reactive(defCrudItems({
   icon: {
     title: '图标',
     formItem: {
-      type: 'Input',
-      value: '',
+      type: 'Select',
+      value: null,
+      options: iconOptions,
+      attrs: {
+        labelField: 'icon',
+        valueField: 'icon',
+        renderLabel: renderIconSelectLabel,
+        filterable: true,
+      },
     },
     tableColumn: {
       render(row: any) {

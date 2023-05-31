@@ -21,7 +21,7 @@ export default defineConfig({
     AutoImport({
       imports: ['vue', 'vue-router', 'pinia', '@vueuse/core', 'vue/macros'],
       dts: 'src/auto-imports.d.ts',
-      dirs: ['src/composables', 'src/stores', 'src/apis'],
+      dirs: ['src/composables', 'src/stores', 'src/apis/**/*'],
       vueTemplate: true,
     }),
     Components({

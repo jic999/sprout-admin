@@ -11,12 +11,12 @@ const props = defineProps({
   /* 页面标题 */
   title: {
     type: String,
-    required: true,
+    default: '',
   },
   /* 实体名称 */
   entityName: {
     type: String,
-    default: undefined,
+    default: '',
   },
   /* 表格列项 */
   columns: {
@@ -139,6 +139,7 @@ const crudTableColumns = computed(() => props.crudItems
 /* Form */
 const smartFormRef = ref()
 const smartTableRef = ref()
+const noForm = computed(() => !props.formItems && !crudFormItems.value)
 
 const formData = reactive(
   _.mapValues(crudFormItems.value || props.formItems, item => item['value']),
@@ -219,7 +220,7 @@ const defaultColumns: DataTableColumns = [
 ]
 
 const _columns = computed<DataTableColumns>(
-  () => props.isCustomActions
+  () => (props.isCustomActions || noForm.value)
     ? (crudTableColumns.value || props.columns)
     : (
         crudTableColumns.value
@@ -233,7 +234,8 @@ const queryParams = computed({
   set: (val: any) => emits('update:queryParams', val),
 })
 const queryInputPlaceholder = computed(
-  () => `请输入${props.queryFieldsOptions?.find(item => item.value === queryParams.value.field)?.label || '关键词'}`,
+  () => props.queryFieldsOptions?.find(item => item.value === queryParams.value.field)?.placeholder
+  || `请输入${props.queryFieldsOptions?.find(item => item.value === queryParams.value.field)?.label || '关键词'}`,
 )
 
 function handleQuery() {
@@ -281,7 +283,7 @@ function handleReset() {
       </n-space>
       <n-space>
         <slot name="BeforeAddBtn" />
-        <NButton type="primary" secondary @click="handleCreate">
+        <NButton v-if="!noForm" type="primary" secondary @click="handleCreate">
           新增{{ entityName }}
         </NButton>
         <slot name="AfterAddBtn" />
@@ -301,6 +303,7 @@ function handleReset() {
       />
     </div>
     <n-modal
+      v-if="!noForm"
       v-model:show="formVisible"
       preset="card"
       :title="formTitle"

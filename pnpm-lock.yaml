@@ -1,6 +1,9 @@
 lockfileVersion: '6.0'
 
 dependencies:
+  '@iconify-json/ep':
+    specifier: ^1.1.10
+    version: 1.1.10
   '@vueuse/core':
     specifier: ^10.0.2
     version: 10.0.2(vue@3.2.47)
@@ -1063,9 +1066,14 @@ packages:
       '@iconify/types': 2.0.0
     dev: true
 
+  /@iconify-json/ep@1.1.10:
+    resolution: {integrity: sha512-1N3H28hbulsw3UNZjAZ1c7BhK9mLiw8VrngQc58xNQ7dnzaUgtKN81aqkrZ9ffDXcfJGL3Rk9Yc3/QrSSI24sg==}
+    dependencies:
+      '@iconify/types': 2.0.0
+    dev: false
+
   /@iconify/types@2.0.0:
     resolution: {integrity: sha512-+wluvCrRhXrhyOmRDJ3q8mux9JkKy5SJ/v8ol2tu4FVjyYvtEzkc/3pK15ET6RKg4b4w4BmTk1+gsCUhf21Ykg==}
-    dev: true
 
   /@iconify/utils@2.1.5:
     resolution: {integrity: sha512-6MvDI+I6QMvXn5rK9KQGdpEE4mmLTcuQdLZEiX5N+uZB+vc4Yw9K1OtnOgkl8mp4d9X0UrILREyZgF1NUwUt+Q==}
