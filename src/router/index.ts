@@ -31,7 +31,7 @@ export async function addDynamicRoutes() {
     !userStore.userInfo.id && (await userStore.getUserInfo())
 
     const { data } = await menuApi.list()
-    dynamicRoutes.splice(0, 0, ...getDynamicRoutes(data))
+    dynamicRoutes.splice(0, dynamicRoutes.length, ...getDynamicRoutes(data))
     dynamicRoutes.forEach((route: CustomRoute) => {
       router.addRoute(route)
     })

@@ -79,6 +79,12 @@ const crudItems = reactive(defCrudItems({
       options: componentOptions as SelectOption[],
       attrs: { clearable: true },
     },
+    tableColumn: {
+      render(row) {
+        if (row.component)
+          return h(NTag, { type: 'info' }, () => row.component)
+      },
+    },
   },
   perm: {
     title: '权限标识',
@@ -233,7 +239,7 @@ function commitFail() {
       viewDataHandler,
       tableAttrs: {
         rowKey: (row: any) => row.id,
-        scrollX: 2208,
+        scrollX: 2250,
       },
     }"
     @before-form-show="beforeFormShow"

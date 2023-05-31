@@ -119,7 +119,7 @@ async function showRoleModal(row: any) {
   menuModalVisible.value = true
   menuModalLoading.value = true
   currentMenuRow = row
-
+  await getMenuOptions()
   const { data } = await roleApi.menus(row.id)
   menuIds.value = data.map((item: any) => item.id)
   menuModalLoading.value = false
@@ -159,10 +159,6 @@ const extendActionsAfter: CrudExtendAction = (row: any) => {
     }),
   ]
 }
-
-onMounted(() => {
-  getMenuOptions()
-})
 </script>
 
 <template>
