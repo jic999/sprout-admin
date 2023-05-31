@@ -14,7 +14,7 @@ interface ExtendedInfo {
   isSingle?: boolean // 有子路由但无需展示时使用
   order?: number
   roles?: string[]
-  perms?: string
+  perm?: string
 }
 
 export declare type CustomRoute = RouteRecordRaw & ExtendedInfo

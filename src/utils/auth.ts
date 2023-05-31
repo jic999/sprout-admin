@@ -18,3 +18,7 @@ export function removeToken() {
 export function hasRole(needRoles: string[], withRoles: string[]) {
   return needRoles.some(role => withRoles.findIndex(withRole => withRole === role) !== -1)
 }
+
+export function hasPerm(needPerm: string, withPerms: string[]) {
+  return !needPerm || withPerms.includes(needPerm)
+}

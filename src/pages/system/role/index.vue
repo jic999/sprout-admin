@@ -194,7 +194,7 @@ onMounted(() => {
           label-field="title"
           key-field="id"
           check-strategy="child"
-          default-expand-all multiple cascade checkable clearable
+          cascade checkable clearable multiple default-expand-all
         />
       </n-spin>
 

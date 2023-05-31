@@ -4,7 +4,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import { getDynamicRoutes, staticRoutes } from './routes'
 import { setupRouteGuard } from './guards'
 import type { CustomRoute } from '@/types'
-import { getToken, hasRole } from '@/utils'
+import { getToken } from '@/utils'
 
 export * from './routes'
 const router = createRouter({
@@ -27,17 +27,13 @@ export async function addDynamicRoutes() {
    */
   try {
     const userStore = useUserStore()
-    const { data } = await menuApi.list()
-    dynamicRoutes.splice(0, 0, ...getDynamicRoutes(data))
     // 若无用户信息 getUserInfo
     !userStore.userInfo.id && (await userStore.getUserInfo())
-    // TODO 根据 permission添加路由
+
+    const { data } = await menuApi.list()
+    dynamicRoutes.splice(0, 0, ...getDynamicRoutes(data))
     dynamicRoutes.forEach((route: CustomRoute) => {
-      if (
-        !route.roles
-        || hasRole(route.roles, userStore.userInfo.roles)
-      )
-        router.addRoute(route)
+      router.addRoute(route)
     })
   }
   catch (error) {

@@ -1,6 +1,7 @@
 import type { Component } from 'vue'
 import Layout from '@/components/layout/index.vue'
 import type { CustomRoute, MenuItem } from '@/types'
+import { hasPerm } from '@/utils'
 
 export const staticRoutes: CustomRoute[] = [
   {
@@ -57,7 +58,18 @@ export function buildRouteTree(parentRoute: RouteTreeNode, data: MenuItem[]) {
   })
 }
 export function getDynamicRoutes(data: MenuItem[]) {
-  data = data.filter(item => item.status === 0)
+  const userStore = useUserStore()
+  // 根据permissions 筛选路由
+  data = data.filter(item => item.status === 0
+    && hasPerm(item.perm, userStore.userInfo.permissions),
+  )
+  // 去除无子菜单的父菜单
+  data = data.filter(item =>
+    !( // 无特定组件 且无子菜单
+      (!item.component || item.component === 'Layout')
+      && !data.find(child => child.parentId === item.id)
+    ),
+  )
   const routes: RouteTreeNode[] = []
   data.sort((a, b) => a.orderNum - b.orderNum)
     .filter(item => item.parentId === 0)

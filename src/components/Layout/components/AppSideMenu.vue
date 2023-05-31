@@ -12,7 +12,7 @@ const userStore = useUserStore()
 const routes = dynamicRoutes
 
 const menuOptions = computed(() => getMenuOptions(routes as CustomRoute[]))
-
+console.log('menuOptions.value :>> ', menuOptions.value)
 function getMenuOptions(routes: CustomRoute[]) {
   return routes.filter(
     (route: CustomRoute) => (!route.roles || hasRole(route.roles, userStore.userInfo.roles)))
