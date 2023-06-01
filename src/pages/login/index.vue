@@ -16,23 +16,18 @@ const userStore = useUserStore()
 const router = useRouter()
 
 async function handleLogin() {
-  try {
-    loading.value = true
-    const { code, data, msg } = await authApi.login(loginParams)
-    if (code !== 0)
-      throw new Error(msg)
-    setToken(data.token)
-    userStore.setUserInfo(data.userInfo)
-    await addDynamicRoutes()
-    router.push({ path: '/' })
-    window.$notification.success({ content: '登录成功', duration: 1500 })
+  loading.value = true
+  const { err, data } = await authApi.login(loginParams)
+  loading.value = false
+  if (err) {
+    window.$message.error(err.message)
+    return
   }
-  catch (error: any) {
-    window.$message.error(error.message)
-  }
-  finally {
-    loading.value = false
-  }
+  setToken(data.token)
+  userStore.setUserInfo(data.userInfo)
+  await addDynamicRoutes()
+  router.push({ path: '/' })
+  window.$notification.success({ content: '登录成功', duration: 1500 })
 }
 </script>
 

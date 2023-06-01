@@ -1,3 +1,3 @@
 export * from './icon'
 export * from './env'
-export * from './resource'
+export * from '../resource'

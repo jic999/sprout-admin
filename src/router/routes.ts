@@ -37,7 +37,7 @@ const componentModules = import.meta.glob('@/pages/**/**/index.vue', { eager: tr
 export const routeComponents = [
   Layout,
   ...Object.keys(componentModules).map(key => (componentModules[key] as any).default as Component),
-]
+].sort((a, b) => a.name!.toLowerCase() <= b.name!.toLowerCase() ? -1 : 1)
 
 type RouteTreeNode = CustomRoute & { id: number }
 

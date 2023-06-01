@@ -69,6 +69,7 @@ declare global {
   const markRaw: typeof import('vue')['markRaw']
   const menuApi: typeof import('./apis/system/menu')['menuApi']
   const nextTick: typeof import('vue')['nextTick']
+  const objToQueryStr: typeof import('./apis/request')['objToQueryStr']
   const onActivated: typeof import('vue')['onActivated']
   const onBeforeMount: typeof import('vue')['onBeforeMount']
   const onBeforeRouteLeave: typeof import('vue-router')['onBeforeRouteLeave']
@@ -393,6 +394,7 @@ declare module 'vue' {
     readonly markRaw: UnwrapRef<typeof import('vue')['markRaw']>
     readonly menuApi: UnwrapRef<typeof import('./apis/system/menu')['menuApi']>
     readonly nextTick: UnwrapRef<typeof import('vue')['nextTick']>
+    readonly objToQueryStr: UnwrapRef<typeof import('./apis/request')['objToQueryStr']>
     readonly onActivated: UnwrapRef<typeof import('vue')['onActivated']>
     readonly onBeforeMount: UnwrapRef<typeof import('vue')['onBeforeMount']>
     readonly onBeforeRouteLeave: UnwrapRef<typeof import('vue-router')['onBeforeRouteLeave']>

@@ -67,22 +67,20 @@ export const useCrud = ({
       onPositiveClick: async () => {
         const msgLoading = window.$message.loading('删除中', { duration: 0 })
         beforeCommit && beforeCommit()
-        try {
-          const { code, msg } = await apis.delete(id)
-          if (code !== SUCCESS_CODE)
-            throw new Error(msg)
-          window.$message.success('删除成功')
-          refresh()
-          commitSuccess && commitSuccess()
-        }
-        catch (error: any) {
-          window.$message.error(error.message || '删除失败，请稍后再试')
+        const { err } = await apis.delete(id)
+        // AfterCommit
+        afterCommit && afterCommit()
+        msgLoading.destroy()
+        if (err) {
+          window.$message.error(err.message || '删除失败，请稍后再试')
+          // Commit fail
           commitFail && commitFail()
+          return
         }
-        finally {
-          afterCommit && afterCommit()
-          msgLoading.destroy()
-        }
+        window.$message.success('删除成功')
+        refresh()
+        // Commit success
+        commitSuccess && commitSuccess()
       },
     })
   }
@@ -98,24 +96,19 @@ export const useCrud = ({
       update: async () => apis.update(await updateParamsHandler(omitFields(formData, excludeFields.update))),
     }
     beforeCommit && beforeCommit()
-    try {
-      formSwitch.loading()
-      const { code, msg } = await handler[formAction.value as keyof typeof handler]()
-      if (code !== SUCCESS_CODE)
-        throw new Error(msg)
-      refresh()
-      window.$message.success('提交成功')
-      handleCancel()
-      commitSuccess && commitSuccess()
-    }
-    catch (error: any) {
-      window.$message.error(error.message || '提交失败')
+    formSwitch.loading()
+    const { err } = await handler[formAction.value as keyof typeof handler]()
+    formSwitch.stop()
+    afterCommit && afterCommit()
+    if (err) {
+      window.$message.error(err.message || '提交失败')
       commitFail && commitFail()
+      return
     }
-    finally {
-      formSwitch.stop()
-      afterCommit && afterCommit()
-    }
+    refresh()
+    window.$message.success('提交成功')
+    handleCancel()
+    commitSuccess && commitSuccess()
   }
   function handleCancel() {
     formSwitch.close()

@@ -23,29 +23,23 @@ export const useUserStore = defineStore('user', () => {
     Object.assign(userInfo, { ...info, roles: info.roles || [], permissions: info.permissions || [] })
   }
   async function getUserInfo() {
-    try {
-      const { code, data, msg } = await authApi.getUserInfo()
-      if (code !== SUCCESS_CODE)
-        throw new Error(msg)
-      setUserInfo(data)
+    const { data, err } = await authApi.getUserInfo()
+    if (err) {
+      window.$message.error(err.message)
+      return
     }
-    catch (error) {
-      window.$message.error((error as Error).message)
-    }
+    setUserInfo(data)
   }
   async function logout() {
-    try {
-      const { code, msg } = await authApi.logout()
-      if (code !== SUCCESS_CODE)
-        throw new Error(msg)
-      removeToken()
-      resetRouter()
-      sStorage.remove(StorageKeyEnum.TagBarData)
-      window.$notification.success({ content: '退出登录成功', duration: 1500 })
+    const { err } = await authApi.logout()
+    if (err) {
+      window.$message.error((err.message))
+      return
     }
-    catch (error) {
-      window.$message.error((error as Error).message)
-    }
+    window.$notification.success({ content: '退出登录成功', duration: 1500 })
+    removeToken()
+    resetRouter()
+    sStorage.remove(StorageKeyEnum.TagBarData)
   }
 
   return {

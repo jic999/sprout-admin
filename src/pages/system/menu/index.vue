@@ -224,8 +224,12 @@ function viewDataHandler(data: MenuItem[]) {
   return result
 }
 async function beforeFormShow({ row, action }: any) {
-  if (row && action === 'update') {
-    const { data } = await menuApi.optionsById(row.id)
+  if (action === 'update' && row) {
+    const { err, data } = await menuApi.optionsById(row.id)
+    if (err) {
+      window.$message.error(err.message)
+      return
+    }
     const options = getMenuList(data)
     crudItems.parentId.formItem.options = options as unknown as CascaderOption[]
   }
@@ -242,18 +246,18 @@ const excludeFields: CrudExcludeFormFields = {
 const menuStore = useMenuStore()
 
 function beforeCommit() {
-  console.log('userCrud hook ======> beforeCommit')
+  console.log('useCrud hook ======> beforeCommit')
 }
 function afterCommit() {
   menuStore.refreshMenuOptions()
-  console.log('userCrud hook ======> afterCommit')
+  console.log('useCrud hook ======> afterCommit')
 }
 function commitSuccess() {
-  console.log('userCrud hook ======> commitSuccess')
+  console.log('useCrud hook ======> commitSuccess')
   // window.location.reload()
 }
 function commitFail() {
-  console.log('userCrud hook ======> commitFail')
+  console.log('useCrud hook ======> commitFail')
 }
 </script>
 

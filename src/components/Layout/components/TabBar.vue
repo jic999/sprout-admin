@@ -45,7 +45,11 @@ function handleClose(i: number) {
 </script>
 
 <template>
-  <section class="tag-bar" flex items-center gap-x-8 px-12 h-44 bg="$bg-c dark:$dark-bg-c">
+  <section
+    class="tag-bar"
+    flex items-center gap-x-8 px-12 h-44 overflow-x-auto
+    bg="$bg-c dark:$dark-bg-c"
+  >
     <n-tag
       v-for="(tag, i) in tagList"
       :key="tag.fullPath"

@@ -76,7 +76,7 @@ const columns: DataTableColumns = [
     title: '角色名称',
     key: 'roleName',
     render(row: any) {
-      return h(NTag, { type: 'primary' }, () => row.roleName)
+      return h(NTag, { type: 'info' }, () => row.roleName)
     },
   }, {
     title: '角色标识',
@@ -120,7 +120,11 @@ async function showRoleModal(row: any) {
   menuModalLoading.value = true
   currentMenuRow = row
   await getMenuOptions()
-  const { data } = await roleApi.menus(row.id)
+  const { err, data } = await roleApi.menusByRoleId(row.id)
+  if (err) {
+    window.$message.success('请求数据失败')
+    return
+  }
   menuIds.value = data.map((item: any) => item.id)
   menuModalLoading.value = false
 }

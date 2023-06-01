@@ -207,9 +207,13 @@ async function showRoleModal(row: any) {
   roleModalLoading.value = true
   currentRoleRow = row
 
-  const { data } = await userApi.roles(row.id)
-  roleIds.value = data.map((item: any) => item.id)
+  const { data, err } = await userApi.roles(row.id)
   roleModalLoading.value = false
+  if (err) {
+    window.$message.error('请求数据失败')
+    return
+  }
+  roleIds.value = data.map((item: any) => item.id)
 }
 function closeRoleModal() {
   roleModalVisible.value = false
@@ -217,24 +221,22 @@ function closeRoleModal() {
 }
 async function handleRoleConfirm() {
   roleBtnLoading.value = true
-  try {
-    // TODO 分配角色
-    const params = { userId: currentRoleRow.id, roleIds: roleIds.value }
-    const { code, msg } = await userApi.assignRoles(params)
-    if (code !== 0)
-      throw new Error(msg)
-    window.$message.success('分配成功')
-    closeRoleModal()
+  const params = { userId: currentRoleRow.id, roleIds: roleIds.value }
+  const { err } = await userApi.assignRoles(params)
+  roleBtnLoading.value = false
+  if (err) {
+    window.$message.error(err.message)
+    return
   }
-  catch (error) {
-    window.$message.error((error as Error).message)
-  }
-  finally {
-    roleBtnLoading.value = false
-  }
+  window.$message.success('分配成功')
+  closeRoleModal()
 }
 async function getRoleOptions() {
-  const { data } = await roleApi.list()
+  const { err, data } = await roleApi.list()
+  if (err) {
+    window.$message.error('请求数据失败')
+    return
+  }
   roleOptions.value = data.map((role: any) => ({ label: role.roleName, value: role.id }))
 }
 

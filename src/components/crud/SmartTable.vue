@@ -61,31 +61,26 @@ const pagination = reactive({
 })
 
 async function handleQuery() {
-  try {
-    isLoading.value = true
-    const { code, data, msg } = await props.getData({
-      pageNo: pagination.page,
-      pageSize: pagination.pageSize,
-      ...props.queryParams,
-    })
-    if (code !== SUCCESS_CODE)
-      throw new Error(msg)
-    if (props.isPagination) {
-      tableData.value = data[PAGE_FIELD]
-      pagination.itemCount = data[TOTAL_FIELD]
-    }
-    else {
-      tableData.value = data
-      pagination.itemCount = data.length
-    }
-    tableData.value = props.viewDataHandler(tableData.value)
+  isLoading.value = true
+  const { err, data } = await props.getData({
+    pageNo: pagination.page,
+    pageSize: pagination.pageSize,
+    ...props.queryParams,
+  })
+  isLoading.value = false
+  if (err) {
+    window.$message.error(err.message)
+    return
   }
-  catch (error: any) {
-    window.$message.error(error.message)
+  if (props.isPagination) {
+    tableData.value = data[PAGE_FIELD]
+    pagination.itemCount = data[TOTAL_FIELD]
   }
-  finally {
-    isLoading.value = false
+  else {
+    tableData.value = data
+    pagination.itemCount = data.length
   }
+  tableData.value = props.viewDataHandler(tableData.value)
 }
 function handleSearch() {
   pagination.page = 1

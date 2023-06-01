@@ -26,18 +26,17 @@ export async function addDynamicRoutes() {
    * 转为route树形结构
    * 添加路由
    */
-  try {
-    const userStore = useUserStore()
-    // 若无用户信息 getUserInfo
-    !userStore.userInfo.id && (await userStore.getUserInfo())
+  const userStore = useUserStore()
+  // 若无用户信息 getUserInfo
+  !userStore.userInfo.id && (await userStore.getUserInfo())
 
-    const { data } = await menuApi.list()
-    dynamicRoutes.splice(0, dynamicRoutes.length, ...getDynamicRoutes(data))
-    addRoutes(dynamicRoutes)
+  const { err, data } = await menuApi.list()
+  if (err) {
+    console.error(err.message)
+    return
   }
-  catch (error) {
-    console.error('error :>> ', error)
-  }
+  dynamicRoutes.splice(0, dynamicRoutes.length, ...getDynamicRoutes(data))
+  addRoutes(dynamicRoutes)
 }
 
 export function addRoutes(routes: CustomRoute[]) {

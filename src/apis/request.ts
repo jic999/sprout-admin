@@ -5,6 +5,7 @@ export interface Result {
   code: number
   msg: string
   data: any
+  err: Error
 }
 
 export const SUCCESS_CODE = 0
@@ -17,17 +18,29 @@ export const req = axios.create({
 })
 
 req.interceptors.request.use((config) => {
-  config.headers.Authorization = getToken() || ''
+  // 是否携带token
+  if (!config.cancelToken)
+    config.headers.Authorization = getToken() || ''
+
   return config
 })
 
 req.interceptors.response.use(
   (res) => {
     // 请求成功的回调函数
+    if (res.data.code !== SUCCESS_CODE)
+      return { ...res.data, err: new Error(res.data.msg) }
     return res.data
   },
   (err) => {
     // 请求失败的回调函数
-    return Promise.reject(err)
+    return { err }
   },
 )
+
+export function objToQueryStr(obj: object) {
+  const queryStr = new URLSearchParams()
+  for (const key in obj)
+    queryStr.append(key, obj[key as keyof object])
+  return `${queryStr.toString()}`
+}

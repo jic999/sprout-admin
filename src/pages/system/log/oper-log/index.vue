@@ -114,8 +114,8 @@ function copyViewContent() {
 
 const queryFieldsOptions = [
   {
-    label: '用户名',
-    value: 'username',
+    label: '标题',
+    value: 'title',
   },
   {
     label: '操作结果',
@@ -124,7 +124,7 @@ const queryFieldsOptions = [
   },
 ]
 const queryParams = ref({
-  field: 'username',
+  field: 'title',
   keyword: '',
 })
 </script>
