@@ -8,6 +8,7 @@ import { defCrudItems } from '@/types'
 import TheIcon from '@/components/icon/TheIcon.vue'
 import { routeComponents } from '@/router'
 import { getMenuList } from '@/utils'
+import { useMenuStore } from '@/stores/menu'
 
 defineOptions({
   name: 'SystemMenu',
@@ -124,6 +125,10 @@ const crudItems = reactive(defCrudItems({
       value: '',
       attrs: { placeholder: '完整路径' },
     },
+    tableColumn: {
+      width: 120,
+      render: row => h(NEllipsis, { class: 'w-120', lineClamp: 1 }, () => row.redirect),
+    },
   },
   orderNum: {
     title: '排序',
@@ -234,10 +239,13 @@ const excludeFields: CrudExcludeFormFields = {
   update: ['createTime', 'updateTime'],
 }
 
+const menuStore = useMenuStore()
+
 function beforeCommit() {
   console.log('beforeCommit')
 }
 function afterCommit() {
+  menuStore.refreshMenuOptions()
   console.log('afterCommit')
 }
 function commitSuccess() {
