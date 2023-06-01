@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { CustomRoute } from '@/types'
 import { dynamicRoutes } from '@/router'
-import { hasRole, renderIcon } from '@/utils'
+import { hasRole, isExternalLink, renderIcon } from '@/utils'
 
 const route = useRoute()
 const router = useRouter()
@@ -21,10 +21,10 @@ function getMenuOptions(routes: CustomRoute[]) {
 function getMenuItem(route: CustomRoute) {
   const menuItem = {
     label: route.meta?.title || route.name,
-    // ! dangerous
     key: route.name || route.path,
     order: route.order || 9999,
     icon: renderIcon(route.meta?.icon || 'carbon:bookmark', { size: 16 }),
+    path: route.path,
   }
   // 无子路由 直接返回
   if (!route.children)
@@ -50,7 +50,9 @@ function getMenuItem(route: CustomRoute) {
   return menuItem
 }
 
-function handleMenuChange(key: string) {
+function handleMenuChange(key: string, item: any) {
+  if (isExternalLink(item.path))
+    return window.open(item.path)
   router.push({ name: key })
 }
 

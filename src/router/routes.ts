@@ -1,7 +1,7 @@
 import type { Component } from 'vue'
 import Layout from '@/components/layout/index.vue'
 import type { CustomRoute, MenuItem } from '@/types'
-import { hasPerm } from '@/utils'
+import { hasPerm, isExternalLink } from '@/utils'
 
 export const staticRoutes: CustomRoute[] = [
   {
@@ -79,8 +79,9 @@ export function getDynamicRoutes(data: MenuItem[]) {
   )
   // 去除无子菜单的父菜单
   data = data.filter(item =>
-    !( // 无特定组件 且无子菜单
-      (!item.component || item.component === 'Layout')
+    !( // 无特定组件 且无子菜单 且非外部链接
+      !isExternalLink(item.path)
+      && (!item.component || item.component === 'Layout')
       && !data.find(child => child.parentId === item.id)
     ),
   )

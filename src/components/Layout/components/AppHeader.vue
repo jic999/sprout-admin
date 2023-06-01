@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { CustomRouteMeta } from '@/router/routes'
+import type { CustomRouteMeta } from '@/types'
 import { renderIcon } from '@/utils'
 
 const route = useRoute()

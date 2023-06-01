@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { CascaderOption, SelectOption } from 'naive-ui'
-import { NSwitch, NTag } from 'naive-ui'
+import { NEllipsis, NSwitch, NTag } from 'naive-ui'
 import { icons as epIcons } from '@iconify-json/ep'
 import { icons as cbIcons } from '@iconify-json/carbon'
 import type { CrudExcludeFormFields, MenuItem } from '@/types'
@@ -69,6 +69,10 @@ const crudItems = reactive(defCrudItems({
       type: 'Input',
       value: '',
       attrs: { placeholder: '一级菜单带 /，其他不带' },
+    },
+    tableColumn: {
+      width: 120,
+      render: row => h(NEllipsis, { class: 'w-120', lineClamp: 1 }, () => row.path),
     },
   },
   icon: {

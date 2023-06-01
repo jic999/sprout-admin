@@ -4,7 +4,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import { NOT_FOUND_ROUTE, getDynamicRoutes, staticRoutes } from './routes'
 import { setupRouteGuard } from './guards'
 import type { CustomRoute } from '@/types'
-import { getToken } from '@/utils'
+import { getToken, isExternalLink } from '@/utils'
 
 export * from './routes'
 
@@ -34,7 +34,7 @@ export async function addDynamicRoutes() {
     const { data } = await menuApi.list()
     dynamicRoutes.splice(0, dynamicRoutes.length, ...getDynamicRoutes(data))
     dynamicRoutes.forEach((route: CustomRoute) => {
-      router.addRoute(route)
+      !isExternalLink(route.path) && router.addRoute(route)
     })
   }
   catch (error) {

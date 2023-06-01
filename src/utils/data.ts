@@ -1,4 +1,5 @@
 export const todoList = [
+  { content: '菜单动态更新', completed: false },
   { content: '权限细节完善', completed: false },
   { content: 'Axios 错误统一处理', completed: false },
   { content: 'MD render', completed: false },
@@ -6,6 +7,8 @@ export const todoList = [
   { content: '响应式布局', completed: false },
   { content: '文档编写', completed: false },
   { content: '打包体积优化', completed: false },
+  { content: '404 page', completed: true },
+  { content: '日志管理', completed: true },
   { content: '菜单管理', completed: true },
   { content: 'Permission 鉴权', completed: true },
   { content: 'CRUD组件类型完善', completed: true },

@@ -37,3 +37,8 @@ function findPerm(menu: MenuItem, data: MenuItem[]): boolean {
 export function filterPermMenus(data: MenuItem[]) {
   return data.filter(menu => findPerm(menu, data))
 }
+
+export function isExternalLink(url: string) {
+  const pattern = /^(https?:\/\/)/i
+  return pattern.test(url)
+}
