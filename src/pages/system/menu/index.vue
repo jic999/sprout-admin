@@ -242,18 +242,18 @@ const excludeFields: CrudExcludeFormFields = {
 const menuStore = useMenuStore()
 
 function beforeCommit() {
-  console.log('beforeCommit')
+  console.log('userCrud hook ======> beforeCommit')
 }
 function afterCommit() {
   menuStore.refreshMenuOptions()
-  console.log('afterCommit')
+  console.log('userCrud hook ======> afterCommit')
 }
 function commitSuccess() {
-  console.log('commitSuccess')
+  console.log('userCrud hook ======> commitSuccess')
   // window.location.reload()
 }
 function commitFail() {
-  console.log('commitFail')
+  console.log('userCrud hook ======> commitFail')
 }
 </script>
 

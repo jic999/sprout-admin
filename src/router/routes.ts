@@ -72,6 +72,7 @@ export function buildRouteTree(parentRoute: RouteTreeNode, data: MenuItem[]) {
   })
 }
 export function getDynamicRoutes(data: MenuItem[]) {
+  console.log('getDynamicRoutes')
   const userStore = useUserStore()
   // 根据permissions 筛选路由
   data = data.filter(item => item.status === 0
@@ -82,9 +83,14 @@ export function getDynamicRoutes(data: MenuItem[]) {
     !( // 无特定组件 且无子菜单 且非外部链接
       !isExternalLink(item.path)
       && (!item.component || item.component === 'Layout')
-      && !data.find(child => child.parentId === item.id)
+      && !data.find(child =>
+        child.parentId === item.id
+        && (isExternalLink(child.path)
+        || (child.component && child.component !== 'Layout')),
+      )
     ),
   )
+
   const routes: RouteTreeNode[] = []
   data.sort((a, b) => a.orderNum - b.orderNum)
     .filter(item => item.parentId === 0)

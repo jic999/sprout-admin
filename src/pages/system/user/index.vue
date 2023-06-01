@@ -3,14 +3,14 @@ import type { DataTableColumns, FormItemRule, InputNumberProps, InputProps, Swit
 import { NButton, NTag } from 'naive-ui'
 import type { CrudExcludeFormFields, CrudExtendAction, CrudParamsHandler, CrudParamsHandlers } from '@/types'
 import { defFormItems } from '@/types'
-import { getResourceUrl, getToken, renderIcon } from '@/utils'
+import { ENV, getResourceUrl, getToken, renderIcon } from '@/utils'
 
 defineOptions({
   name: 'SystemUser',
 })
 
 /* Form */
-const ACTION = 'http://localhost:1666/file/upload'
+const ACTION = ENV.VITE_UPLOAD_TARGET
 const avatarFinish = ({ file, event }: { file: UploadFileInfo; event?: ProgressEvent }) => {
   const { code, data } = (event?.target as XMLHttpRequest).response
   if (code !== SUCCESS_CODE)

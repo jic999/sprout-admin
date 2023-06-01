@@ -4,14 +4,14 @@ import { NTag } from 'naive-ui'
 import _ from 'lodash'
 import type { CrudParamsHandler, CrudParamsHandlers } from '@/types'
 import { defFormItems } from '@/types'
-import { getResourceUrl, getToken } from '@/utils'
+import { ENV, getResourceUrl, getToken } from '@/utils'
 
 defineOptions({
   name: 'SmartCrud',
 })
 
 /* Form */
-const ACTION = 'http://localhost:1666/file/upload'
+const ACTION = ENV.VITE_UPLOAD_TARGET
 const avatarFinish = ({ file, event }: { file: UploadFileInfo; event?: ProgressEvent }) => {
   const { code, data } = (event?.target as XMLHttpRequest).response
   if (code !== SUCCESS_CODE)

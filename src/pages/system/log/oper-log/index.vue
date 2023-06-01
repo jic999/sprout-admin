@@ -118,7 +118,7 @@ const queryFieldsOptions = [
     value: 'username',
   },
   {
-    label: '登录结果',
+    label: '操作结果',
     value: 'status',
     placeholder: '0表示成功，1表示失败',
   },

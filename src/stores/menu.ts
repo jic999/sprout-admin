@@ -1,13 +1,22 @@
-import { getDynamicRoutes } from '@/router'
+import { dynamicRoutes as cacheRoutes, getDynamicRoutes, refreshRouter } from '@/router'
 import type { CustomRoute } from '@/types'
 import { hasRole, renderIcon } from '@/utils'
 
 export const useMenuStore = defineStore('menu', () => {
-  const menuOptions = ref()
+  const menuOptions = ref<any>([])
+  let loaded = false
 
   async function refreshMenuOptions() {
-    const { data } = await menuApi.list()
-    const dynamicRoutes = getDynamicRoutes(data)
+    const dynamicRoutes = (!loaded && cacheRoutes.length > 0)
+      ? (() => {
+          loaded = true
+          return cacheRoutes
+        })()
+      : await (async () => {
+        const routes = getDynamicRoutes((await menuApi.list()).data)
+        refreshRouter(routes)
+        return routes
+      })()
     menuOptions.value = getMenuOptions(dynamicRoutes)
   }
   function getMenuOptions(routes: CustomRoute[]) {

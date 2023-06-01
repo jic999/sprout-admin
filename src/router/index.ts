@@ -33,13 +33,17 @@ export async function addDynamicRoutes() {
 
     const { data } = await menuApi.list()
     dynamicRoutes.splice(0, dynamicRoutes.length, ...getDynamicRoutes(data))
-    dynamicRoutes.forEach((route: CustomRoute) => {
-      !isExternalLink(route.path) && router.addRoute(route)
-    })
+    addRoutes(dynamicRoutes)
   }
   catch (error) {
     console.error('error :>> ', error)
   }
+}
+
+export function addRoutes(routes: CustomRoute[]) {
+  routes.forEach((route: CustomRoute) => {
+    !isExternalLink(route.path) && router.addRoute(route)
+  })
 }
 
 export function resetRouter() {
@@ -50,6 +54,13 @@ export function resetRouter() {
       name && router.removeRoute(name)
   })
 }
+
+export function refreshRouter(routes: CustomRoute[]) {
+  resetRouter()
+  addRoutes(routes)
+  console.log('refreshRouter')
+}
+
 export async function setupRouter(app: App) {
   await addDynamicRoutes()
   setupRouteGuard(router)
