@@ -62,7 +62,7 @@ function handleClose(i: number) {
     >
       {{ tag.name }}
       <template #icon>
-        <TheIcon :icon="tag.icon" :size="16" />
+        <div v-if="i === currentIndex" circle bg="$primary-c" h-12 w-12 />
       </template>
     </n-tag>
   </section>
