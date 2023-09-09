@@ -1,0 +1,14 @@
+html {
+  color: var(--sp-text-c);
+  background-color: var(--sp-bg-c);
+}
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-thumb {
+  background-color: #888;
+  border-radius: 4px;
+  &:hover {
+    background-color: currentColor;
+  }
+}

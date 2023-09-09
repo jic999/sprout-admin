@@ -1,0 +1,36 @@
+*,
+::before,
+::after {
+  box-sizing: border-box;
+  border: 0 solid #e8e8e8;
+}
+
+.dark *, ::after, ::before {
+  border-color: #484848;
+}
+
+body {
+  margin: 0;
+}
+
+a {
+  display: inline-block;
+  color: inherit;
+  text-decoration: none;
+  outline: none;
+}
+
+input {
+  outline: none;
+}
+span {
+  display: inline-block;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5 {
+  margin: 0.5em 0;
+}

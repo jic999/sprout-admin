@@ -1,0 +1,15 @@
+:root {
+  --sp-primary-c: #0d9488;
+  --sp-text-c: #374151;
+  --sp-bg-c: #f2f2f4;
+  --sp-main-bg-c: #ffffff;
+
+  --sp-text-c-dark: #e5e7eb;
+  --sp-bg-c-dark: #1a1a1a;
+  --sp-main-bg-c-dark: #18181c;
+}
+html.dark {
+  --sp-text-c: var(--sp-text-c-dark);
+  --sp-bg-c: var(--sp-bg-c-dark);
+  --sp-main-bg-c: var(--sp-main-bg-c-dark);
+}

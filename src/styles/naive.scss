@@ -1,0 +1,7 @@
+.n-menu {
+  .n-menu-item-content--selected {
+    &::before {
+      border-left: 4px solid var(--sp-primary-c);
+    }
+  }
+} 
