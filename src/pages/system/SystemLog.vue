@@ -4,7 +4,7 @@
 
 <template>
   <AppPageMain>
-    角色管理
+    日志管理
   </AppPageMain>
 </template>
 

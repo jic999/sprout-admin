@@ -9,10 +9,8 @@ export {}
 
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
-    AppMainContainer: typeof import('./components/AppMainContainer.vue')['default']
     AppPageMain: typeof import('./components/AppPageMain.vue')['default']
     AppProvider: typeof import('./components/AppProvider.vue')['default']
-    Avatar: typeof import('./components/Avatar.vue')['default']
     NBreadcrumb: typeof import('naive-ui')['NBreadcrumb']
     NBreadcrumbItem: typeof import('naive-ui')['NBreadcrumbItem']
     NButton: typeof import('naive-ui')['NButton']
@@ -42,8 +40,7 @@ declare module '@vue/runtime-core' {
     NTag: typeof import('naive-ui')['NTag']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
-    Sprout: typeof import('./components/Sprout/index.tsx')['default']
-    TheFooter: typeof import('./components/TheFooter/index.vue')['default']
+    SpTable: typeof import('./components/sprout/SpTable.vue')['default']
     TheIcon: typeof import('./components/icon/TheIcon.vue')['default']
   }
 }

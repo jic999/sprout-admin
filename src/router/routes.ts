@@ -66,6 +66,24 @@ export const dynamicRoutes: CustomRoute[] = [
           icon: 'carbon:user-multiple',
         },
       },
+      {
+        name: 'SystemMenu',
+        path: '/menu',
+        component: () => import('@/pages/system/SystemMenu.vue'),
+        meta: {
+          title: '菜单管理',
+          icon: 'carbon:menu',
+        },
+      },
+      {
+        name: 'SystemLog',
+        path: '/log',
+        component: () => import('@/pages/system/SystemLog.vue'),
+        meta: {
+          title: '日志管理',
+          icon: 'carbon:license-draft',
+        },
+      },
     ],
   },
 ]
