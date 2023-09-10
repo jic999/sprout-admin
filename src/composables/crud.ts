@@ -1,4 +1,6 @@
+import { cloneDeep, isNull, isUndefined, omit, pickBy } from 'lodash-es'
 import type { UseCrudParams } from '@/types'
+import { isBlank } from '@/utils'
 
 const ACTIONS_TEXT = {
   create: '新增',
@@ -7,13 +9,15 @@ const ACTIONS_TEXT = {
 }
 export declare type ActionKey = keyof typeof ACTIONS_TEXT
 
-export function useCrud({
+export function useCrud<T extends Record<string, any> = any>({
   title,
   formData,
   apis,
   refresh,
   validator,
-}: UseCrudParams) {
+  hooks,
+  filters,
+}: UseCrudParams<T>) {
   const formVisible = ref(false)
   const formLoading = ref(false)
   const formAction = ref<ActionKey>('view')
@@ -72,12 +76,25 @@ export function useCrud({
     const validateError = await validator.validate()
     if (validateError)
       return
+      // 过滤字段
+    let _formData = cloneDeep(formData) as any
+    if (filters) {
+      if (filters.blank || filters.empty)
+        _formData = pickBy(_formData, (val, k) => !filters.excludes?.includes(k) && !isBlank(val))
+      if (filters.null || filters.empty)
+        _formData = pickBy(_formData, (val, k) => !filters.excludes?.includes(k) && !isNull(val))
+      if (filters.undef || filters.empty)
+        _formData = pickBy(_formData, (val, k) => !filters.excludes?.includes(k) && !isUndefined(val))
+      const filterFields = filters[formAction.value as keyof typeof filters] as string[]
+      if (filterFields)
+        _formData = omit(_formData, filterFields)
+    }
     const handler = {
-      create: async () => apis.create(formData),
-      update: async () => apis.update(formData),
+      create: async () => apis.create(_formData),
+      update: async () => apis.update(_formData),
     }
     formSwitch.loading()
-    const { err } = await handler[formAction.value as keyof typeof handler]()
+    const { err } = await handler[formAction.value]()
     formSwitch.stop()
     if (err) {
       window.$message.error(err.message || '提交失败')

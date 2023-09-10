@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { type DataTableColumns, type FormRules, NButton } from 'naive-ui'
+import { type DataTableColumns, type FormRules, NButton, NTag } from 'naive-ui'
 import { sysUserApi } from '@/apis/system/user'
 import type { UseCrudApis } from '@/types'
 import { renderIcon } from '@/utils'
@@ -8,8 +8,8 @@ import { renderIcon } from '@/utils'
 const formData = reactive({
   id: null,
   username: '',
-  nickname: '',
-  avatar: '',
+  nickname: null,
+  avatar: undefined,
   email: '',
   phone: '',
   sex: 2,
@@ -41,6 +41,12 @@ const {
     validate: () => $form.value.validate(),
   },
   refresh: () => handleQuery(),
+  filters: {
+    create: ['id', 'createTime'],
+    update: ['createTime'],
+    empty: true,
+    excludes: ['avatar'],
+  },
 })
 
 const modalFooterStyle = {
@@ -50,6 +56,11 @@ const modalFooterStyle = {
 }
 
 /* Table */
+const sexList = [
+  { value: 0, label: '女' },
+  { value: 1, label: '男' },
+  { value: 2, label: '未知' },
+]
 const columns: DataTableColumns = [
   { key: 'id', title: 'id' },
   { key: 'username', title: '用户名' },
@@ -57,8 +68,22 @@ const columns: DataTableColumns = [
   { key: 'avatar', title: '头像' },
   { key: 'email', title: '邮箱' },
   { key: 'phone', title: '手机号码' },
-  { key: 'sex', title: '性别' },
-  { key: 'status', title: '状态' },
+  {
+    key: 'sex',
+    title: '性别',
+    render: (rowData) => {
+      return sexList[rowData.sex as number].label
+    },
+  },
+  {
+    key: 'status',
+    title: '状态',
+    render(rowData) {
+      if (rowData.status === 0)
+        return h(NTag, { type: 'success' }, () => '正常')
+      return h(NTag, { type: 'warning' }, () => '禁用')
+    },
+  },
   { key: 'createTime', title: '创建时间' },
   {
     title: '操作',
@@ -156,8 +181,20 @@ onMounted(() => {
         <n-form-item path="name" label="名称">
           <n-input v-model:value="formData.nickname" />
         </n-form-item>
+        <n-form-item path="email" label="邮箱地址">
+          <n-input v-model:value="formData.email" />
+        </n-form-item>
         <n-form-item path="phone" label="手机号码">
           <n-input v-model:value="formData.phone" />
+        </n-form-item>
+        <n-form-item path="sex" label="性别">
+          <n-radio-group v-model:value="formData.sex">
+            <n-space>
+              <n-radio v-for="(item, i) in sexList" :key="i" :value="item.value">
+                {{ item.label }}
+              </n-radio>
+            </n-space>
+          </n-radio-group>
         </n-form-item>
         <n-form-item path="status" label="状态">
           <NSwitch v-model:value="formData.status" :checked-value="0" :unchecked-value="1" />
