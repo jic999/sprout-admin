@@ -32,6 +32,7 @@ declare module '@vue/runtime-core' {
     NMessageProvider: typeof import('naive-ui')['NMessageProvider']
     NModal: typeof import('naive-ui')['NModal']
     NNotificationProvider: typeof import('naive-ui')['NNotificationProvider']
+    NPagination: typeof import('naive-ui')['NPagination']
     NRadio: typeof import('naive-ui')['NRadio']
     NRadioGroup: typeof import('naive-ui')['NRadioGroup']
     NSelect: typeof import('naive-ui')['NSelect']
@@ -40,6 +41,8 @@ declare module '@vue/runtime-core' {
     NTag: typeof import('naive-ui')['NTag']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    SpCrud: typeof import('./components/sprout/SpCrud.vue')['default']
+    SpForm: typeof import('./components/sprout/SpForm.vue')['default']
     SpTable: typeof import('./components/sprout/SpTable.vue')['default']
     TheIcon: typeof import('./components/icon/TheIcon.vue')['default']
   }

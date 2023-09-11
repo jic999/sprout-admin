@@ -1,48 +1,26 @@
 <script setup lang="ts">
 import type { DataTableProps } from 'naive-ui'
-import type { PropType } from 'vue'
-import { mapValues } from 'lodash-es'
+import { mapValues, pickBy } from 'lodash-es'
+import type { SpTableProps } from '@/types'
+import { isBlank } from '@/utils'
 
-const props = defineProps({
-  /* 获取data的 api */
-  getData: {
-    type: Function,
-    required: true,
-  },
-  /* 是否分页 决定获取data的方式 */
-  isPagination: {
-    type: Boolean,
-    default: true,
-  },
-  /* 查询参数 */
-  queryParams: {
-    type: Object,
-    default: () => ({}),
-  },
-  /* 数据展示前 进行一些处理 */
-  viewDataHandler: {
-    type: Function as PropType<(data: any) => any>,
-    default: (data: any) => data,
-  },
-  /* n-data-table参数 */
-  tableAttrs: {
-    type: Object as PropType<DataTableProps>,
-    required: true,
-  },
+const props = withDefaults(defineProps<SpTableProps>(), {
+  isPagination: true,
 })
+// ! 绑定值必须使用 ref 而不是 reactive
 const emits = defineEmits(['update:queryParams'])
 
-// * 指定分页查询响应字段
-const PAGE_FIELD = 'records'
+/* 指定分页查询响应字段 */
+const PAGE_FIELD = 'list'
 const TOTAL_FIELD = 'total'
 
-// * 记录默认queryParams 用于reset
+/* 记录默认queryParams 用于reset */
 const initQueryParams = { ...props.queryParams }
 
 const isLoading = ref(false)
 const tableData = ref([])
 
-// 默认分页设置 可被覆盖
+/* 默认分页设置 可被覆盖  */
 const pagination = reactive({
   page: 1,
   pageSize: 5,
@@ -63,11 +41,12 @@ const pagination = reactive({
 
 async function handleQuery() {
   isLoading.value = true
-  const { err, data } = await props.getData({
-    pageNo: pagination.page,
-    pageSize: pagination.pageSize,
-    ...props.queryParams,
-  })
+  const { err, data } = await props.getData(
+    pickBy({
+      page: pagination.page,
+      pageSize: pagination.pageSize,
+      ...props.queryParams,
+    }, val => !isBlank(val)))
   isLoading.value = false
   if (err) {
     window.$message.error(err.message)
@@ -81,13 +60,11 @@ async function handleQuery() {
     tableData.value = data
     pagination.itemCount = data.length
   }
-  tableData.value = props.viewDataHandler(tableData.value)
 }
 function handleSearch() {
   pagination.page = 1
   handleQuery()
 }
-
 async function handleReset() {
   const resetParams = mapValues(props.queryParams, () => '')
   emits('update:queryParams', { ...resetParams, ...initQueryParams })
@@ -96,8 +73,14 @@ async function handleReset() {
   handleQuery()
 }
 
+// 用于构建页面时快速进行预览 实际开发请传入自定义Columns
+const defaultColumns = computed(() => (props.columns
+  ? []
+  : (tableData.value.length ? Object.keys(tableData.value[0]).map(key => ({ key, title: key })) : [])),
+)
 const defaultTableAttrs = computed<DataTableProps>(() => ({
   data: tableData.value,
+  columns: props.columns || defaultColumns.value,
   loading: isLoading.value,
   ...props.tableAttrs,
   // ? 若直接传给table-attrs 部分参数似乎没有效果

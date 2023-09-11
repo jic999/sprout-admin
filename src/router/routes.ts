@@ -86,4 +86,24 @@ export const dynamicRoutes: CustomRoute[] = [
       },
     ],
   },
+  {
+    name: 'Demo',
+    path: '/demo',
+    component: Layout,
+    meta: {
+      title: '演示',
+      icon: 'carbon:code',
+    },
+    children: [
+      {
+        name: 'SpCrudUser',
+        path: '/sp-crud-user',
+        component: () => import('@/pages/demo/SpCrudUser.vue'),
+        meta: {
+          title: 'SpCrud',
+          icon: 'carbon:table',
+        },
+      },
+    ],
+  },
 ]

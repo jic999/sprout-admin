@@ -1,6 +1,6 @@
 import type { AxiosRequestConfig, Method } from 'axios'
 import axios from 'axios'
-import { getToken } from '@/utils'
+import { getToken, objToQueryStr } from '@/utils'
 import type { RequestResult } from '@/types'
 
 // 请求拦截器
@@ -10,6 +10,10 @@ axios.interceptors.request.use((config) => {
     const token = getToken()
     config.headers.Authorization = token ? `Bearer ${token}` : ''
   }
+  // 拼接query参数
+  if (config.data && ['get', 'GET'].includes(config.method!))
+    config.url += `?${objToQueryStr(config.data)}`
+  console.log('config.data :>> ', config.data)
   return config
 })
 
