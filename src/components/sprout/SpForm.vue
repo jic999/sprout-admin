@@ -3,12 +3,11 @@ import { mapValues, omit } from 'lodash'
 import { type FormRules } from 'naive-ui'
 import type { SpFormProps } from '@/types'
 
-// ! 类型完善
 const props = withDefaults(defineProps<SpFormProps>(), {
   disabled: true,
 })
 
-const formRef = ref()
+const $form = ref()
 const formData = computed({
   get: () => props.modelValue,
   set: val => val,
@@ -23,34 +22,34 @@ function getFormData() {
 const rules = computed(() => mapValues(props.items, item => item.rule) as FormRules)
 
 defineExpose({
-  validate: () => formRef.value?.validate(),
-  restore: () => formRef.value?.restoreValidation(),
+  validate: () => $form.value?.validate(),
+  restore: () => $form.value?.restoreValidation(),
   getFormData,
 })
 </script>
 
 <template>
   <n-form
-    ref="formRef"
+    ref="$form"
     :model="formData"
     label-placement="left"
     label-width="auto"
     :disabled="disabled"
     :rules="rules"
   >
-    <template v-for="(item, key) in (items as any)" :key="key">
-      <n-form-item :label="item.label" :path="key" v-bind="item.formItemAttrs">
+    <template v-for="(item, key) in items" :key="key">
+      <n-form-item :label="item.label" :path="key" v-bind="item.formItemProps">
         <template v-if="item.type === 'NumberInput'">
-          <n-input-number v-model:value="formData[key]" v-bind="item.attrs" />
+          <n-input-number v-model:value="formData[key]" v-bind="item.props" />
         </template>
         <template v-else-if="item.type === 'Input'">
           <n-input
             v-model:value="formData[key]"
-            v-bind="item.attrs"
+            v-bind="item.props"
           />
         </template>
         <template v-else-if="item.type === 'Switch'">
-          <n-switch v-model:value="formData[key]" v-bind="item.attrs" />
+          <n-switch v-model:value="formData[key]" v-bind="item.props" />
         </template>
         <template v-else-if="item.type === 'Radio'">
           <n-radio-group v-model:value="formData[key]" name="radiogroup">
@@ -92,7 +91,7 @@ defineExpose({
             v-model:value="formData[key]"
             :options="item.options"
             :placeholder="`请选择${item.label}`"
-            v-bind="item.attrs"
+            v-bind="item.props"
           />
         </template>
         <template v-else-if="item.type === 'Cascader'">
@@ -100,14 +99,14 @@ defineExpose({
             v-model:value="formData[key]"
             :options="item.options"
             :placeholder="`请选择${item.label}`"
-            v-bind="item.attrs"
+            v-bind="item.props"
           />
         </template>
         <template v-else-if="item.type === 'Upload'">
           <n-upload
             v-model:file-list="formData[key]"
             response-type="json"
-            v-bind="item.attrs"
+            v-bind="item.props"
           />
         </template>
       </n-form-item>

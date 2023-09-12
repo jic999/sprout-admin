@@ -16,4 +16,7 @@ export const sysUserApi = {
   get(id: any) {
     return req('get', `/system-user/${id}`)
   },
+  page(data: any) {
+    return req('get', '/system-user/page', data)
+  },
 }

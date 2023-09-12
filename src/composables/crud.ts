@@ -17,6 +17,7 @@ export function useCrud<T extends Record<string, any> = any>({
   validator,
   hooks,
   filters,
+  getCheckedKeys,
 }: UseCrudParams<T>) {
   const formVisible = ref(false)
   const formLoading = ref(false)
@@ -60,6 +61,26 @@ export function useCrud<T extends Record<string, any> = any>({
       onPositiveClick: async () => {
         const msgLoading = window.$message.loading('删除中', { duration: 0 })
         const { err } = await apis.delete(id)
+        msgLoading.destroy()
+        if (err) {
+          window.$message.error(err.message || '删除失败，请稍后再试')
+          return
+        }
+        window.$message.success('删除成功')
+        refresh()
+      },
+    })
+  }
+  function handleBatchDelete() {
+    window.$dialog.warning({
+      title: `删除选中的${title}`,
+      content: '确认删除？',
+      positiveText: '确认',
+      negativeText: '取消',
+      autoFocus: false,
+      onPositiveClick: async () => {
+        const msgLoading = window.$message.loading('删除中', { duration: 0 })
+        const { err } = await apis.batchDelete!(getCheckedKeys!())
         msgLoading.destroy()
         if (err) {
           window.$message.error(err.message || '删除失败，请稍后再试')
@@ -116,6 +137,7 @@ export function useCrud<T extends Record<string, any> = any>({
     handleUpdate,
     handleCreate,
     handleDelete,
+    handleBatchDelete,
     handleCommit,
     handleCancel,
   }

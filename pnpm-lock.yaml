@@ -31,12 +31,9 @@ devDependencies:
   '@antfu/eslint-config':
     specifier: 0.38.4
     version: 0.38.4(eslint@8.37.0)(typescript@5.0.4)
-  '@iconify-json/ant-design':
-    specifier: ^1.1.10
-    version: registry.npmmirror.com/@iconify-json/ant-design@1.1.10
-  '@iconify-json/carbon':
-    specifier: ^1.1.16
-    version: 1.1.16
+  '@iconify/json':
+    specifier: ^2.2.114
+    version: registry.npmmirror.com/@iconify/json@2.2.114
   '@iconify/utils':
     specifier: ^2.1.5
     version: 2.1.5
@@ -571,12 +568,6 @@ packages:
 
   /@humanwhocodes/object-schema@1.2.1:
     resolution: {integrity: sha512-ZnQMnLV4e7hDlUvw8H+U8ASL02SS2Gn6+9Ac3wGGLIe7+je2AeAOxPY+izIPJDfFDb7eDjev0Us8MO1iFRN8hA==}
-    dev: true
-
-  /@iconify-json/carbon@1.1.16:
-    resolution: {integrity: sha512-AD8bcnRSGA0WfcGEass2FbA0sagrUzrpFx5WchuDy3uf7yKBWumdypdQK121DH321fQDl5+zZQ26T6gC9knwUQ==}
-    dependencies:
-      '@iconify/types': 2.0.0
     dev: true
 
   /@iconify/types@2.0.0:
@@ -2675,7 +2666,7 @@ packages:
     resolution: {integrity: sha512-+c7A3CV0KGdKcylsI6khWyts/CYrGTrRVo4R/I7u/cUsy0Conxa6LUhiEzVKIw14lc2L5aiO4+SeVe4TeGRKww==}
     dependencies:
       acorn: registry.npmmirror.com/acorn@8.8.2
-      pathe: registry.npmmirror.com/pathe@1.1.0
+      pathe: registry.npmmirror.com/pathe@1.1.1
       pkg-types: 1.0.2
       ufo: 1.1.1
     dev: true
@@ -2928,7 +2919,7 @@ packages:
     dependencies:
       jsonc-parser: 3.2.0
       mlly: 1.2.0
-      pathe: registry.npmmirror.com/pathe@1.1.0
+      pathe: registry.npmmirror.com/pathe@1.1.1
     dev: true
 
   /pluralize@8.0.0:
@@ -3984,12 +3975,13 @@ packages:
     dev: true
     optional: true
 
-  registry.npmmirror.com/@iconify-json/ant-design@1.1.10:
-    resolution: {integrity: sha512-XgBEAl+3N0QIn3nDN9xFPw5WlU9IgnmJvis2Ev1au4Y6ITG4zReMglXi+I21xmfK3mnjFnfAteZ4EzLVKHm7Hw==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@iconify-json/ant-design/-/ant-design-1.1.10.tgz}
-    name: '@iconify-json/ant-design'
-    version: 1.1.10
+  registry.npmmirror.com/@iconify/json@2.2.114:
+    resolution: {integrity: sha512-KxZUi3yvruewUcDKK3kGXIZTqRQxN/LuO0uvoduBtCdntQ9NqKlY2cKchgt9cSv950teGzvRUv2nFEgd7Ywuvw==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@iconify/json/-/json-2.2.114.tgz}
+    name: '@iconify/json'
+    version: 2.2.114
     dependencies:
       '@iconify/types': registry.npmmirror.com/@iconify/types@2.0.0
+      pathe: registry.npmmirror.com/pathe@1.1.1
     dev: true
 
   registry.npmmirror.com/@iconify/types@2.0.0:
@@ -5537,12 +5529,6 @@ packages:
     name: path-key
     version: 3.1.1
     engines: {node: '>=8'}
-    dev: true
-
-  registry.npmmirror.com/pathe@1.1.0:
-    resolution: {integrity: sha512-ODbEPR0KKHqECXW1GoxdDb+AZvULmXjVPy4rt+pGo2+TnjJTIPJQSVS6N63n8T2Ip+syHhbn52OewKicV0373w==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/pathe/-/pathe-1.1.0.tgz}
-    name: pathe
-    version: 1.1.0
     dev: true
 
   registry.npmmirror.com/pathe@1.1.1:

@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import type { DataTableProps } from 'naive-ui'
+import { type DataTableProps } from 'naive-ui'
 import { mapValues, pickBy } from 'lodash-es'
 import type { SpTableProps } from '@/types'
 import { isBlank } from '@/utils'
 
 const props = withDefaults(defineProps<SpTableProps>(), {
-  isPagination: true,
+  isPagination: false,
 })
 // ! 绑定值必须使用 ref 而不是 reactive
 const emits = defineEmits(['update:queryParams'])
@@ -78,9 +78,9 @@ const defaultColumns = computed(() => (props.columns
   ? []
   : (tableData.value.length ? Object.keys(tableData.value[0]).map(key => ({ key, title: key })) : [])),
 )
-const defaultTableAttrs = computed<DataTableProps>(() => ({
+const _tableAttrs = computed<DataTableProps>(() => ({
   data: tableData.value,
-  columns: props.columns || defaultColumns.value,
+  columns: (props.columns || defaultColumns.value),
   loading: isLoading.value,
   ...props.tableAttrs,
   // ? 若直接传给table-attrs 部分参数似乎没有效果
@@ -88,6 +88,7 @@ const defaultTableAttrs = computed<DataTableProps>(() => ({
   //   ? (props.tableAttrs.pagination ? { ...pagination, ...props.tableAttrs.pagination } : pagination)
   //   : undefined,
 }))
+
 /**
   * 分页
   * - 若开启分页且未传 pagination 则使用默认
@@ -109,7 +110,10 @@ defineExpose({
 </script>
 
 <template>
-  <n-data-table v-bind="defaultTableAttrs" :pagination="false" />
+  <n-data-table
+    :pagination="false"
+    v-bind="_tableAttrs"
+  />
   <div v-if="paginationAttrs" mt-12 flex justify-end>
     <n-pagination v-bind="paginationAttrs" />
   </div>

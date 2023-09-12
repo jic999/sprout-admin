@@ -28,21 +28,37 @@ export interface SpFormTypePropMap {
   'Cascader': CascaderProps
   'Upload': UploadProps
 }
+export type SpFormItemType = keyof SpFormTypePropMap
+
+export type RadioGroupOption = RadioProps
+export type CheckboxOption = CheckboxProps
+
+export interface SpFormTypeOptionMap {
+  'NumberInput': undefined
+  'Input': undefined
+  'Switch': undefined
+  'Radio': RadioGroupOption
+  'Checkbox': CheckboxOption
+  'CheckboxGroup': CheckboxOption
+  'Select': SelectOption | SelectGroupOption
+  'Cascader': CascaderOption
+  'Upload': undefined
+}
+
 export type SpFormItemOption = CascaderOption
 | SelectOption
 | TreeSelectOption
 | SelectGroupOption
 | SelectRenderOption
-export type SpFormItemType = keyof SpFormTypePropMap
 
 export interface SpFormItem<T extends SpFormItemType> {
   type: T
   label: string
   value: unknown
-  attrs?: SpFormTypePropMap[T]
-  formItemAttrs?: FormItemProps
+  props?: SpFormTypePropMap[T]
+  formItemProps?: FormItemProps
   rule?: FormItemRule
-  options?: SpFormItemOption[]
+  options: SpFormTypeOptionMap[T][]
 }
 
 export function defineFormItems<T extends SpFormItemType>(items: Record<string, SpFormItem<T>>) {
@@ -50,7 +66,7 @@ export function defineFormItems<T extends SpFormItemType>(items: Record<string, 
 }
 
 export interface SpFormProps {
-  items: Record<string, SpFormItem<SpFormItemType>>
+  items: Record<string, SpFormItem<any>>
   modelValue: Record<string, any>
   disabled?: boolean
   excludes?: string[]

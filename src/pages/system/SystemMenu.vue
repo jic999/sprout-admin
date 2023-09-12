@@ -105,26 +105,23 @@ const columns: TableColumns = [
       </n-space>
       <n-space>
         <NButton secondary @click="$table?.handleReset">
-          重置
           <template #icon>
             <div i-carbon:reset />
           </template>
         </NButton>
         <NButton type="info" secondary @click="$table?.handleSearch">
-          搜索
           <template #icon>
             <div i-carbon:search />
           </template>
         </NButton>
         <NButton type="primary" secondary @click="handleCreate">
-          新增权限
           <template #icon>
-            <div i-carbon:add />
+            <div i-ant-design:plus-outlined />
           </template>
         </NButton>
       </n-space>
     </n-space>
-    <SpTable ref="$table" v-model:query-params="queryParams" :get-data="sysPermApi.page" :columns="columns" />
+    <SpTable ref="$table" v-model:query-params="queryParams" :get-data="sysPermApi.page" :columns="columns" is-pagination />
     <n-modal
       v-model:show="formVisible"
       class="w-600px!"

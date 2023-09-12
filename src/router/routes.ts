@@ -89,6 +89,7 @@ export const dynamicRoutes: CustomRoute[] = [
   {
     name: 'Demo',
     path: '/demo',
+    redirect: '/sp-crud-user',
     component: Layout,
     meta: {
       title: '演示',

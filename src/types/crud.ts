@@ -6,11 +6,16 @@ export interface UseCrudApis {
   create: ApiRequest
   update: ApiRequest
   delete: ApiRequest
+  batchDelete?: ApiRequest
 }
 
 /**
  * Receive raw data, return processed data
  * you can process data or perform some operations here
+ * @param data raw data
+ * @param result the data returned by request
+ * @returns processed data
+ * @example (data, result) => ({ ...data, id: result.id })
  */
 export type UseCrudHook<T = any> = (data: T, result?: any) => any
 
@@ -46,4 +51,5 @@ export interface UseCrudParams<T extends Record<string, any>> {
   validator: { validate: Function; restore?: Function }
   hooks?: UseCrudHooks<T>
   filters?: UseCrudFilters<T>
+  getCheckedKeys?: () => (string | number)[]
 }
