@@ -9,7 +9,6 @@ const props = withDefaults(defineProps<SpTableProps>(), {
 })
 // ! 绑定值必须使用 ref 而不是 reactive
 const emits = defineEmits(['update:queryParams'])
-
 /* 指定分页查询响应字段 */
 const PAGE_FIELD = 'list'
 const TOTAL_FIELD = 'total'
@@ -36,7 +35,7 @@ const pagination = reactive({
     pagination.page = 1
     handleQuery()
   },
-  ...props.tableAttrs?.pagination,
+  ...props.nAttrs?.pagination,
 })
 
 async function handleQuery() {
@@ -78,14 +77,14 @@ const defaultColumns = computed(() => (props.columns
   ? []
   : (tableData.value.length ? Object.keys(tableData.value[0]).map(key => ({ key, title: key })) : [])),
 )
-const _tableAttrs = computed<DataTableProps>(() => ({
+const tableAttrs = computed<DataTableProps>(() => ({
   data: tableData.value,
   columns: (props.columns || defaultColumns.value),
   loading: isLoading.value,
-  ...props.tableAttrs,
+  ...props.nAttrs,
   // ? 若直接传给table-attrs 部分参数似乎没有效果
   // pagination: props.isPagination
-  //   ? (props.tableAttrs.pagination ? { ...pagination, ...props.tableAttrs.pagination } : pagination)
+  //   ? (props.nAttrs.pagination ? { ...pagination, ...props.nAttrs.pagination } : pagination)
   //   : undefined,
 }))
 
@@ -112,7 +111,7 @@ defineExpose({
 <template>
   <n-data-table
     :pagination="false"
-    v-bind="_tableAttrs"
+    v-bind="tableAttrs"
   />
   <div v-if="paginationAttrs" mt-12 flex justify-end>
     <n-pagination v-bind="paginationAttrs" />

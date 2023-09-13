@@ -22,7 +22,7 @@ const keepAliveRouteNames = computed(() => {
     <n-layout-sider
       bordered
       :width="216"
-      :collapsed-width="60"
+      :collapsed-width="54"
       :collapsed="appStore.sidebarCollapsed"
       collapse-mode="width"
       content-style="padding: 6px 0; height: 100vh;"

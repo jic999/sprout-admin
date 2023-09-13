@@ -5,6 +5,7 @@ import type {
   CheckboxProps,
   FormItemProps,
   FormItemRule,
+  FormProps,
   InputNumberProps,
   InputProps,
   RadioProps,
@@ -70,4 +71,5 @@ export interface SpFormProps {
   modelValue: Record<string, any>
   disabled?: boolean
   excludes?: string[]
+  nAttrs?: FormProps
 }

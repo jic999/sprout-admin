@@ -2,7 +2,6 @@
 import type { SwitchProps } from 'naive-ui'
 import { NTag } from 'naive-ui'
 import { sysUserApi } from '@/apis/system/user'
-import type { SpCrudQueryOptions } from '@/types'
 import { defineCrudItems } from '@/types'
 
 const sexList = [
@@ -69,9 +68,10 @@ const items = defineCrudItems({
     formItem: { type: 'Input', value: null, props: { placeholder: '自动', disabled: true } },
   },
 })
-const queryOptions = reactive<SpCrudQueryOptions>({
-  username: { label: '用户名', value: '' },
-  nickname: { label: '昵称', value: '' },
+
+const queryParams = ref({
+  username: '',
+  nickname: '',
 })
 // const useCrudParams: Partial<UseCrudParams<typeof items>> = {
 //   filters: {
@@ -83,11 +83,25 @@ const queryOptions = reactive<SpCrudQueryOptions>({
 
 <template>
   <SpCrud
-    v-model:query-options="queryOptions"
+    v-model:query-params="queryParams"
+    entity-name="用户"
     :apis="sysUserApi"
     :crud-items="items"
     is-pagination
-  />
+  >
+    <template #BarLeft>
+      <n-form :model="queryParams" label-placement="left" :show-feedback="false">
+        <n-space>
+          <n-form-item label="用户名">
+            <n-input v-model:value="queryParams.username" />
+          </n-form-item>
+          <n-form-item label="昵称">
+            <n-input v-model:value="queryParams.nickname" />
+          </n-form-item>
+        </n-space>
+      </n-form>
+    </template>
+  </SpCrud>
 </template>
 
 <style lang="scss" scoped>

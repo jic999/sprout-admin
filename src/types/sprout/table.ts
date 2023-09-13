@@ -10,5 +10,5 @@ export interface SpTableProps {
   /* 是否分页 决定data获取方式 */
   isPagination?: boolean
   queryParams?: object
-  tableAttrs?: DataTableProps
+  nAttrs?: DataTableProps
 }

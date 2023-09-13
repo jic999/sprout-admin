@@ -19,4 +19,7 @@ export const sysUserApi = {
   page(data: any) {
     return req('get', '/system-user/page', data)
   },
+  batchDelete(ids: number[]) {
+    return req('post', '/system-user/batch-delete', { ids })
+  },
 }

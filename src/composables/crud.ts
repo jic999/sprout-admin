@@ -71,10 +71,12 @@ export function useCrud<T extends Record<string, any> = any>({
       },
     })
   }
-  function handleBatchDelete() {
+  function handleBatchDelete(data?: any) {
+    if (!getCheckedKeys || !getCheckedKeys()?.length || !data || !data.length)
+      return window.$message.warning('请先选择要删除的数据')
     window.$dialog.warning({
-      title: `删除选中的${title}`,
-      content: '确认删除？',
+      title: `批量删除${title}`,
+      content: title ? `确认要删除选中的${title}？` : '确认要删除所有已选中项？',
       positiveText: '确认',
       negativeText: '取消',
       autoFocus: false,

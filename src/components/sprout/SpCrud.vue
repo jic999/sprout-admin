@@ -2,9 +2,11 @@
 import { mapValues } from 'lodash-es'
 import type { DataTableProps } from 'naive-ui'
 import { NButton } from 'naive-ui'
-import type { ApiRequest, SpFormItem, SpTableColumn, SpTableColumns, UseCrudApis } from '@/types'
+import type { SpFormItem, SpTableColumn, SpTableColumns, UseCrudApis } from '@/types'
 import type { SpCrudProps } from '@/types/sprout/crud'
 import { renderIcon } from '@/utils'
+
+// TODO 只是一个设想 目前只能应用于较为简单的场景 且有诸多限制
 
 const props = withDefaults(defineProps<SpCrudProps>(), {
   isCustomActions: false,
@@ -12,6 +14,8 @@ const props = withDefaults(defineProps<SpCrudProps>(), {
   entityName: '',
   isPagination: false,
 })
+
+const emits = defineEmits(['update:queryParams'])
 
 const formItems = computed(
   () => mapValues(props.crudItems, item => ({ label: item.title, ...item.formItem } as SpFormItem<any>)),
@@ -66,17 +70,17 @@ const defaultColumns: SpTableColumns = [
         h(
           NButton,
           { type: 'primary', size: 'tiny', secondary: true, onClick: () => handleView(row) },
-          { icon: renderIcon('carbon:view', { size: 14 }) },
+          { icon: renderIcon('carbon:view', { size: 14 }), default: () => '查看' },
         ),
         h(
           NButton,
-          { type: 'default', size: 'tiny', onClick: () => handleUpdate(row) },
-          { icon: renderIcon('carbon:edit', { size: 14 }) },
+          { type: 'default', size: 'tiny', secondary: true, onClick: () => handleUpdate(row) },
+          { icon: renderIcon('carbon:edit', { size: 14 }), default: () => '编辑' },
         ),
         h(
           NButton,
           { type: 'error', size: 'tiny', secondary: true, onClick: () => handleDelete(row.id) },
-          { icon: renderIcon('carbon:trash-can', { size: 14 }) },
+          { icon: renderIcon('carbon:trash-can', { size: 14 }), default: () => '删除' },
         ),
         ...(props.extendActions?.after ? props.extendActions.after(row, i) : []),
       ])
@@ -90,11 +94,17 @@ const _columns = computed(() => (props.isCustomActions
       ...tableColumns.value,
       ...defaultColumns,
     ]) as SpTableColumns)
+
 const tableAttrs = computed<DataTableProps>(() => ({
   rowKey: row => row?.id,
   onUpdateCheckedRowKeys: (keys: any[]) => checkedKeys.value = keys,
-  ...props.tableProps?.tableAttrs,
+  ...props.tableProps?.nAttrs,
 }))
+
+const queryParams = computed({
+  get: () => props.queryParams,
+  set: val => emits('update:queryParams', val),
+})
 
 function handleQuery() {
   $table.value.refresh()
@@ -157,10 +167,11 @@ defineExpose({
     <div bg="$sp-main-bg-c" br-8 mt-xs rounded p-sm>
       <SpTable
         ref="$table"
+        v-model:query-params="queryParams"
         :columns="_columns"
         :is-pagination="isPagination"
-        :get-data="(isPagination ? apis.page : apis.list) as ApiRequest"
-        :table-attrs="tableAttrs"
+        :n-attrs="tableAttrs"
+        :get-data="(isPagination ? apis.page : apis.list)!"
       />
     </div>
     <n-modal

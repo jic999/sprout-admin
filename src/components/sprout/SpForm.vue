@@ -36,6 +36,7 @@ defineExpose({
     label-width="auto"
     :disabled="disabled"
     :rules="rules"
+    v-bind="props.nAttrs"
   >
     <template v-for="(item, key) in items" :key="key">
       <n-form-item :label="item.label" :path="key" v-bind="item.formItemProps">

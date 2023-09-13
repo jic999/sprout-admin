@@ -79,8 +79,8 @@ export interface SpCrudProps {
   extendActions?: SpCrudExtendActions
   /* useCrudParams */
   useCrudParams?: UseCrudParams<any>
-  /* queryOptions */
-  queryOptions?: SpCrudQueryOptions
+  /* 查询参数 */
+  queryParams?: object
   /* * With defaults */
   /* 页面标题 */
   title?: string
