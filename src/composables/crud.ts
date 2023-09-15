@@ -1,6 +1,6 @@
-import { cloneDeep, isNull, isUndefined, omit, pickBy } from 'lodash-es'
+import { cloneDeep, omit } from 'lodash-es'
 import type { UseCrudParams } from '@/types'
-import { isBlank } from '@/utils'
+import { filterNegativeQuery } from '@/utils'
 
 const ACTIONS_TEXT = {
   create: '新增',
@@ -11,12 +11,12 @@ export declare type ActionKey = keyof typeof ACTIONS_TEXT
 
 export function useCrud<T extends Record<string, any> = any>({
   title,
-  formData,
+  form,
   apis,
   refresh,
   validator,
   hooks,
-  filters,
+  filters = { empty: true },
   getCheckedKeys,
 }: UseCrudParams<T>) {
   const formVisible = ref(false)
@@ -24,7 +24,7 @@ export function useCrud<T extends Record<string, any> = any>({
   const formAction = ref<ActionKey>('view')
   const formTitle = computed(() => ACTIONS_TEXT[formAction.value] + title)
 
-  const defaultFormData = { ...formData }
+  const defaultFormData = { ...form }
 
   const formSwitch = {
     open: () => formVisible.value = true,
@@ -33,7 +33,7 @@ export function useCrud<T extends Record<string, any> = any>({
     stop: () => formLoading.value = false,
   }
   function setFormData(data: any) {
-    Object.assign(formData, data)
+    Object.assign(form, data)
   }
   function handleView(row: any) {
     formAction.value = 'view'
@@ -48,7 +48,7 @@ export function useCrud<T extends Record<string, any> = any>({
   function handleCreate() {
     formAction.value = 'create'
     formSwitch.open()
-    Object.assign(formData, defaultFormData)
+    Object.assign(form, defaultFormData)
     setFormData(defaultFormData)
   }
   function handleDelete(id: Number | String) {
@@ -71,50 +71,53 @@ export function useCrud<T extends Record<string, any> = any>({
       },
     })
   }
-  function handleBatchDelete(data?: any) {
-    if (!getCheckedKeys || !getCheckedKeys()?.length || !data || !data.length)
-      return window.$message.warning('请先选择要删除的数据')
-    window.$dialog.warning({
-      title: `批量删除${title}`,
-      content: title ? `确认要删除选中的${title}？` : '确认要删除所有已选中项？',
-      positiveText: '确认',
-      negativeText: '取消',
-      autoFocus: false,
-      onPositiveClick: async () => {
-        const msgLoading = window.$message.loading('删除中', { duration: 0 })
-        const { err } = await apis.batchDelete!(getCheckedKeys!())
-        msgLoading.destroy()
-        if (err) {
-          window.$message.error(err.message || '删除失败，请稍后再试')
-          return
-        }
-        window.$message.success('删除成功')
-        refresh()
-      },
-    })
-  }
+  const handleBatchDelete = apis.batchDelete
+    ? async (data?: any) => {
+      // 若未传入 getCheckedKeys 和 data 或者 getCheckedKeys 和 data 都为空，则提示
+      if ((!getCheckedKeys || !getCheckedKeys().length) && (!data || !data.length)) {
+        window.$message.warning(`请选择需要删除的${title || '数据'}`)
+        return
+      }
+      window.$dialog.warning({
+        title: `批量删除${title}`,
+        content: title ? `确认要删除选中的${title}？` : '确认要删除所有已选中项？',
+        positiveText: '确认',
+        negativeText: '取消',
+        autoFocus: false,
+        onPositiveClick: async () => {
+          const msgLoading = window.$message.loading('删除中', { duration: 0 })
+          const { err } = await apis.batchDelete!(getCheckedKeys!())
+          msgLoading.destroy()
+          if (err) {
+            window.$message.error(err.message || '删除失败，请稍后再试')
+            return
+          }
+          window.$message.success('删除成功')
+          refresh()
+        },
+      })
+    }
+    : undefined
+
   async function handleCommit() {
     if (formAction.value === 'view')
       return handleCancel()
     const validateError = await validator.validate()
     if (validateError)
       return
-      // 过滤字段
-    let _formData = cloneDeep(formData) as any
+      // # 过滤字段
+    let _form = cloneDeep(form) as any
     if (filters) {
-      if (filters.blank || filters.empty)
-        _formData = pickBy(_formData, (val, k) => !filters.excludes?.includes(k) && !isBlank(val))
-      if (filters.null || filters.empty)
-        _formData = pickBy(_formData, (val, k) => !filters.excludes?.includes(k) && !isNull(val))
-      if (filters.undef || filters.empty)
-        _formData = pickBy(_formData, (val, k) => !filters.excludes?.includes(k) && !isUndefined(val))
+      // - filter negative fields
+      _form = filterNegativeQuery(_form, filters)
+      // - filter not required fields
       const filterFields = filters[formAction.value as keyof typeof filters] as string[]
       if (filterFields)
-        _formData = omit(_formData, filterFields)
+        _form = omit(_form, filterFields)
     }
     const handler = {
-      create: async () => apis.create(_formData),
-      update: async () => apis.update(_formData),
+      create: async () => apis.create(_form),
+      update: async () => apis.update(_form),
     }
     formSwitch.loading()
     const { err } = await handler[formAction.value]()

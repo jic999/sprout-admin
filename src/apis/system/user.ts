@@ -22,4 +22,10 @@ export const sysUserApi = {
   batchDelete(ids: number[]) {
     return req('post', '/system-user/batch-delete', { ids })
   },
+  getWithRoles(id: any) {
+    return req('get', `/system-user/role/${id}`)
+  },
+  assignRoles(data: any) {
+    return req('post', '/system-user/role', data)
+  },
 }

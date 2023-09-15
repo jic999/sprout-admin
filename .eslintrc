@@ -1,4 +1,8 @@
 {
   "root": true,
-  "extends": ["@antfu", "@unocss"]
+  "extends": ["@antfu", "@unocss"],
+  "rules": {
+    "vue/singleline-html-element-content-newline": "off",
+    "no-console": "warn"
+  }
 }

@@ -32,7 +32,7 @@ const $form = ref()
 const $table = ref()
 const checkedKeys = ref<Array<number | string>>()
 
-const formData = reactive(mapValues(formItems.value, item => item.value))
+const form = reactive(mapValues(formItems.value, item => item.value))
 
 const {
   formTitle,
@@ -48,7 +48,7 @@ const {
   handleCancel,
 } = useCrud({
   title: props.entityName,
-  formData,
+  form,
   apis: props.apis as UseCrudApis,
   validator: {
     validate: () => $form.value?.validate(),
@@ -98,7 +98,7 @@ const _columns = computed(() => (props.isCustomActions
 const tableAttrs = computed<DataTableProps>(() => ({
   rowKey: row => row?.id,
   onUpdateCheckedRowKeys: (keys: any[]) => checkedKeys.value = keys,
-  ...props.tableProps?.nAttrs,
+  ...props.tableProps,
 }))
 
 const queryParams = computed({
@@ -117,7 +117,7 @@ defineExpose({
   handleQuery,
   handleReset,
   getCheckedKeys: () => checkedKeys.value,
-  getFormData: () => formData,
+  getFormData: () => form,
   // useCrud
   getFormTitle: () => formTitle.value,
   getFormAction: () => formAction.value,
@@ -151,7 +151,7 @@ defineExpose({
             <TheIcon icon="carbon:search" :size="16" />
           </template>
         </NButton>
-        <NButton v-if="props.apis.batchDelete" type="error" size="small" secondary @click="handleBatchDelete">
+        <NButton v-if="handleBatchDelete" type="error" size="small" secondary @click="handleBatchDelete">
           <template #icon>
             <TheIcon icon="carbon:trash-can" :size="16" />
           </template>
@@ -183,7 +183,7 @@ defineExpose({
     >
       <SpForm
         ref="$form"
-        v-model:model-value="formData"
+        v-model:model-value="form"
         :items="formItems"
         :disabled="formAction === 'view'"
       />

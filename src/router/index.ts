@@ -1,8 +1,8 @@
-import { createRouter, createWebHistory } from 'vue-router'
+import type { RouteRecordRaw } from 'vue-router'
 import type { App } from 'vue'
+import { createRouter, createWebHistory } from 'vue-router'
 import { dynamicRoutes, staticRoutes } from './routes'
 import { setupRouteGuard } from './grards'
-import type { CustomRoute } from '@/types'
 import { getToken, isExternalLink } from '@/utils'
 
 export { dynamicRoutes, staticRoutes }
@@ -11,7 +11,7 @@ const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     ...staticRoutes,
-  ] as CustomRoute[],
+  ],
 })
 
 export async function addDynamicRoutes() {
@@ -25,8 +25,8 @@ export async function addDynamicRoutes() {
   if (userStore.userInfo)
     addRoutes(dynamicRoutes)
 }
-export function addRoutes(routes: CustomRoute[]) {
-  routes.forEach((route: CustomRoute) => {
+export function addRoutes(routes: RouteRecordRaw[]) {
+  routes.forEach((route: RouteRecordRaw) => {
     !isExternalLink(route.path) && router.addRoute(route)
   })
 }

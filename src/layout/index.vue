@@ -12,7 +12,7 @@ const router = useRouter()
 const appStore = useAppStore()
 
 const keepAliveRouteNames = computed(() => {
-  return router.getRoutes().filter(route => route.meta?.keepAlive).map(route => route.name) as string[]
+  return router.getRoutes().filter(route => !route.meta?.noCache).map(route => route.name) as string[]
 })
 </script>
 
@@ -39,10 +39,11 @@ const keepAliveRouteNames = computed(() => {
       <n-layout-content
         style="height: calc(100vh - 98px); overflow: auto;"
         bordered
-        content-style="padding: 8px; background: var(--sp-bg-c)"
+        content-style="background: var(--sp-bg-c)"
       >
         <RouterView v-slot="{ Component }">
           <Transition name="page-transition" mode="out-in" appear>
+            <!-- ! 当子路由组件有多个根标签时 这似乎不生效 -->
             <KeepAlive :include="keepAliveRouteNames">
               <component :is="Component" />
             </KeepAlive>

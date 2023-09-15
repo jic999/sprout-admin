@@ -1,25 +1,25 @@
 <script setup lang="ts">
-import { type DataTableProps } from 'naive-ui'
-import { mapValues, pickBy } from 'lodash-es'
-import type { SpTableProps } from '@/types'
-import { isBlank } from '@/utils'
+import type { DataTableProps, PaginationProps } from 'naive-ui'
+import { isArray, pickBy } from 'lodash-es'
+import type { InternalRowData, RowKey } from 'naive-ui/es/data-table/src/interface'
+import { filterNegativeQuery, isBlank } from '@/utils'
+import { spTableProps } from '@/types'
 
-const props = withDefaults(defineProps<SpTableProps>(), {
-  isPagination: false,
-})
+const props = defineProps(spTableProps)
+
 // ! 绑定值必须使用 ref 而不是 reactive
 const emits = defineEmits(['update:queryParams'])
+
 /* 指定分页查询响应字段 */
 const PAGE_FIELD = 'list'
 const TOTAL_FIELD = 'total'
 
-/* 记录默认queryParams 用于reset */
+// 默认queryParams 用于重置
 const initQueryParams = { ...props.queryParams }
-
-const isLoading = ref(false)
+const loading = ref(false)
 const tableData = ref([])
-
-/* 默认分页设置 可被覆盖  */
+// ? 若分页信息直接传给table-attrs 部分参数似乎没有效果 故自定义分页
+// 默认分页配置 可被覆盖
 const pagination = reactive({
   page: 1,
   pageSize: 5,
@@ -35,18 +35,22 @@ const pagination = reactive({
     pagination.page = 1
     handleQuery()
   },
-  ...props.nAttrs?.pagination,
+  ...props.pagination,
 })
 
+const paginationAttrs = computed(
+  () => (props.isPagination ? pagination : undefined) as PaginationProps,
+)
+
 async function handleQuery() {
-  isLoading.value = true
-  const { err, data } = await props.getData(
+  loading.value = true
+  const { err, data } = await props.getData!(
     pickBy({
       page: pagination.page,
       pageSize: pagination.pageSize,
-      ...props.queryParams,
+      ...(props.queryParams ? filterNegativeQuery(props.queryParams) : undefined),
     }, val => !isBlank(val)))
-  isLoading.value = false
+  loading.value = false
   if (err) {
     window.$message.error(err.message)
     return
@@ -65,37 +69,45 @@ function handleSearch() {
   handleQuery()
 }
 async function handleReset() {
-  const resetParams = mapValues(props.queryParams, () => '')
-  emits('update:queryParams', { ...resetParams, ...initQueryParams })
+  emits('update:queryParams', { ...initQueryParams })
   await nextTick()
   pagination.page = 1
   handleQuery()
 }
 
-// 用于构建页面时快速进行预览 实际开发请传入自定义Columns
+// # 收集 checkedKeys 手动回调
+const checkedKeys = ref<any[]>([])
+function handleUpdateCheckedRowKeys(
+  keys: RowKey[],
+  rows: InternalRowData[],
+  meta: {
+    row: InternalRowData | undefined
+    action: 'check' | 'uncheck' | 'checkAll' | 'uncheckAll'
+  }) {
+  checkedKeys.value = keys
+  if (props.onUpdateCheckedRowKeys) {
+    if (isArray(props.onUpdateCheckedRowKeys))
+      props.onUpdateCheckedRowKeys.forEach(fn => fn(keys, rows, meta))
+    else
+      props.onUpdateCheckedRowKeys(keys, rows, meta)
+  }
+}
+
+// tip: 用于构建页面时快速进行预览 实际开发请传入自定义Columns
 const defaultColumns = computed(() => (props.columns
   ? []
   : (tableData.value.length ? Object.keys(tableData.value[0]).map(key => ({ key, title: key })) : [])),
 )
-const tableAttrs = computed<DataTableProps>(() => ({
-  data: tableData.value,
-  columns: (props.columns || defaultColumns.value),
-  loading: isLoading.value,
-  ...props.nAttrs,
-  // ? 若直接传给table-attrs 部分参数似乎没有效果
-  // pagination: props.isPagination
-  //   ? (props.nAttrs.pagination ? { ...pagination, ...props.nAttrs.pagination } : pagination)
-  //   : undefined,
-}))
 
-/**
-  * 分页
-  * - 若开启分页且未传 pagination 则使用默认
-  * - 若开启分页且传入 pagination 进行覆盖
-  */
-const paginationAttrs = computed(
-  () => props.isPagination ? pagination : undefined,
-)
+const isLoading = computed(() => loading.value || props.loading)
+
+const _tableAttrs = computed<DataTableProps>(() => ({
+  ...props,
+  data: tableData.value,
+  columns: props.columns || defaultColumns.value,
+  loading: isLoading.value,
+  onUpdateCheckedRowKeys: handleUpdateCheckedRowKeys,
+}))
 
 onMounted(() => {
   handleQuery()
@@ -105,15 +117,16 @@ defineExpose({
   refresh: () => handleQuery(),
   handleSearch,
   handleReset,
+  getCheckedKeys: () => checkedKeys.value,
 })
 </script>
 
 <template>
-  <n-data-table
-    :pagination="false"
-    v-bind="tableAttrs"
-  />
-  <div v-if="paginationAttrs" mt-12 flex justify-end>
-    <n-pagination v-bind="paginationAttrs" />
+  <div>
+    <n-data-table v-bind="_tableAttrs" :loading="isLoading" />
+    <!-- <component :is="RenderTable" /> -->
+    <div v-if="paginationAttrs" mt-lg flex justify-end>
+      <n-pagination v-bind="paginationAttrs" />
+    </div>
   </div>
 </template>

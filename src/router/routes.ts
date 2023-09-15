@@ -1,18 +1,18 @@
-import type { CustomRoute } from '@/types'
+import type { RouteRecordRaw } from 'vue-router'
 import Layout from '@/layout/index.vue'
 
-export const staticRoutes: CustomRoute[] = [
+export const staticRoutes: RouteRecordRaw[] = [
   {
     name: 'Login',
     path: '/login',
     component: () => import('@/pages/Login.vue'),
   },
 ]
-export const dynamicRoutes: CustomRoute[] = [
+export const dynamicRoutes: RouteRecordRaw[] = [
   {
     name: 'Home',
     path: '/',
-    redirect: '/workbench',
+    redirect: 'workbench',
     component: Layout,
     meta: {
       title: '主页',
@@ -36,12 +36,13 @@ export const dynamicRoutes: CustomRoute[] = [
           icon: 'carbon:logo-github',
         },
       },
+
     ],
   },
   {
     name: 'System',
     path: '/system',
-    redirect: '/user',
+    redirect: 'user',
     component: Layout,
     meta: {
       title: '系统管理',
@@ -50,16 +51,17 @@ export const dynamicRoutes: CustomRoute[] = [
     children: [
       {
         name: 'SystemUser',
-        path: '/user',
-        component: () => import('@/pages/system/SystemUser.vue'),
+        path: 'user',
+        component: () => import('@/pages/system/user/index.vue'),
         meta: {
           title: '用户管理',
           icon: 'carbon:user',
+
         },
       },
       {
         name: 'SystemRole',
-        path: '/role',
+        path: 'role',
         component: () => import('@/pages/system/SystemRole.vue'),
         meta: {
           title: '角色管理',
@@ -68,7 +70,7 @@ export const dynamicRoutes: CustomRoute[] = [
       },
       {
         name: 'SystemMenu',
-        path: '/menu',
+        path: 'menu',
         component: () => import('@/pages/system/SystemMenu.vue'),
         meta: {
           title: '菜单管理',
@@ -77,7 +79,7 @@ export const dynamicRoutes: CustomRoute[] = [
       },
       {
         name: 'SystemLog',
-        path: '/log',
+        path: 'log',
         component: () => import('@/pages/system/SystemLog.vue'),
         meta: {
           title: '日志管理',
@@ -89,7 +91,7 @@ export const dynamicRoutes: CustomRoute[] = [
   {
     name: 'Demo',
     path: '/demo',
-    redirect: '/sp-crud-user',
+    redirect: 'sp-crud-user',
     component: Layout,
     meta: {
       title: '演示',
@@ -98,12 +100,26 @@ export const dynamicRoutes: CustomRoute[] = [
     children: [
       {
         name: 'SpCrudUser',
-        path: '/sp-crud-user',
+        path: 'sp-crud-user',
         component: () => import('@/pages/demo/SpCrudUser.vue'),
         meta: {
           title: 'SpCrud',
           icon: 'carbon:table',
         },
+      },
+    ],
+  },
+  // ------ sub page
+  {
+    path: '/system/user/assign-role',
+    component: Layout,
+    meta: { hidden: true },
+    children: [
+      {
+        name: 'AssignRole',
+        path: ':userId(\\d+)',
+        component: () => import('@/pages/system/user/AssignRole.vue'),
+        meta: { title: '分配角色', activeMenu: 'SystemUser', noCache: true, noTag: true },
       },
     ],
   },

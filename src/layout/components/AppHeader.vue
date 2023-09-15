@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { CustomRouteMeta } from '@/types'
+import type { RouteMeta } from 'vue-router'
 import { renderIcon } from '@/utils'
 
 const route = useRoute()
@@ -17,8 +17,8 @@ function handleBreadClick(path: string) {
     return
   router.push(path)
 }
-function getIcon(meta: CustomRouteMeta) {
-  return renderIcon(meta.icon || '', { size: 16 })
+function getIcon(meta: RouteMeta) {
+  return renderIcon(meta?.icon || 'ant-design:tag-outlined', { size: 16 })
 }
 
 const userOptions = [
@@ -52,7 +52,7 @@ function handleSelect(key: string) {
             :key="item.path"
             @click="handleBreadClick(item.path)"
           >
-            <component :is="getIcon(item.meta as unknown as CustomRouteMeta)" />
+            <component :is="getIcon(item.meta)" />
             {{ item.meta.title }}
           </n-breadcrumb-item>
         </n-breadcrumb>
@@ -63,10 +63,7 @@ function handleSelect(key: string) {
       <div flex items-center gap-x-xs>
         <div i-carbon:moon dark:i-carbon:sun icon-btn @click="toggleDark()" />
         <a href="https://github.com/jic999/sprout-admin" target="_blank" i-carbon:logo-github icon-btn />
-        <div
-          :class="isFullscreen ? `i-ant-design:fullscreen-exit-outlined` : 'i-ant-design:fullscreen-outlined'"
-          icon-btn @click="toggleFullscreen"
-        />
+        <div :class="isFullscreen ? `i-ant-design:fullscreen-exit-outlined` : 'i-ant-design:fullscreen-outlined'" icon-btn @click="toggleFullscreen" />
       </div>
       <n-dropdown
         trigger="hover"
@@ -82,7 +79,3 @@ function handleSelect(key: string) {
     </div>
   </div>
 </template>
-
-<style lang="scss" scoped>
-
-</style>

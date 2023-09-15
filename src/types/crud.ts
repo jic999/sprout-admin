@@ -1,4 +1,5 @@
 import type { RequestResult } from './request'
+import type { FilterNegativeQueryOptions } from './utils'
 
 export type ApiRequest = (...args: any[]) => Promise<RequestResult>
 
@@ -34,18 +35,13 @@ export interface UseCrudHooks<T = any> {
  * Exclude some unnecessary fields
  * Performed before the hooks
  */
-export interface UseCrudFilters<T extends Record<string, any>> {
-  undef?: boolean
-  blank?: boolean
-  null?: boolean
-  empty?: boolean
+export interface UseCrudFilters<T extends Record<string, any>> extends FilterNegativeQueryOptions<T> {
   create?: (keyof T)[]
   update?: (keyof T)[]
-  excludes?: (keyof T)[]
 }
 export interface UseCrudParams<T extends Record<string, any>> {
   title: string
-  formData: T
+  form: T
   apis: UseCrudApis
   refresh: Function
   validator: { validate: Function; restore?: Function }

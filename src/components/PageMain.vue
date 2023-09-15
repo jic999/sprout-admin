@@ -1,5 +1,5 @@
 <template>
-  <main rounded p-xs bg="$sp-main-bg-c">
+  <main p-8px>
     <slot />
   </main>
 </template>

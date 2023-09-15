@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { CustomRoute } from '@/types'
+import type { RouteRecordRaw } from 'vue-router'
 import { isExternalLink, renderIcon } from '@/utils'
 import { dynamicRoutes } from '@/router'
 
@@ -16,39 +16,23 @@ function handleMenuChange(key: string, item: any) {
 const activeMenu = computed<any>(() => route.meta?.activeMenu || route.name)
 const menuOptions = ref()
 
-function getMenuOptions(routes: CustomRoute[]) {
-  return routes.map((route: any) => getMenuItem(route))
+function getMenuOptions(routes: RouteRecordRaw[]) {
+  return routes.map((route: RouteRecordRaw) => getMenuItem(route))
     .sort((a, b) => a.order - b.order)
 }
-function getMenuItem(route: CustomRoute) {
+function getMenuItem(route: RouteRecordRaw) {
   const menuItem = {
     label: route.meta?.title || route.name,
     key: route.name || route.path,
-    order: route.order || 9999,
+    order: route.meta?.order || 9999,
     icon: renderIcon(route.meta?.icon || 'carbon:bookmark', { size: 18 }),
     path: route.path,
   }
-  // 无子路由 直接返回
+  // 无子路由 直接返回 有子路由 递归处理
   if (!route.children)
     return menuItem
-    // 有子路由 判断isSingle
-    // - isSingle 则所有子路由都不显示在menu中
-    //   - 判断组件 不为 Layout 返回本身信息
-    //   - 若为Layout返回首个子路由的信息
-  if (route.isSingle) {
-    if (route.component?.name !== 'Layout')
-      return menuItem
-    const theRoute = route.children[0]
-    return {
-      ...menuItem,
-      key: theRoute.name,
-      label: theRoute.meta?.title || theRoute.name,
-      icon: renderIcon(theRoute.meta?.icon || 'carbon:bookmark', { size: 16 }),
-    }
-  }
-  // - !isSingle 筛选路由 继续获取
-  // - 否则 继续获取子菜单
-  (menuItem as any).children = getMenuOptions(route.children)
+  else
+    (menuItem as any).children = getMenuOptions(route.children)
   return menuItem
 }
 
@@ -71,7 +55,3 @@ onMounted(() => {
     @update:value="handleMenuChange"
   />
 </template>
-
-<style lang="scss" scoped>
-
-</style>

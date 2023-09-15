@@ -23,5 +23,9 @@
     },
     "outDir": "dist"
   },
+  "vueCompilerOptions": {
+    "target": 3,
+    "plugins": ["@vue-macros/volar/define-options"]
+  },
   "exclude": ["dist", "node_modules"]
 }

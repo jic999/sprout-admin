@@ -15,7 +15,7 @@ const modalFooterStyle = {
   justifyContent: 'end',
   gap: '0 16px',
 }
-const formData = reactive({
+const form = reactive({
   id: null,
   name: '',
   code: '',
@@ -25,7 +25,7 @@ const rules: FormRules = {
   name: { required: true },
   code: { required: true },
 }
-const queryParams = ref(pick(formData, 'name', 'code'))
+const queryParams = ref(pick(form, 'name', 'code'))
 
 const {
   formTitle,
@@ -40,7 +40,7 @@ const {
   handleCancel,
 } = useCrud({
   title: '权限',
-  formData,
+  form,
   apis: sysPermApi as UseCrudApis,
   validator: {
     validate: () => $form.value.validate(),
@@ -132,23 +132,23 @@ const columns: TableColumns = [
     >
       <n-form
         ref="$form"
-        :model="formData"
+        :model="form"
         :rules="rules"
         label-placement="left"
         label-width="auto"
         :disabled="formAction === 'view'"
       >
         <n-form-item path="id" label="id">
-          <n-input-number v-model:value="formData.id" :disabled="true" placeholder="自动生成" />
+          <n-input-number v-model:value="form.id" :disabled="true" placeholder="自动生成" />
         </n-form-item>
         <n-form-item path="username" label="权限名称">
-          <n-input v-model:value="formData.name" />
+          <n-input v-model:value="form.name" />
         </n-form-item>
         <n-form-item path="name" label="权限标识">
-          <n-input v-model:value="formData.code" />
+          <n-input v-model:value="form.code" />
         </n-form-item>
         <n-form-item path="createTime" label="创建时间">
-          <n-input v-model:value="formData.createTime" :disabled="true" placeholder="自动生成" />
+          <n-input v-model:value="form.createTime" :disabled="true" placeholder="自动生成" />
         </n-form-item>
       </n-form>
       <template #footer>

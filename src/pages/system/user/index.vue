@@ -1,0 +1,215 @@
+<script setup lang="ts">
+import { NTag } from 'naive-ui'
+import type { DataTableColumns, FormRules } from 'naive-ui'
+import { sysUserApi } from '@/apis/system/user'
+import SpTableRowActions from '@/components/sprout/SpTableRowActions.vue'
+
+defineOptions({
+  name: 'SystemUser',
+})
+
+const router = useRouter()
+
+const $table = ref()
+const $form = ref()
+
+const form = reactive({
+  id: null,
+  username: '',
+  nickname: '',
+  email: '',
+  phone: '',
+  sex: 2,
+  status: 0,
+  createTime: '',
+})
+
+const queryParams = ref({
+  username: '',
+  nickname: '',
+  sex: null,
+})
+
+const {
+  formTitle,
+  formVisible,
+  formLoading,
+  handleCreate,
+  handleUpdate,
+  handleDelete,
+  handleBatchDelete,
+  handleCommit,
+  handleCancel,
+} = useCrud({
+  title: '用户',
+  form,
+  apis: sysUserApi,
+  refresh: () => $table.value.refresh(),
+  validator: { validate: () => $form.value.validate() },
+  getCheckedKeys: () => $table.value.getCheckedKeys(),
+})
+
+const dropdownOptions = [
+  { label: '分配角色', key: 'AssignRole' },
+  { label: '重置密码', key: 'ResetPassword' },
+]
+function handleDropdownSelect(row: any, index: number, key: string) {
+  const callback = {
+    AssignRole: () => {
+      router.push(`/system/user/assign-role/${row.id}`)
+    },
+    ResetPassword: () => {
+      window.$message.info('重置密码')
+    },
+  }[key]!
+  callback()
+}
+
+const sexEnum = {
+  0: '女',
+  1: '男',
+  2: '未知',
+}
+const columns: DataTableColumns = [
+  { type: 'selection' },
+  { title: 'id', key: 'id' },
+  { title: '用户名', key: 'username' },
+  { title: '昵称', key: 'nickname' },
+  { title: '邮箱', key: 'email' },
+  { title: '手机号', key: 'phone' },
+  { title: '性别', key: 'sex', render: row => sexEnum[row.sex as keyof typeof sexEnum] },
+  {
+    title: '状态',
+    key: 'status',
+    render: ({ status }) => h(
+      NTag,
+      { type: status ? 'error' : 'success' },
+      () => status ? '禁用' : '启用'),
+  },
+  { title: '创建时间', key: 'createTime' },
+  {
+    title: '操作',
+    key: 'actions',
+    fixed: 'right',
+    render(row, index) {
+      return h(
+        SpTableRowActions,
+        {
+          row,
+          index,
+          dropdownOptions,
+          onEdit: handleUpdate,
+          onDelete: () => handleDelete(row.id as number),
+          onSelect: handleDropdownSelect,
+        },
+      )
+    },
+  },
+]
+
+const rules: FormRules = {
+  username: [{ type: 'string', required: true, message: '请输入用户名', min: 3, max: 20 }],
+  nickname: [{ type: 'string', min: 1, max: 20, message: '昵称长度在1-20之间' }],
+  email: [{ type: 'email', message: '请输入正确的邮箱' }],
+  phone: [{ type: 'string', message: '请输入正确的手机号', pattern: /^(13[0-9]|14[01456879]|15[0-35-9]|16[2567]|17[0-8]|18[0-9]|19[0-35-9])\d{8}$/ }],
+  sex: [{ type: 'enum', enum: [0, 1, 2], message: '非法的数据' }],
+  status: [{ type: 'enum', enum: [0, 1], message: '非法的数据' }],
+}
+</script>
+
+<template>
+  <PageMain>
+    <!-- Search bar -->
+    <section mb-8px flex items-end justify-between sp-section>
+      <n-form :model="queryParams" label-placement="left" label-width="auto" label-align="right" :show-feedback="false">
+        <n-space vertical>
+          <n-space>
+            <n-form-item label="用户名">
+              <n-input v-model:value="queryParams.username" placeholder="搜索用户名" />
+            </n-form-item>
+            <n-form-item label="昵称">
+              <n-input v-model:value="queryParams.nickname" placeholder="搜索昵称" />
+            </n-form-item>
+            <n-form-item label="性别">
+              <n-radio-group v-model:value="queryParams.sex">
+                <div flex items-center gap-x-xs>
+                  <n-radio label="男" :value="1" />
+                  <n-radio label="女" :value="0" />
+                  <n-radio label="未知" :value="2" />
+                  <IconButton icon="ant-design:close-outlined" size="tiny" circle quaternary @click="queryParams.sex = null" />
+                </div>
+              </n-radio-group>
+            </n-form-item>
+          </n-space>
+        </n-space>
+      </n-form>
+      <div flex gap-x-2>
+        <IconButton icon="ant-design:redo-outlined" :icon-size="16" size="small" secondary @click="() => $table?.handleReset()" />
+        <IconButton icon="ant-design:search-outlined" type="info" :icon-size="16" size="small" secondary @click="() => $table?.handleSearch()" />
+        <IconButton icon="ant-design:delete-outlined" type="error" :icon-size="16" size="small" secondary @click="handleBatchDelete" />
+        <IconButton icon="ant-design:plus-outlined" type="primary" :icon-size="16" size="small" secondary @click="handleCreate" />
+      </div>
+    </section>
+    <section sp-section>
+      <!-- Table -->
+      <SpTable
+        ref="$table"
+        v-model:query-params="queryParams"
+        :get-data="sysUserApi.page"
+        :columns="columns" is-pagination
+        :row-key="(row) => row.id"
+      />
+    </section>
+    <!-- Form -->
+    <n-modal
+      v-model:show="formVisible"
+      :style="{ width: '600px' }"
+      :auto-focus="false"
+      :title="formTitle"
+      preset="card"
+    >
+      <n-form ref="$form" :model="form" :rules="rules" label-placement="left" label-width="auto" label-align="right">
+        <n-grid :x-gap="24">
+          <n-gi :span="12">
+            <n-form-item-gi label="用户名" path="id">
+              <n-input-number v-model:value="form.id" disabled placeholder="自动" />
+            </n-form-item-gi>
+            <n-form-item-gi label="用户名" path="username">
+              <n-input v-model:value="form.username" placeholder="请输入用户名" />
+            </n-form-item-gi>
+            <n-form-item-gi label="昵称" path="nickname">
+              <n-input v-model:value="form.nickname" placeholder="请输入昵称" />
+            </n-form-item-gi>
+            <n-form-item-gi label="邮箱" path="email">
+              <n-input v-model:value="form.email" placeholder="请输入邮箱" />
+            </n-form-item-gi>
+          </n-gi>
+          <n-gi :span="12">
+            <n-form-item-gi label="手机号" path="phone">
+              <n-input v-model:value="form.phone" placeholder="请输入手机号" />
+            </n-form-item-gi>
+            <n-form-item-gi label="性别" path="sex">
+              <n-radio-group v-model:value="form.sex">
+                <n-radio :value="1"> 男 </n-radio>
+                <n-radio :value="0"> 女 </n-radio>
+                <n-radio :value="2"> 未知 </n-radio>
+              </n-radio-group>
+            </n-form-item-gi>
+            <n-form-item-gi label="状态" path="status">
+              <n-switch v-model:value="form.status" :checked-value="0" :unchecked-value="1" />
+            </n-form-item-gi>
+            <n-form-item-gi label="创建时间" path="createTime">
+              <n-input v-model:value="form.createTime" disabled placeholder="自动" />
+            </n-form-item-gi>
+          </n-gi>
+        </n-grid>
+      </n-form>
+      <template #footer>
+        <div flex justify-end gap-x-sm>
+          <n-button type="primary" :loading="formLoading" @click="handleCommit">提交</n-button>
+          <n-button @click="handleCancel">取消</n-button>
+        </div>
+      </template>
+    </n-modal>
+  </PageMain>
+</template>
