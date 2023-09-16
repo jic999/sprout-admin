@@ -10,13 +10,16 @@ export const sysRoleApi = {
   delete(id: any) {
     return req('delete', `/system-role/${id}`)
   },
-  list() {
-    return req('get', '/system-role')
+  list(data: any) {
+    return req('get', '/system-role', data)
   },
   get(id: any) {
     return req('get', `/system-role/${id}`)
   },
   page(data: any) {
     return req('get', '/system-role/page', data)
+  },
+  batchDelete(ids: number[]) {
+    return req('post', '/system-role/batch-remove', { ids })
   },
 }

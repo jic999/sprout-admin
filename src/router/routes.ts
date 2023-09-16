@@ -62,7 +62,7 @@ export const dynamicRoutes: RouteRecordRaw[] = [
       {
         name: 'SystemRole',
         path: 'role',
-        component: () => import('@/pages/system/SystemRole.vue'),
+        component: () => import('@/pages/system/role/index.vue'),
         meta: {
           title: '角色管理',
           icon: 'carbon:user-multiple',

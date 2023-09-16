@@ -38,6 +38,8 @@ function handleLogin() {
     const { err, data } = await reqLogin(loginParams)
     loading.value = false
     if (err) {
+      getCheckCode()
+      loginParams.checkCode = ''
       window.$message.error(err.message)
       return
     }

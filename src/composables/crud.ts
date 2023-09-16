@@ -44,6 +44,7 @@ export function useCrud<T extends Record<string, any> = any>({
     formAction.value = 'update'
     formSwitch.open()
     setFormData(row)
+    console.log('form ==> ', form)
   }
   function handleCreate() {
     formAction.value = 'create'

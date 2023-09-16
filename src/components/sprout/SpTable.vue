@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import type { DataTableProps, PaginationProps } from 'naive-ui'
-import { isArray, pickBy } from 'lodash-es'
+import { isArray } from 'lodash-es'
 import type { InternalRowData, RowKey } from 'naive-ui/es/data-table/src/interface'
-import { filterNegativeQuery, isBlank } from '@/utils'
+import { filterNegativeQuery } from '@/utils'
 import { spTableProps } from '@/types'
 
 const props = defineProps(spTableProps)
@@ -44,12 +44,12 @@ const paginationAttrs = computed(
 
 async function handleQuery() {
   loading.value = true
-  const { err, data } = await props.getData!(
-    pickBy({
-      page: pagination.page,
-      pageSize: pagination.pageSize,
-      ...(props.queryParams ? filterNegativeQuery(props.queryParams) : undefined),
-    }, val => !isBlank(val)))
+  // TODO 选择传入 filterNegativeQuery options
+  const queryParams = props.queryParams ? filterNegativeQuery(props.queryParams) : undefined
+  const query = props.isPagination
+    ? { page: pagination.page, pageSize: pagination.pageSize, ...queryParams }
+    : queryParams
+  const { err, data } = await props.getData!(query)
   loading.value = false
   if (err) {
     window.$message.error(err.message)
@@ -94,9 +94,9 @@ function handleUpdateCheckedRowKeys(
 }
 
 // tip: 用于构建页面时快速进行预览 实际开发请传入自定义Columns
-const defaultColumns = computed(() => (props.columns
-  ? []
-  : (tableData.value.length ? Object.keys(tableData.value[0]).map(key => ({ key, title: key })) : [])),
+const tableColumns = computed(() => (
+  props.columns
+  || (tableData.value.length ? Object.keys(tableData.value[0]).map(key => ({ key, title: key })) : [])),
 )
 
 const isLoading = computed(() => loading.value || props.loading)
@@ -104,7 +104,7 @@ const isLoading = computed(() => loading.value || props.loading)
 const _tableAttrs = computed<DataTableProps>(() => ({
   ...props,
   data: tableData.value,
-  columns: props.columns || defaultColumns.value,
+  columns: tableColumns.value,
   loading: isLoading.value,
   onUpdateCheckedRowKeys: handleUpdateCheckedRowKeys,
 }))
@@ -118,13 +118,13 @@ defineExpose({
   handleSearch,
   handleReset,
   getCheckedKeys: () => checkedKeys.value,
+  getData: () => tableData.value,
 })
 </script>
 
 <template>
   <div>
     <n-data-table v-bind="_tableAttrs" :loading="isLoading" />
-    <!-- <component :is="RenderTable" /> -->
     <div v-if="paginationAttrs" mt-lg flex justify-end>
       <n-pagination v-bind="paginationAttrs" />
     </div>

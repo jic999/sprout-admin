@@ -14,7 +14,7 @@ defineEmits(['edit', 'delete', 'select'])
       删除
     </IconButton>
     <n-dropdown
-      v-if="!$props.noMore"
+      v-if="$props.dropdownOptions && $props.dropdownOptions.length"
       trigger="hover"
       size="small"
       :options="$props.dropdownOptions"

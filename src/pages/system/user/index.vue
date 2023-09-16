@@ -70,6 +70,7 @@ const sexEnum = {
   1: '男',
   2: '未知',
 }
+// TODO 分配角色后更新数据
 const columns: DataTableColumns = [
   { type: 'selection' },
   { title: 'id', key: 'id' },
@@ -78,6 +79,20 @@ const columns: DataTableColumns = [
   { title: '邮箱', key: 'email' },
   { title: '手机号', key: 'phone' },
   { title: '性别', key: 'sex', render: row => sexEnum[row.sex as keyof typeof sexEnum] },
+  {
+    title: '角色',
+    key: 'roles',
+    render(row) {
+      const roles = row.roles as any[]
+      if (!roles || !roles.length)
+        return '-'
+      return h('div', { class: 'flex flex-col items-start gap-y-1' }, roles.map(role => h(
+        NTag,
+        { type: 'info', size: 'tiny' },
+        () => role.name,
+      )))
+    },
+  },
   {
     title: '状态',
     key: 'status',
@@ -91,19 +106,17 @@ const columns: DataTableColumns = [
     title: '操作',
     key: 'actions',
     fixed: 'right',
-    render(row, index) {
-      return h(
-        SpTableRowActions,
-        {
-          row,
-          index,
-          dropdownOptions,
-          onEdit: handleUpdate,
-          onDelete: () => handleDelete(row.id as number),
-          onSelect: handleDropdownSelect,
-        },
-      )
-    },
+    render: (row, index) => h(
+      SpTableRowActions,
+      {
+        row,
+        index,
+        dropdownOptions,
+        onEdit: handleUpdate,
+        onDelete: () => handleDelete(row.id as number),
+        onSelect: handleDropdownSelect,
+      },
+    ),
   },
 ]
 
@@ -156,8 +169,9 @@ const rules: FormRules = {
         ref="$table"
         v-model:query-params="queryParams"
         :get-data="sysUserApi.page"
-        :columns="columns" is-pagination
-        :row-key="(row) => row.id"
+        :columns="columns"
+        :row-key="row => row.id"
+        is-pagination
       />
     </section>
     <!-- Form -->
@@ -171,36 +185,36 @@ const rules: FormRules = {
       <n-form ref="$form" :model="form" :rules="rules" label-placement="left" label-width="auto" label-align="right">
         <n-grid :x-gap="24">
           <n-gi :span="12">
-            <n-form-item-gi label="用户名" path="id">
+            <n-form-item label="用户名" path="id">
               <n-input-number v-model:value="form.id" disabled placeholder="自动" />
-            </n-form-item-gi>
-            <n-form-item-gi label="用户名" path="username">
+            </n-form-item>
+            <n-form-item label="用户名" path="username">
               <n-input v-model:value="form.username" placeholder="请输入用户名" />
-            </n-form-item-gi>
-            <n-form-item-gi label="昵称" path="nickname">
+            </n-form-item>
+            <n-form-item label="昵称" path="nickname">
               <n-input v-model:value="form.nickname" placeholder="请输入昵称" />
-            </n-form-item-gi>
-            <n-form-item-gi label="邮箱" path="email">
+            </n-form-item>
+            <n-form-item label="邮箱" path="email">
               <n-input v-model:value="form.email" placeholder="请输入邮箱" />
-            </n-form-item-gi>
+            </n-form-item>
           </n-gi>
           <n-gi :span="12">
-            <n-form-item-gi label="手机号" path="phone">
+            <n-form-item label="手机号" path="phone">
               <n-input v-model:value="form.phone" placeholder="请输入手机号" />
-            </n-form-item-gi>
-            <n-form-item-gi label="性别" path="sex">
+            </n-form-item>
+            <n-form-item label="性别" path="sex">
               <n-radio-group v-model:value="form.sex">
                 <n-radio :value="1"> 男 </n-radio>
                 <n-radio :value="0"> 女 </n-radio>
                 <n-radio :value="2"> 未知 </n-radio>
               </n-radio-group>
-            </n-form-item-gi>
-            <n-form-item-gi label="状态" path="status">
+            </n-form-item>
+            <n-form-item label="状态" path="status">
               <n-switch v-model:value="form.status" :checked-value="0" :unchecked-value="1" />
-            </n-form-item-gi>
-            <n-form-item-gi label="创建时间" path="createTime">
+            </n-form-item>
+            <n-form-item label="创建时间" path="createTime">
               <n-input v-model:value="form.createTime" disabled placeholder="自动" />
-            </n-form-item-gi>
+            </n-form-item>
           </n-gi>
         </n-grid>
       </n-form>

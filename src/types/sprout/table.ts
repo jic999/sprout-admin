@@ -10,7 +10,6 @@ export interface TableRowActionsProps {
   row: any
   index: number
   dropdownOptions?: DropdownProps['options']
-  noMore?: boolean
 }
 
 export const spTableProps = {

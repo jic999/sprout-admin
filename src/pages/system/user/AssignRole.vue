@@ -53,7 +53,7 @@ onBeforeMount(() => {
       <n-form :model="form" label-placement="left" :show-feedback="false">
         <n-grid v-if="form" :x-gap="24">
           <n-form-item-gi :span="8" label="用户id" path="id">
-            <n-input v-model:value="form.id" disabled />
+            <n-input-number v-model:value="form.id" disabled />
           </n-form-item-gi>
           <n-form-item-gi :span="8" label="用户名" path="username">
             <n-input v-model:value="form.username" disabled />
