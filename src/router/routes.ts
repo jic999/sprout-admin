@@ -109,6 +109,35 @@ export const dynamicRoutes: RouteRecordRaw[] = [
     ],
   },
   {
+    name: 'Monitor',
+    path: '/monitor',
+    component: Layout,
+    meta: {
+      title: '系统监控',
+      icon: 'carbon:analytics',
+    },
+    children: [
+      {
+        name: 'DataMonitor',
+        path: 'data',
+        component: () => import('@/pages/monitor/data/index.vue'),
+        meta: {
+          title: '数据监控',
+          icon: 'carbon:analytics',
+        },
+      },
+      {
+        name: 'ServerMonitor',
+        path: 'server',
+        component: () => import('@/pages/monitor/server/index.vue'),
+        meta: {
+          title: '服务监控',
+          icon: 'carbon:analytics',
+        },
+      },
+    ],
+  },
+  {
     name: 'Demo',
     path: '/demo',
     redirect: 'sp-crud-user',

@@ -15,8 +15,8 @@ export function useCrud<T extends Record<string, any> = any>({
   apis,
   refresh,
   validator,
-  hooks,
   filters = { empty: true },
+  hooks = {},
   getCheckedKeys,
 }: UseCrudParams<T>) {
   const formVisible = ref(false)
@@ -36,23 +36,30 @@ export function useCrud<T extends Record<string, any> = any>({
     Object.assign(form, data)
   }
   function handleView(row: any) {
+    hooks.before && hooks.before(form)
+
     formAction.value = 'view'
     formSwitch.open()
     setFormData(row)
   }
   function handleUpdate(row: any) {
+    hooks.before && hooks.before(form)
+
     formAction.value = 'update'
     formSwitch.open()
     setFormData(row)
-    console.log('form ==> ', form)
   }
   function handleCreate() {
+    hooks.before && hooks.before(form)
+
     formAction.value = 'create'
     formSwitch.open()
     Object.assign(form, defaultFormData)
     setFormData(defaultFormData)
   }
   function handleDelete(id: Number | String) {
+    hooks.before && hooks.before(form)
+
     window.$dialog.warning({
       title: `删除${title}`,
       content: '确认删除？',

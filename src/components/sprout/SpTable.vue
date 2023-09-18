@@ -60,7 +60,7 @@ async function handleQuery() {
     pagination.itemCount = data[TOTAL_FIELD]
   }
   else {
-    tableData.value = data
+    tableData.value = props.voHandler(data) as any
     pagination.itemCount = data.length
   }
 }
@@ -123,7 +123,7 @@ defineExpose({
 </script>
 
 <template>
-  <div>
+  <div v-if="!props.lazyShow || tableData.length">
     <n-data-table v-bind="_tableAttrs" :loading="isLoading" />
     <div v-if="paginationAttrs" mt-lg flex justify-end>
       <n-pagination v-bind="paginationAttrs" />

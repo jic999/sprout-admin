@@ -22,10 +22,10 @@ export function filterNegativeQuery<T extends Record<string, any>>(obj: T, optio
   options = { ...defaultOptions, ...options }
   let newObj: Partial<T> = { ...obj }
   if (options.blank || options.empty)
-    newObj = pickBy(newObj, (val, k) => !options!.excludes?.includes(k) && !isBlank(val)) as Partial<T>
+    newObj = pickBy(newObj, (val, k) => options!.excludes?.includes(k) || !isBlank(val)) as Partial<T>
   if (options.null || options.empty)
-    newObj = pickBy(newObj, (val, k) => !options!.excludes?.includes(k) && !isNull(val)) as Partial<T>
+    newObj = pickBy(newObj, (val, k) => options!.excludes?.includes(k) || !isNull(val)) as Partial<T>
   if (options.undef || options.empty)
-    newObj = pickBy(newObj, (val, k) => !options!.excludes?.includes(k) && !isUndefined(val)) as Partial<T>
+    newObj = pickBy(newObj, (val, k) => options!.excludes?.includes(k) || !isUndefined(val)) as Partial<T>
   return newObj
 }

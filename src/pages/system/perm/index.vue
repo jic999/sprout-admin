@@ -5,6 +5,7 @@ import { sysPermApi } from '@/apis/system/perm'
 import { routeComponents } from '@/router'
 import TheIcon from '@/components/icon/TheIcon.vue'
 import SpTableRowActions from '@/components/sprout/SpTableRowActions.vue'
+import { getMenuList } from '@/utils'
 
 defineOptions({
   name: 'SystemPerm',
@@ -25,6 +26,8 @@ function renderIconSelectLabel(option: any) {
     h('span', {}, option.label),
   ])
 }
+
+const permData = ref()
 
 // ------------------------------
 const $table = ref()
@@ -69,6 +72,12 @@ const {
   apis: sysPermApi,
   refresh: () => $table.value.refresh(),
   validator: { validate: () => $form.value.validate() },
+  filters: { excludes: ['permCode'] },
+  hooks: {
+    before: () => {
+      permData.value = $table.value.getData()
+    },
+  },
 })
 
 const columns: DataTableColumns = [
@@ -81,7 +90,6 @@ const columns: DataTableColumns = [
   },
   { title: '权限标识', key: 'permCode' },
   { title: '权限类型', key: 'type', render: row => permTypes.find(item => item.value === row.type)?.label },
-  { title: '父级权限', key: 'parentId' },
   { title: '路由组件名称', key: 'component' },
   { title: '路由路径', key: 'path' },
   { title: '排序', key: 'orderNum' },
@@ -119,7 +127,7 @@ const columns: DataTableColumns = [
     </section>
     <!-- Table -->
     <section sp-section>
-      <SpTable ref="$table" :get-data="sysPermApi.list" :columns="columns" :scroll-x="1800" />
+      <SpTable ref="$table" :get-data="sysPermApi.list" :columns="columns" :scroll-x="1800" :vo-handler="getMenuList" default-expand-all lazy-show />
     </section>
     <!-- Form -->
     <n-modal
@@ -146,7 +154,7 @@ const columns: DataTableColumns = [
             <n-select v-model:value="form.type" :options="permTypes" placeholder="请选择权限类型" />
           </n-form-item-gi>
           <n-form-item-gi :span="12" label="父级权限" path="parentId">
-            <n-input-number v-model:value="form.parentId" placeholder="请输入父级权限" />
+            <n-cascader v-model:value="form.parentId" :options="permData" label-field="permName" value-field="id" placeholder="请选择父级权限" />
           </n-form-item-gi>
           <n-form-item-gi :span="12" label="状态" path="status">
             <n-switch v-model:value="form.status" :checked-value="0" :unchecked-value="1" />

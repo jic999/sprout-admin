@@ -1,15 +1,11 @@
 <script setup lang="ts">
 defineOptions({
-  name: 'Workbench',
+  name: 'MonitorData',
 })
 </script>
 
 <template>
   <PageMain>
-    工作台
+    <h2>数据监控</h2>
   </PageMain>
 </template>
-
-<style lang="scss" scoped>
-
-</style>

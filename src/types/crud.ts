@@ -30,6 +30,8 @@ export interface UseCrudHooks<T = any> {
   afterView?: UseCrudHook<T>
   afterCreate?: UseCrudHook<T>
   afterUpdate?: UseCrudHook<T>
+  before?: UseCrudHook<T>
+  after?: UseCrudHook<T>
 }
 /**
  * Exclude some unnecessary fields
