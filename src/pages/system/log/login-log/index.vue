@@ -5,11 +5,7 @@ defineOptions({
 </script>
 
 <template>
-  <AppPageMain>
-    日志管理
-  </AppPageMain>
+  <PageMain>
+    <h2>登录日志</h2>
+  </PageMain>
 </template>
-
-<style lang="scss" scoped>
-
-</style>

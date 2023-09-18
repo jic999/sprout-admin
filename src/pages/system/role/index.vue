@@ -12,8 +12,8 @@ const $form = ref()
 
 const form = reactive({
   id: null,
-  name: '',
-  code: '',
+  roleName: '',
+  roleCode: '',
   description: '',
   createTime: '',
 })
@@ -38,14 +38,14 @@ const {
 })
 
 const queryParams = ref({
-  name: '',
-  code: '',
+  roleName: '',
+  roleCode: '',
 })
 const columns: DataTableColumns = [
   { type: 'selection' },
   { title: 'id', key: 'id' },
-  { title: '名称', key: 'name' },
-  { title: '标识', key: 'code' },
+  { title: '名称', key: 'roleName' },
+  { title: '标识', key: 'roleCode' },
   { title: '描述', key: 'description' },
   { title: '创建时间', key: 'createTime' },
   {
@@ -78,10 +78,10 @@ const rules = {
       <n-form :model="queryParams" label-placement="left" label-width="auto" label-align="right" :show-feedback="false">
         <n-space>
           <n-form-item label="角色名">
-            <n-input v-model:value="queryParams.name" placeholder="搜索用户名" />
+            <n-input v-model:value="queryParams.roleName" placeholder="搜索用户名" />
           </n-form-item>
           <n-form-item label="角色标识">
-            <n-input v-model:value="queryParams.code" placeholder="搜索昵称" />
+            <n-input v-model:value="queryParams.roleCode" placeholder="搜索昵称" />
           </n-form-item>
         </n-space>
       </n-form>
@@ -116,10 +116,10 @@ const rules = {
               <n-input v-model:value="form.id" disabled placeholder="自动" />
             </n-form-item>
             <n-form-item label="角色名称" required>
-              <n-input v-model:value="form.name" placeholder="请输入角色名称" />
+              <n-input v-model:value="form.roleName" placeholder="请输入角色名称" />
             </n-form-item>
             <n-form-item label="角色标识" required>
-              <n-input v-model:value="form.code" placeholder="请输入角色标识" />
+              <n-input v-model:value="form.roleCode" placeholder="请输入角色标识" />
             </n-form-item>
           </n-gi>
           <n-gi :span="12">

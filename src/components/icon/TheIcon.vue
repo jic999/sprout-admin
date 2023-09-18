@@ -1,21 +1,15 @@
-<script setup>
+<script setup lang="ts">
 import { renderIcon } from '@/utils'
 
-const props = defineProps({
-  icon: {
-    type: String,
-    required: true,
-  },
-  size: {
-    type: Number,
-    default: 14,
-  },
-  color: {
-    type: String,
-    default: undefined,
-  },
-})
+export interface TheIconProps {
+  icon: string
+  size?: number
+  color?: string
+}
 
+const props = withDefaults(defineProps<TheIconProps>(), {
+  size: 16,
+})
 const iconCom = computed(() => renderIcon(props.icon, { size: props.size, color: props.color }))
 </script>
 

@@ -89,7 +89,7 @@ const columns: DataTableColumns = [
       return h('div', { class: 'flex flex-col items-start gap-y-1' }, roles.map(role => h(
         NTag,
         { type: 'info', size: 'tiny' },
-        () => role.name,
+        () => role.roleName,
       )))
     },
   },

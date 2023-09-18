@@ -14,8 +14,8 @@ const defaultCheckedRowKeys = ref<number[]>()
 const columns = reactive<TableColumns>([
   { type: 'selection' },
   { title: 'id', key: 'id' },
-  { title: '角色名称', key: 'name' },
-  { title: '角色标识', key: 'code' },
+  { title: '角色名称', key: 'roleName' },
+  { title: '角色标识', key: 'roleCode' },
   { title: '创建时间', key: 'createTime' },
 ])
 

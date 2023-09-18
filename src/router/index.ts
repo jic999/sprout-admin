@@ -1,11 +1,11 @@
 import type { RouteRecordRaw } from 'vue-router'
 import type { App } from 'vue'
 import { createRouter, createWebHistory } from 'vue-router'
-import { dynamicRoutes, staticRoutes } from './routes'
-import { setupRouteGuard } from './grards'
+import { dynamicRoutes, staticRoutes, subRoutes } from './routes'
+import { setupRouteGuard } from './guards'
 import { getToken, isExternalLink } from '@/utils'
 
-export { dynamicRoutes, staticRoutes }
+export * from './routes'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -22,8 +22,10 @@ export async function addDynamicRoutes() {
   // 若无用户信息 getUserInfo
   !userStore.userInfo && (await userStore.getUserInfo())
   // TODO 根据权限信息筛选路由
-  if (userStore.userInfo)
+  if (userStore.userInfo) {
     addRoutes(dynamicRoutes)
+    addRoutes(subRoutes)
+  }
 }
 export function addRoutes(routes: RouteRecordRaw[]) {
   routes.forEach((route: RouteRecordRaw) => {
