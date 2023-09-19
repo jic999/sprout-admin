@@ -2,6 +2,7 @@
 import type { DataTableColumns } from 'naive-ui'
 import { sysRoleApi } from '@/apis/system/role'
 import SpTableRowActions from '@/components/sprout/SpTableRowActions.vue'
+import { sysPermApi } from '@/apis/system/perm'
 
 defineOptions({
   name: 'SystemRole',
@@ -16,6 +17,7 @@ const form = reactive({
   roleCode: '',
   description: '',
   createTime: '',
+  permIds: [],
 })
 
 const {
@@ -35,6 +37,12 @@ const {
   refresh: () => $table.value.refresh(),
   validator: { validate: () => $form.value.validate() },
   getCheckedKeys: () => $table.value.getCheckedKeys(),
+  hooks: {
+    before: ({ row }) => {
+      if (row)
+        form.permIds = row.permIds || []
+    },
+  },
 })
 
 const queryParams = ref({
@@ -69,6 +77,26 @@ const rules = {
   name: [{ required: true, message: '请输入角色名称', trigger: 'blur' }],
   code: [{ required: true, message: '请输入角色标识', trigger: 'blur' }],
 }
+
+function tableVoHandler(data: any[]) {
+  return data.map(role => ({
+    ...role,
+    permIds: role.permissions?.map((perm: any) => perm.id),
+  }))
+}
+
+const permTree = ref()
+
+async function getPermData() {
+  const { err, data } = await sysPermApi.list()
+  if (err) {
+    console.warn(err)
+    return
+  }
+  permTree.value = data
+}
+
+getPermData()
 </script>
 
 <template>
@@ -100,6 +128,7 @@ const rules = {
         :get-data="sysRoleApi.list"
         :columns="columns"
         :row-key="row => row.id"
+        :vo-handler="tableVoHandler"
       />
     </section>
     <n-modal
@@ -113,7 +142,7 @@ const rules = {
         <n-grid :x-gap="24">
           <n-gi :span="12">
             <n-form-item label="角色id">
-              <n-input v-model:value="form.id" disabled placeholder="自动" />
+              <n-input-number v-model:value="form.id" disabled placeholder="自动" />
             </n-form-item>
             <n-form-item label="角色名称" required>
               <n-input v-model:value="form.roleName" placeholder="请输入角色名称" />
@@ -131,6 +160,17 @@ const rules = {
             </n-form-item>
           </n-gi>
         </n-grid>
+        <n-form-item label="分配权限">
+          <n-cascader
+            v-model:value="form.permIds"
+            :options="permTree"
+            label-field="permName"
+            value-field="id"
+            placeholder="分配权限"
+            :show-path="false"
+            clearable multiple
+          />
+        </n-form-item>
       </n-form>
       <template #footer>
         <div flex justify-end gap-x-sm>
