@@ -43,6 +43,7 @@ async function handleCommit() {
     return
   }
   window.$message.success('操作成功')
+  refreshSS.set(true)
   router.back()
 }
 
@@ -80,7 +81,7 @@ onBeforeMount(() => {
       <n-empty v-else description="暂无数据" />
       <div mt-xl flex-center gap-x-lg>
         <n-button type="primary" :loading="loading" @click="handleCommit">提交</n-button>
-        <n-button @click="() => $router.back()">返回</n-button>
+        <n-button @click="router.back">返回</n-button>
       </div>
     </section>
   </PageMain>

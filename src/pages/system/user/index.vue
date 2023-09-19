@@ -128,6 +128,13 @@ const rules: FormRules = {
   sex: [{ type: 'enum', enum: [0, 1, 2], message: '非法的数据' }],
   status: [{ type: 'enum', enum: [0, 1], message: '非法的数据' }],
 }
+
+onBeforeUpdate(() => {
+  if (refreshSS.get()) {
+    $table.value.refresh()
+    refreshSS.restore()
+  }
+})
 </script>
 
 <template>
