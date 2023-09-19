@@ -13,13 +13,15 @@ export interface UseCrudApis {
 /**
  * Receive raw data, return processed data
  * you can process data or perform some operations here
- * @param data raw data
- * @param row the row data of the current operation
- * @param result the data returned by request
- * @returns processed data
- * @example (data, result) => ({ ...data, id: result.id })
+ * @param form form data
+ * @param row the data of the current row
+ * @param result the data returned by the request
  */
-export type UseCrudHook<T = any> = (data: T, row?: T & Record<string, any>, result?: any) => any
+export type UseCrudHook<T = any> = (params: {
+  form: T
+  row?: T & Record<string, any>
+  result?: any
+}) => any
 
 /**
  * the first param is form data, the second is the data returned by request

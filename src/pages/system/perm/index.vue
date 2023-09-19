@@ -74,7 +74,7 @@ const {
   validator: { validate: () => $form.value.validate() },
   filters: { excludes: ['permCode'] },
   hooks: {
-    before: (_, row) => {
+    before: ({ row }) => {
       permData.value = $table.value.getData()
       resetTreeDisabled(permData.value)
       if (row) {
@@ -91,7 +91,7 @@ const columns: DataTableColumns = [
   {
     title: '图标',
     key: 'icon',
-    render: row => h(TheIcon, { icon: row.icon, size: 20 }),
+    render: row => h(TheIcon, { icon: row.icon as string, size: 20 }),
   },
   { title: '权限标识', key: 'permCode' },
   { title: '权限类型', key: 'type', render: row => permTypes.find(item => item.value === row.type)?.label },

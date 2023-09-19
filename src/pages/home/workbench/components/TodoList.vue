@@ -20,7 +20,7 @@ import { todoList } from '@/utils'
           正如它的名字一样，该项目还处于萌芽阶段。
         </p>
         <p flex items-center gap-x-xs text-yellow-500>
-          <span i-carbon:face-cool text-24px />
+          <span i-carbon:face-activated text-24px />
           但我会不断完善它~
         </p>
       </div>
