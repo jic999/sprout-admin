@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { icons } from '@iconify/json/json/ant-design.json'
-import type { DataTableColumns } from 'naive-ui'
+import { type DataTableColumns, type FormItemRule, type FormRules, NTag } from 'naive-ui'
 import { sysPermApi } from '@/apis/system/perm'
 import { routeComponents } from '@/router'
 import TheIcon from '@/components/icon/TheIcon.vue'
@@ -34,9 +34,9 @@ const $table = ref()
 const $form = ref()
 
 const permTypes = [
-  { label: '目录', value: 'C' },
-  { label: '菜单', value: 'M' },
-  { label: '按钮', value: 'B' },
+  { label: '目录', value: 'C', tag: 'primary' },
+  { label: '菜单', value: 'M', tag: 'info' },
+  { label: '按钮', value: 'B', tag: 'default' },
 ]
 const form = reactive({
   id: null,
@@ -56,6 +56,20 @@ const form = reactive({
   noTag: 0,
   createTime: '',
 })
+
+const rules: FormRules = {
+  permName: [{ required: true, message: '请输入权限名称', trigger: 'blur' }],
+  // router info
+  component: [{ validator: routeInfoValidator, message: '请选择路由组件', trigger: 'blur' }],
+  icon: [{ validator: routeInfoValidator, message: '请选择图标', trigger: 'blur' }],
+  path: [{ validator: routeInfoValidator, message: '请输入路由路径', trigger: 'blur' }],
+}
+
+function routeInfoValidator(_: FormItemRule, val: string) {
+  if (form.type !== 'B' && !val)
+    return false
+  return true
+}
 
 const {
   formTitle,
@@ -91,17 +105,31 @@ const columns: DataTableColumns = [
   {
     title: '图标',
     key: 'icon',
-    render: row => h(TheIcon, { icon: row.icon as string, size: 20 }),
+    render: row => row.icon ? h(TheIcon, { icon: row.icon as string, size: 20 }) : null,
   },
   { title: '权限标识', key: 'permCode' },
-  { title: '权限类型', key: 'type', render: row => permTypes.find(item => item.value === row.type)?.label },
+  {
+    title: '权限类型',
+    key: 'type',
+    render: (row) => {
+      const item = permTypes.find(item => item.value === row.type)
+      return h(NTag, { type: item?.tag as any }, () => item?.label)
+    },
+  },
   { title: '路由组件名称', key: 'component' },
   { title: '路由路径', key: 'path' },
   { title: '排序', key: 'orderNum' },
+  {
+    title: '页面缓存',
+    key: 'cache',
+    render: (row) => {
+      if (row.type === 'M')
+        return h(NTag, { type: row.cache ? 'primary' : 'default' }, () => row.cache ? '开启' : '关闭')
+      return '-'
+    },
+  },
   { title: '描述', key: 'description' },
-  { title: '是否缓存', key: 'cache' },
-  { title: '是否隐藏', key: 'hidden' },
-  { title: '状态', key: 'status' },
+  { title: '状态', key: 'status', render: row => h(NTag, { type: row.status ? 'warning' : 'success' }, () => row.status ? '禁用' : '启用') },
   { title: '创建时间', key: 'createTime' },
   {
     title: '操作',
@@ -132,7 +160,7 @@ const columns: DataTableColumns = [
     </section>
     <!-- Table -->
     <section sp-section>
-      <SpTable ref="$table" :get-data="sysPermApi.list" :columns="columns" :scroll-x="1800" default-expand-all lazy-show />
+      <SpTable ref="$table" :get-data="sysPermApi.list" :columns="columns" :scroll-x="1680" default-expand-all lazy-show />
     </section>
     <!-- Form -->
     <n-modal
@@ -142,14 +170,14 @@ const columns: DataTableColumns = [
       :title="formTitle"
       preset="card"
     >
-      <n-form ref="$form" :model="form" label-placement="left" label-width="auto" label-align="right">
+      <n-form ref="$form" :model="form" :rules="rules" label-placement="left" label-width="auto" label-align="right">
         <div pb-lg text="center lg gray-500">基本信息</div>
         <n-grid x-gap="24">
           <!-- 基本信息 -->
           <n-form-item-gi :span="12" label="id" path="id">
             <n-input-number v-model:value="form.id" placeholder="自动" disabled />
           </n-form-item-gi>
-          <n-form-item-gi :span="12" label="权限名称" path="permName">
+          <n-form-item-gi :span="12" label="权限名称" path="permName" required>
             <n-input v-model:value="form.permName" placeholder="请输入权限名称" />
           </n-form-item-gi>
           <n-form-item-gi :span="12" label="权限标识" path="permCode">
@@ -175,13 +203,13 @@ const columns: DataTableColumns = [
           <!-- 路由信息 -->
           <div pb-lg text="center lg gray-500">路由信息</div>
           <n-grid x-gap="24">
-            <n-form-item-gi :span="12" label="路由组件" path="component">
+            <n-form-item-gi :span="12" label="路由组件" path="component" required>
               <n-select v-model:value="form.component" :options="routeComponentsOptions" placeholder="请选择路由组件" label-field="name" value-field="name" filterable />
             </n-form-item-gi>
-            <n-form-item-gi :span="12" label="路由路径" path="path">
+            <n-form-item-gi :span="12" label="路由路径" path="path" required>
               <n-input v-model:value="form.path" placeholder="请输入路由路径" />
             </n-form-item-gi>
-            <n-form-item-gi :span="12" label="图标" path="icon">
+            <n-form-item-gi :span="12" label="图标" path="icon" required>
               <n-select v-model:value="form.icon" :options="iconOptions" filterable placeholder="请选择图标" :render-label="renderIconSelectLabel" />
             </n-form-item-gi>
             <n-form-item-gi :span="12" label="排序" path="orderNum">

@@ -6,13 +6,11 @@ export function resetTreeDisabled(permTree: any[]) {
       resetTreeDisabled(item.children)
   })
 }
-// 寻找当前权限的所有子级权限 并禁用
+// 寻找当前权限 和 按钮权限 并禁用
 export function setTreeDisabled(permTree: any[], id: number) {
   for (const item of permTree) {
-    if (item.id === id) {
+    if (item.type === 'B' || item.id === id)
       item.disabled = true
-      return
-    }
     if (item.children)
       setTreeDisabled(item.children, id)
   }
