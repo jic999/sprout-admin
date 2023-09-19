@@ -36,14 +36,14 @@ export function useCrud<T extends Record<string, any> = any>({
     Object.assign(form, data)
   }
   function handleView(row: any) {
-    hooks.before && hooks.before(form)
+    hooks.before && hooks.before(form, row)
 
     formAction.value = 'view'
     formSwitch.open()
     setFormData(row)
   }
   function handleUpdate(row: any) {
-    hooks.before && hooks.before(form)
+    hooks.before && hooks.before(form, row)
 
     formAction.value = 'update'
     formSwitch.open()

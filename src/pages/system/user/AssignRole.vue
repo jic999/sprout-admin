@@ -3,6 +3,10 @@ import type { TableColumns } from 'naive-ui/es/data-table/src/interface'
 import { sysUserApi } from '@/apis/system/user'
 import { sysRoleApi } from '@/apis/system/role'
 
+defineOptions({
+  name: 'AssignRole',
+})
+
 const route = useRoute()
 const router = useRouter()
 

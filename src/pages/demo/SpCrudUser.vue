@@ -82,26 +82,28 @@ const queryParams = ref({
 </script>
 
 <template>
-  <SpCrud
-    v-model:query-params="queryParams"
-    entity-name="用户"
-    :apis="sysUserApi"
-    :crud-items="items"
-    is-pagination
-  >
-    <template #BarLeft>
-      <n-form :model="queryParams" label-placement="left" :show-feedback="false">
-        <n-space>
-          <n-form-item label="用户名">
-            <n-input v-model:value="queryParams.username" />
-          </n-form-item>
-          <n-form-item label="昵称">
-            <n-input v-model:value="queryParams.nickname" />
-          </n-form-item>
-        </n-space>
-      </n-form>
-    </template>
-  </SpCrud>
+  <PageMain>
+    <SpCrud
+      v-model:query-params="queryParams"
+      entity-name="用户"
+      :apis="sysUserApi"
+      :crud-items="items"
+      is-pagination
+    >
+      <template #BarLeft>
+        <n-form :model="queryParams" label-placement="left" :show-feedback="false">
+          <n-space>
+            <n-form-item label="用户名">
+              <n-input v-model:value="queryParams.username" />
+            </n-form-item>
+            <n-form-item label="昵称">
+              <n-input v-model:value="queryParams.nickname" />
+            </n-form-item>
+          </n-space>
+        </n-form>
+      </template>
+    </SpCrud>
+  </PageMain>
 </template>
 
 <style lang="scss" scoped>

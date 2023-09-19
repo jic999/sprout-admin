@@ -5,7 +5,7 @@ import { sysPermApi } from '@/apis/system/perm'
 import { routeComponents } from '@/router'
 import TheIcon from '@/components/icon/TheIcon.vue'
 import SpTableRowActions from '@/components/sprout/SpTableRowActions.vue'
-import { getMenuList } from '@/utils'
+import { resetTreeDisabled, setTreeDisabled } from '@/utils'
 
 defineOptions({
   name: 'SystemPerm',
@@ -74,8 +74,13 @@ const {
   validator: { validate: () => $form.value.validate() },
   filters: { excludes: ['permCode'] },
   hooks: {
-    before: () => {
+    before: (_, row) => {
       permData.value = $table.value.getData()
+      resetTreeDisabled(permData.value)
+      if (row) {
+        // 禁止将 自己的父级权限 设置为 自己或自己的子级权限
+        setTreeDisabled(permData.value, +row.id!)
+      }
     },
   },
 })
@@ -127,7 +132,7 @@ const columns: DataTableColumns = [
     </section>
     <!-- Table -->
     <section sp-section>
-      <SpTable ref="$table" :get-data="sysPermApi.list" :columns="columns" :scroll-x="1800" :vo-handler="getMenuList" default-expand-all lazy-show />
+      <SpTable ref="$table" :get-data="sysPermApi.list" :columns="columns" :scroll-x="1800" default-expand-all lazy-show />
     </section>
     <!-- Form -->
     <n-modal
@@ -170,8 +175,8 @@ const columns: DataTableColumns = [
           <!-- 路由信息 -->
           <div pb-lg text="center lg gray-500">路由信息</div>
           <n-grid x-gap="24">
-            <n-form-item-gi :span="12" label="路由组件名称" path="component">
-              <n-select v-model:value="form.component" :options="routeComponentsOptions" placeholder="请选择路由组件" label-field="name" value-field="name" />
+            <n-form-item-gi :span="12" label="路由组件" path="component">
+              <n-select v-model:value="form.component" :options="routeComponentsOptions" placeholder="请选择路由组件" label-field="name" value-field="name" filterable />
             </n-form-item-gi>
             <n-form-item-gi :span="12" label="路由路径" path="path">
               <n-input v-model:value="form.path" placeholder="请输入路由路径" />

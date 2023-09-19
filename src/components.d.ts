@@ -11,6 +11,7 @@ declare module '@vue/runtime-core' {
   export interface GlobalComponents {
     AppPageMain: typeof import('./components/AppPageMain.vue')['default']
     AppProvider: typeof import('./components/AppProvider.vue')['default']
+    Avatar: typeof import('./components/Avatar.vue')['default']
     IconButton: typeof import('./components/IconButton.vue')['default']
     NBreadcrumb: typeof import('naive-ui')['NBreadcrumb']
     NBreadcrumbItem: typeof import('naive-ui')['NBreadcrumbItem']

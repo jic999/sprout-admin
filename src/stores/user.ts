@@ -18,7 +18,7 @@ export const useUserStore = defineStore('user', () => {
   async function getUserInfo() {
     const { err, data } = await reqUserInfo()
     if (err) {
-      window.$message.error(err.message)
+      window.$message?.error(err?.message || '获取用户信息失败')
       // TODO 若token过期 跳转登录页
       return
     }

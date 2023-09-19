@@ -23,7 +23,7 @@ export const dynamicRoutes: RouteRecordRaw[] = [
       {
         name: 'Workbench',
         path: '/workbench',
-        component: () => import('@/pages/home/Workbench.vue'),
+        component: () => import('@/pages/home/workbench/index.vue'),
         meta: {
           title: '工作台',
           icon: 'carbon:screen',
@@ -57,7 +57,6 @@ export const dynamicRoutes: RouteRecordRaw[] = [
         meta: {
           title: '用户管理',
           icon: 'carbon:user',
-
         },
       },
       {

@@ -26,6 +26,7 @@ axios.interceptors.response.use(
     return r
   },
   (err) => {
+    console.log('err ==> ', err)
     return { err }
   },
 )
