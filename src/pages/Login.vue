@@ -79,34 +79,37 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div style="background: left bottom/cover url('/imgs/login_bg.jpg');" h-100vh w-full flex-center>
-    <section mb="10%" mx-auto w-360px flex flex-col gap-y-sm rounded-lg bg-white p-lg op-90 shadow>
-      <div flex-center gap-x-xs font-600 text-primary>
-        <span i-carbon:sprout text-6 />
+  <div
+    :style="{ background: `left bottom/cover url('/imgs/login_bg.jpg')`, filter: isDark ? 'brightness(0.7)' : undefined }"
+    h-100vh w-full flex-center
+  >
+    <section mb="10%" mx-auto w-360px flex flex-col gap-y-sm rounded-lg bg="$sp-main-bg-c" p-lg op-90 shadow>
+      <div flex-center gap-x-xs text-xl font-600 text-primary>
+        <span i-carbon:sprout text-28px />
         <span>Sprout Admin Pro</span>
       </div>
       <n-form ref="$form" :model="loginParams" label-placement="left" :rules="rules">
         <n-form-item path="username">
-          <n-input v-model:value="loginParams.username" placeholder="请输入用户名" @keydown.enter="handleLogin">
+          <n-input v-model:value="loginParams.username" placeholder="请输入用户名" size="large" @keydown.enter="handleLogin">
             <template #prefix>
               <div i-carbon:user mr-6px scale-120 op-60 />
             </template>
           </n-input>
         </n-form-item>
         <n-form-item path="password">
-          <n-input v-model:value="loginParams.password" placeholder="请输入密码" type="password" show-password-on="mousedown" @keydown.enter="handleLogin">
+          <n-input v-model:value="loginParams.password" placeholder="请输入密码" size="large" type="password" show-password-on="mousedown" @keydown.enter="handleLogin">
             <template #prefix>
               <div i-carbon:password mr-6px scale-120 op-60 />
             </template>
           </n-input>
         </n-form-item>
         <n-form-item path="checkCode">
-          <n-input v-model:value="loginParams.checkCode" placeholder="请输入验证码" @keydown.enter="handleLogin">
+          <n-input v-model:value="loginParams.checkCode" placeholder="请输入验证码" size="large" @keydown.enter="handleLogin">
             <template #prefix>
               <div i-carbon:bot mr-6px scale-120 op-60 />
             </template>
           </n-input>
-          <img :src="checkCodeUrl" h-34px @click="getCheckCode">
+          <img :src="checkCodeUrl" h-40px @click="getCheckCode">
         </n-form-item>
         <n-checkbox v-model:checked="loginSettings.rememberMe">
           记住我

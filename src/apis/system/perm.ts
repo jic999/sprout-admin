@@ -19,4 +19,7 @@ export const sysPermApi = {
   page(data: any) {
     return req('get', '/system-permission/page', data)
   },
+  routes() {
+    return req('get', '/system-permission/routes')
+  },
 }

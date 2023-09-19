@@ -5,7 +5,7 @@ import { sysPermApi } from '@/apis/system/perm'
 import { routeComponents } from '@/router'
 import TheIcon from '@/components/icon/TheIcon.vue'
 import SpTableRowActions from '@/components/sprout/SpTableRowActions.vue'
-import { resetTreeDisabled, setTreeDisabled } from '@/utils'
+import { isExternalLink, resetTreeDisabled, setTreeDisabled } from '@/utils'
 
 defineOptions({
   name: 'SystemPerm',
@@ -60,15 +60,24 @@ const form = reactive({
 const rules: FormRules = {
   permName: [{ required: true, message: '请输入权限名称', trigger: 'blur' }],
   // router info
-  component: [{ validator: routeInfoValidator, message: '请选择路由组件', trigger: 'blur' }],
-  icon: [{ validator: routeInfoValidator, message: '请选择图标', trigger: 'blur' }],
-  path: [{ validator: routeInfoValidator, message: '请输入路由路径', trigger: 'blur' }],
+  component: [
+    { validator: needComponentValidator, message: '请选择路由组件', trigger: 'blur' },
+    { validator: componentValidator, message: '外链菜单无需选择组件', trigger: 'blur' },
+  ],
+  icon: [{ validator: needComponentValidator, message: '请选择图标', trigger: 'blur' }],
+  path: [{ validator: needComponentValidator, message: '请输入路由路径', trigger: 'blur' }],
 }
 
-function routeInfoValidator(_: FormItemRule, val: string) {
+function needComponentValidator(_: FormItemRule, val: string) {
+  if (isExternalLink(form.path))
+    return true
   if (form.type !== 'B' && !val)
     return false
   return true
+}
+function componentValidator(_: FormItemRule, val: string) {
+  if (isExternalLink(form.path) && val)
+    return false
 }
 
 const {
@@ -204,7 +213,7 @@ const columns: DataTableColumns = [
           <div pb-lg text="center lg gray-500">路由信息</div>
           <n-grid x-gap="24">
             <n-form-item-gi :span="12" label="路由组件" path="component" required>
-              <n-select v-model:value="form.component" :options="routeComponentsOptions" placeholder="请选择路由组件" label-field="name" value-field="name" filterable />
+              <n-select v-model:value="form.component" :options="routeComponentsOptions" placeholder="请选择路由组件" label-field="name" value-field="name" filterable clearable />
             </n-form-item-gi>
             <n-form-item-gi :span="12" label="路由路径" path="path" required>
               <n-input v-model:value="form.path" placeholder="请输入路由路径" />

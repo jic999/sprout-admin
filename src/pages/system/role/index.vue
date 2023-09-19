@@ -52,8 +52,8 @@ const queryParams = ref({
 const columns: DataTableColumns = [
   { type: 'selection' },
   { title: 'id', key: 'id' },
-  { title: '名称', key: 'roleName' },
-  { title: '标识', key: 'roleCode' },
+  { title: '角色名称', key: 'roleName' },
+  { title: '角色标识', key: 'roleCode' },
   { title: '描述', key: 'description' },
   { title: '创建时间', key: 'createTime' },
   {
@@ -168,6 +168,7 @@ getPermData()
             value-field="id"
             placeholder="分配权限"
             :show-path="false"
+            :cascade="false"
             clearable multiple
           />
         </n-form-item>

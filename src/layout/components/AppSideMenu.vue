@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { RouteRecordRaw } from 'vue-router'
+import { isNumber } from 'lodash-es'
 import { isExternalLink, renderIcon } from '@/utils'
 import { dynamicRoutes } from '@/router'
 
@@ -24,7 +25,7 @@ function getMenuItem(route: RouteRecordRaw) {
   const menuItem = {
     label: route.meta?.title || route.name,
     key: route.name || route.path,
-    order: route.meta?.order || 9999,
+    order: isNumber(route.meta?.order) ? route.meta.order : 9999,
     icon: renderIcon(route.meta?.icon || 'carbon:bookmark', { size: 18 }),
     path: route.path,
   }

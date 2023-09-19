@@ -9,7 +9,7 @@ export const staticRoutes: RouteRecordRaw[] = [
     component: () => import('@/pages/Login.vue'),
   },
 ]
-export const dynamicRoutes: RouteRecordRaw[] = [
+/* export const dynamicRoutes: RouteRecordRaw[] = [
   {
     name: 'Home',
     path: '/',
@@ -157,7 +157,7 @@ export const dynamicRoutes: RouteRecordRaw[] = [
       },
     ],
   },
-]
+] */
 
 export const subRoutes = [
   // ------ sub page

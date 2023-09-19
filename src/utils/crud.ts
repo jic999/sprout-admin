@@ -1,7 +1,7 @@
 // 解除所有权限的禁用
-export function resetTreeDisabled(permTree: any[]) {
+export function resetTreeDisabled(permTree: any[], disabled = false) {
   permTree.forEach((item) => {
-    item.disabled = false
+    item.disabled = disabled
     if (item.children)
       resetTreeDisabled(item.children)
   })
