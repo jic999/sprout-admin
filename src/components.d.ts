@@ -9,22 +9,18 @@ export {}
 
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
-    AppPageMain: typeof import('./components/AppPageMain.vue')['default']
     AppProvider: typeof import('./components/AppProvider.vue')['default']
     Avatar: typeof import('./components/Avatar.vue')['default']
     IconButton: typeof import('./components/IconButton.vue')['default']
     NBreadcrumb: typeof import('naive-ui')['NBreadcrumb']
     NBreadcrumbItem: typeof import('naive-ui')['NBreadcrumbItem']
     NButton: typeof import('naive-ui')['NButton']
-    NButtonGroup: typeof import('naive-ui')['NButtonGroup']
-    NBuutton: typeof import('naive-ui')['NBuutton']
     NCascader: typeof import('naive-ui')['NCascader']
     NCheckbox: typeof import('naive-ui')['NCheckbox']
     NCheckboxGroup: typeof import('naive-ui')['NCheckboxGroup']
     NConfigProvider: typeof import('naive-ui')['NConfigProvider']
     NDataTable: typeof import('naive-ui')['NDataTable']
     NDialogProvider: typeof import('naive-ui')['NDialogProvider']
-    NDivider: typeof import('naive-ui')['NDivider']
     NDropdown: typeof import('naive-ui')['NDropdown']
     NEmpty: typeof import('naive-ui')['NEmpty']
     NForm: typeof import('naive-ui')['NForm']
@@ -33,7 +29,6 @@ declare module '@vue/runtime-core' {
     NGi: typeof import('naive-ui')['NGi']
     NGrid: typeof import('naive-ui')['NGrid']
     NInput: typeof import('naive-ui')['NInput']
-    NInputGroup: typeof import('naive-ui')['NInputGroup']
     NInputNumber: typeof import('naive-ui')['NInputNumber']
     NLayout: typeof import('naive-ui')['NLayout']
     NLayoutContent: typeof import('naive-ui')['NLayoutContent']
@@ -44,7 +39,6 @@ declare module '@vue/runtime-core' {
     NMessageProvider: typeof import('naive-ui')['NMessageProvider']
     NModal: typeof import('naive-ui')['NModal']
     NNotificationProvider: typeof import('naive-ui')['NNotificationProvider']
-    NNumberInput: typeof import('naive-ui')['NNumberInput']
     NPagination: typeof import('naive-ui')['NPagination']
     NRadio: typeof import('naive-ui')['NRadio']
     NRadioGroup: typeof import('naive-ui')['NRadioGroup']
@@ -60,7 +54,6 @@ declare module '@vue/runtime-core' {
     SpForm: typeof import('./components/sprout/SpForm.vue')['default']
     SpTable: typeof import('./components/sprout/SpTable.vue')['default']
     SpTableRowActions: typeof import('./components/sprout/SpTableRowActions.vue')['default']
-    SpTableRowPanel: typeof import('./components/sprout/SpTableRowPanel.vue')['default']
     TheIcon: typeof import('./components/icon/TheIcon.vue')['default']
   }
 }

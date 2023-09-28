@@ -14,7 +14,7 @@ function authGuard(router: Router) {
     }
     if (WHITE_LIST_PAGE.includes(to.path))
       return true
-    window.$notification.warning({ content: '身份验证失败，请登录', duration: 2000 })
+    window.$notification.error({ content: '身份验证失败，请登录', duration: 2000 })
     return { path: '/login' }
   })
 }

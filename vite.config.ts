@@ -7,6 +7,7 @@ import Components from 'unplugin-vue-components/vite'
 import VueMacros from 'unplugin-vue-macros/vite'
 import Unocss from 'unocss/vite'
 import { NaiveUiResolver } from 'unplugin-vue-components/resolvers'
+import { visualizer } from 'rollup-plugin-visualizer'
 
 export default defineConfig({
   plugins: [
@@ -26,6 +27,11 @@ export default defineConfig({
       extensions: ['vue', 'tsx'],
       dts: 'src/components.d.ts',
     }),
+    visualizer({
+      open: true,
+      gzipSize: true,
+      brotliSize: true,
+    }),
   ],
   resolve: {
     alias: {
@@ -33,10 +39,10 @@ export default defineConfig({
     },
   },
   server: {
-    port: 1888,
+    port: 2020,
     proxy: {
       '/api': {
-        target: 'http://localhost:3000',
+        target: 'http://localhost:2023',
         changeOrigin: true,
       },
     },

@@ -26,12 +26,13 @@ const keepAliveRouteNames = computed(() => {
       :collapsed="appStore.sidebarCollapsed"
       collapse-mode="width"
       content-style="padding: 6px 0; height: 100vh;"
+      select-none
     >
       <AppSideMenu />
     </n-layout-sider>
     <n-layout>
       <!-- Header -->
-      <n-layout-header bordered position-static h-98px>
+      <n-layout-header bordered position-static h-98px select-none>
         <AppHeader />
         <AppTabBar />
       </n-layout-header>

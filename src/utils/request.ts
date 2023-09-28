@@ -21,20 +21,22 @@ axios.interceptors.request.use((config) => {
 axios.interceptors.response.use(
   (res) => {
     const r = res.data
-    if (r.code !== 0)
-      return { ...r, err: new Error(r.msg) }
+    if (r.code !== 200)
+      return { ...r, err: new Error(r.message) }
     return r
   },
-  (err) => {
-    console.log('err ==> ', err)
-    return { err }
+  (error) => {
+    if (error.response?.data)
+      return { ...error.response.data, err: new Error(error.response.data.message) }
+    console.log('error ==> ', error)
+    return { code: error.response?.status, msg: error.message, err: error }
   },
 )
 
 export function req<T = any>(method: Method, url: string, data?: any, config?: AxiosRequestConfig<any>) {
   return axios({
     // default config
-    baseURL: '/api',
+    baseURL: '/api/admin',
     timeout: 5000,
     // Custom
     method,

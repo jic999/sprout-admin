@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { mapValues, omit } from 'lodash'
+import { mapValues, omit } from 'lodash-es'
 import { type FormRules } from 'naive-ui'
 import type { SpFormProps } from '@/types'
 

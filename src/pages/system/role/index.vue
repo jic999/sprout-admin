@@ -13,11 +13,10 @@ const $form = ref()
 
 const form = reactive({
   id: null,
-  roleName: '',
-  roleCode: '',
-  description: '',
-  createTime: '',
+  name: '',
+  desc: '',
   permIds: [],
+  createTime: '',
 })
 
 const {
@@ -52,9 +51,8 @@ const queryParams = ref({
 const columns: DataTableColumns = [
   { type: 'selection' },
   { title: 'id', key: 'id' },
-  { title: '角色名称', key: 'roleName' },
-  { title: '角色标识', key: 'roleCode' },
-  { title: '描述', key: 'description' },
+  { title: '角色名称', key: 'name' },
+  { title: '角色描述', key: 'desc' },
   { title: '创建时间', key: 'createTime' },
   {
     title: '操作',
@@ -75,7 +73,6 @@ const columns: DataTableColumns = [
 ]
 const rules = {
   name: [{ required: true, message: '请输入角色名称', trigger: 'blur' }],
-  code: [{ required: true, message: '请输入角色标识', trigger: 'blur' }],
 }
 
 function tableVoHandler(data: any[]) {
@@ -141,21 +138,18 @@ getPermData()
       <n-form ref="$form" :model="form" :rules="rules" label-placement="left" label-width="auto" label-align="right">
         <n-grid :x-gap="24">
           <n-gi :span="12">
-            <n-form-item label="角色id">
+            <n-form-item label="角色id" path="id">
               <n-input-number v-model:value="form.id" disabled placeholder="自动" />
             </n-form-item>
-            <n-form-item label="角色名称" required>
-              <n-input v-model:value="form.roleName" placeholder="请输入角色名称" />
-            </n-form-item>
-            <n-form-item label="角色标识" required>
-              <n-input v-model:value="form.roleCode" placeholder="请输入角色标识" />
+            <n-form-item label="角色名称" required path="name">
+              <n-input v-model:value="form.name" placeholder="请输入角色名称" />
             </n-form-item>
           </n-gi>
           <n-gi :span="12">
-            <n-form-item label="角色描述">
-              <n-input v-model:value="form.description" type="textarea" placeholder="请输入角色描述" />
+            <n-form-item label="角色描述" path="desc">
+              <n-input v-model:value="form.desc" type="textarea" placeholder="请输入角色描述" autosize />
             </n-form-item>
-            <n-form-item label="创建时间">
+            <n-form-item label="创建时间" path="createTime">
               <n-input v-model:value="form.createTime" disabled placeholder="自动" />
             </n-form-item>
           </n-gi>
@@ -164,7 +158,7 @@ getPermData()
           <n-cascader
             v-model:value="form.permIds"
             :options="permTree"
-            label-field="permName"
+            label-field="name"
             value-field="id"
             placeholder="分配权限"
             :show-path="false"

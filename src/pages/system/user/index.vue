@@ -19,7 +19,6 @@ const form = reactive({
   nickname: '',
   email: '',
   phone: '',
-  sex: 2,
   status: 0,
   createTime: '',
 })
@@ -53,7 +52,7 @@ const dropdownOptions = [
   { label: '分配角色', key: 'AssignRole' },
   { label: '重置密码', key: 'ResetPassword' },
 ]
-function handleDropdownSelect(row: any, index: number, key: string) {
+function handleDropdownSelect(row: any, _: number, key: string) {
   const callback = {
     AssignRole: () => {
       router.push(`/system/user/assign-role/${row.id}`)
@@ -65,11 +64,6 @@ function handleDropdownSelect(row: any, index: number, key: string) {
   callback()
 }
 
-const sexEnum = {
-  0: '女',
-  1: '男',
-  2: '未知',
-}
 // TODO 分配角色后更新数据
 const columns: DataTableColumns = [
   { type: 'selection' },
@@ -78,7 +72,6 @@ const columns: DataTableColumns = [
   { title: '昵称', key: 'nickname' },
   { title: '邮箱', key: 'email' },
   { title: '手机号', key: 'phone' },
-  { title: '性别', key: 'sex', render: row => sexEnum[row.sex as keyof typeof sexEnum] },
   {
     title: '角色',
     key: 'roles',
@@ -88,8 +81,8 @@ const columns: DataTableColumns = [
         return '-'
       return h('div', { class: 'flex flex-col items-start gap-y-1' }, roles.map(role => h(
         NTag,
-        { type: 'info', size: 'tiny' },
-        () => role.roleName,
+        { type: 'info', size: 'small' },
+        () => role.name,
       )))
     },
   },
@@ -125,7 +118,6 @@ const rules: FormRules = {
   nickname: [{ type: 'string', min: 1, max: 20, message: '昵称长度在1-20之间' }],
   email: [{ type: 'email', message: '请输入正确的邮箱' }],
   phone: [{ type: 'string', message: '请输入正确的手机号', pattern: /^(13[0-9]|14[01456879]|15[0-35-9]|16[2567]|17[0-8]|18[0-9]|19[0-35-9])\d{8}$/ }],
-  sex: [{ type: 'enum', enum: [0, 1, 2], message: '非法的数据' }],
   status: [{ type: 'enum', enum: [0, 1], message: '非法的数据' }],
 }
 
@@ -193,7 +185,7 @@ onBeforeUpdate(() => {
         <n-grid :x-gap="24">
           <n-gi :span="12">
             <n-form-item label="用户名" path="id">
-              <n-input-number v-model:value="form.id" disabled placeholder="自动" />
+              <n-input v-model:value="form.id" placeholder="自动" disabled />
             </n-form-item>
             <n-form-item label="用户名" path="username">
               <n-input v-model:value="form.username" placeholder="请输入用户名" />
@@ -208,13 +200,6 @@ onBeforeUpdate(() => {
           <n-gi :span="12">
             <n-form-item label="手机号" path="phone">
               <n-input v-model:value="form.phone" placeholder="请输入手机号" />
-            </n-form-item>
-            <n-form-item label="性别" path="sex">
-              <n-radio-group v-model:value="form.sex">
-                <n-radio :value="1"> 男 </n-radio>
-                <n-radio :value="0"> 女 </n-radio>
-                <n-radio :value="2"> 未知 </n-radio>
-              </n-radio-group>
             </n-form-item>
             <n-form-item label="状态" path="status">
               <n-switch v-model:value="form.status" :checked-value="0" :unchecked-value="1" />

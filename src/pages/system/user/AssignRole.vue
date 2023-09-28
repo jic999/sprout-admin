@@ -18,8 +18,8 @@ const defaultCheckedRowKeys = ref<number[]>()
 const columns = reactive<TableColumns>([
   { type: 'selection' },
   { title: 'id', key: 'id' },
-  { title: '角色名称', key: 'roleName' },
-  { title: '角色标识', key: 'roleCode' },
+  { title: '角色名称', key: 'name' },
+  { title: '角色描述', key: 'desc' },
   { title: '创建时间', key: 'createTime' },
 ])
 
@@ -36,7 +36,7 @@ async function getData() {
 async function handleCommit() {
   const roleIds = $table.value.getCheckedKeys() as number[]
   loading.value = true
-  const { err } = await sysUserApi.assignRoles({ userId: form.value.id, roleIds })
+  const { err } = await sysUserApi.assignRoles({ id: form.value.id, roleIds })
   loading.value = false
   if (err) {
     window.$message.error(err.message)
@@ -58,7 +58,7 @@ onBeforeMount(() => {
       <n-form :model="form" label-placement="left" :show-feedback="false">
         <n-grid v-if="form" :x-gap="24">
           <n-form-item-gi :span="8" label="用户id" path="id">
-            <n-input-number v-model:value="form.id" disabled />
+            <n-input v-model:value="form.id" disabled />
           </n-form-item-gi>
           <n-form-item-gi :span="8" label="用户名" path="username">
             <n-input v-model:value="form.username" disabled />

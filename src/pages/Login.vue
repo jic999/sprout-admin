@@ -28,7 +28,7 @@ const loginSettings = reactive({
 
 const checkCodeUrl = ref('')
 function getCheckCode() {
-  checkCodeUrl.value = `/api/getCheckCode?time=${Date.now()}`
+  checkCodeUrl.value = `/api/user/getCheckCode?time=${Date.now()}`
 }
 function handleLogin() {
   $form.value.validate(async (errs: any) => {
@@ -57,9 +57,9 @@ function handleLogin() {
       $cookies?.remove('loginInfo')
     }
     // 记录用户状态
-    userStore.setUserInfo(data.userInfo)
+    userStore.setUserInfo(data.user)
     // 存储 token
-    setToken(data.token)
+    setToken(data.accessToken)
     await addDynamicRoutes()
     router.push('/')
   })

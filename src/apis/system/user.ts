@@ -2,30 +2,30 @@ import { req } from '@/utils'
 
 export const sysUserApi = {
   create(data: any) {
-    return req('post', '/system-user', data)
+    return req('post', '/sys-user', data)
   },
   update(data: any) {
-    return req('patch', `/system-user/${data.id}`, data)
+    return req('patch', '/sys-user', data)
   },
   delete(id: any) {
-    return req('delete', `/system-user/${id}`)
+    return req('delete', `/sys-user/${id}`)
   },
   list() {
-    return req('get', '/system-user')
+    return req('get', '/sys-user')
   },
   get(id: any) {
-    return req('get', `/system-user/${id}`)
+    return req('get', `/sys-user/${id}`)
   },
   page(data: any) {
-    return req('get', '/system-user/page', data)
+    return req('get', '/sys-user/page', data)
   },
   batchDelete(ids: number[]) {
-    return req('post', '/system-user/batch-remove', { ids })
+    return req('post', '/sys-user/batch-remove', { ids })
   },
   getWithRoles(id: any) {
-    return req('get', `/system-user/role/${id}`)
+    return req('get', `/sys-user/withRoles/${id}`)
   },
   assignRoles(data: any) {
-    return req('post', '/system-user/role', data)
+    return req('post', '/sys-user/assignRoles', data)
   },
 }

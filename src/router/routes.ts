@@ -8,8 +8,14 @@ export const staticRoutes: RouteRecordRaw[] = [
     path: '/login',
     component: () => import('@/pages/Login.vue'),
   },
+  {
+    name: 'Error404',
+    path: '/404',
+    component: () => import('@/pages/error/404.vue'),
+    meta: { title: '404' },
+  },
 ]
-/* export const dynamicRoutes: RouteRecordRaw[] = [
+export const dynamicRoutes: RouteRecordRaw[] = [
   {
     name: 'Home',
     path: '/',
@@ -83,6 +89,7 @@ export const staticRoutes: RouteRecordRaw[] = [
         meta: {
           title: '日志管理',
           icon: 'carbon:license-draft',
+          hidden: true,
         },
         children: [
           {
@@ -114,6 +121,7 @@ export const staticRoutes: RouteRecordRaw[] = [
     meta: {
       title: '系统监控',
       icon: 'carbon:analytics',
+      hidden: true,
     },
     children: [
       {
@@ -136,28 +144,28 @@ export const staticRoutes: RouteRecordRaw[] = [
       },
     ],
   },
-  {
-    name: 'Demo',
-    path: '/demo',
-    redirect: 'sp-crud-user',
-    component: Layout,
-    meta: {
-      title: '演示',
-      icon: 'carbon:code',
-    },
-    children: [
-      {
-        name: 'SpCrudUser',
-        path: 'sp-crud-user',
-        component: () => import('@/pages/demo/SpCrudUser.vue'),
-        meta: {
-          title: 'SpCrud',
-          icon: 'carbon:table',
-        },
-      },
-    ],
-  },
-] */
+  // {
+  //   name: 'Demo',
+  //   path: '/demo',
+  //   redirect: 'sp-crud-user',
+  //   component: Layout,
+  //   meta: {
+  //     title: '演示',
+  //     icon: 'carbon:code',
+  //   },
+  //   children: [
+  //     {
+  //       name: 'SpCrudUser',
+  //       path: 'sp-crud-user',
+  //       component: () => import('@/pages/demo/SpCrudUser.vue'),
+  //       meta: {
+  //         title: 'SpCrud',
+  //         icon: 'carbon:table',
+  //       },
+  //     },
+  //   ],
+  // },
+]
 
 export const subRoutes = [
   // ------ sub page
@@ -168,11 +176,20 @@ export const subRoutes = [
     children: [
       {
         name: 'AssignRole',
-        path: ':userId(\\d+)',
+        //
+        path: ':userId(\\w{8}-\\w{4}-\\w{4}-\\w{4}-\\w{12})',
         component: () => import('@/pages/system/user/AssignRole.vue'),
         meta: { title: '分配角色', activeMenu: 'SystemUser', noCache: true, noTag: true },
       },
     ],
+  },
+]
+
+export const errorRoutes: RouteRecordRaw[] = [
+  {
+    name: 'NotFound',
+    path: '/:pathMatch(.*)*',
+    redirect: '/404',
   },
 ]
 

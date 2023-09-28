@@ -18,7 +18,9 @@ const activeMenu = computed<any>(() => route.meta?.activeMenu || route.name)
 const menuOptions = ref()
 
 function getMenuOptions(routes: RouteRecordRaw[]) {
-  return routes.map((route: RouteRecordRaw) => getMenuItem(route))
+  return routes
+    .filter(route => !route.meta?.hidden)
+    .map((route: RouteRecordRaw) => getMenuItem(route))
     .sort((a, b) => a.order - b.order)
 }
 function getMenuItem(route: RouteRecordRaw) {
