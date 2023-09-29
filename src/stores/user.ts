@@ -8,6 +8,8 @@ export interface UserInfo {
   email: string
   avatar: string
   sex: string
+  roles: string[]
+  perms: string[]
 }
 export const useUserStore = defineStore('user', () => {
   const userInfo = ref<UserInfo | null>(null)

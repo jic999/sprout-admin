@@ -14,3 +14,7 @@ export function setToken(token: string) {
 export function removeToken() {
   lStorage.remove(TOKEN_CODE)
 }
+
+export function hasPerm(needPerms: string[], perms: string[]) {
+  return needPerms.every(perm => perms.includes(perm))
+}

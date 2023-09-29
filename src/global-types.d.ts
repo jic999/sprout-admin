@@ -19,6 +19,7 @@ declare module 'vue-router' {
     noCache?: boolean
     noTag?: boolean
     hidden?: boolean
+    perms?: string[]
   }
 }
 

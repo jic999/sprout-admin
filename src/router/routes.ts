@@ -1,5 +1,4 @@
 import type { RouteRecordRaw } from 'vue-router'
-import { pickBy } from 'lodash-es'
 import Layout from '@/layout/index.vue'
 
 export const staticRoutes: RouteRecordRaw[] = [
@@ -63,6 +62,7 @@ export const dynamicRoutes: RouteRecordRaw[] = [
         meta: {
           title: '用户管理',
           icon: 'carbon:user',
+          perms: ['sys:user:read'],
         },
       },
       {
@@ -72,6 +72,7 @@ export const dynamicRoutes: RouteRecordRaw[] = [
         meta: {
           title: '角色管理',
           icon: 'carbon:user-multiple',
+          perms: ['sys:role:read'],
         },
       },
       {
@@ -81,69 +82,70 @@ export const dynamicRoutes: RouteRecordRaw[] = [
         meta: {
           title: '权限管理',
           icon: 'carbon:menu',
+          perms: ['sys:perm:read'],
         },
       },
-      {
-        name: 'Log',
-        path: 'log',
-        meta: {
-          title: '日志管理',
-          icon: 'carbon:license-draft',
-          hidden: true,
-        },
-        children: [
-          {
-            name: 'SystemLog',
-            path: 'system',
-            component: () => import('@/pages/system/log/sys-log/index.vue'),
-            meta: {
-              title: '系统日志',
-              icon: 'carbon:license-draft',
-            },
-          },
-          {
-            name: 'LoginLog',
-            path: 'login',
-            component: () => import('@/pages/system/log/login-log/index.vue'),
-            meta: {
-              title: '登录日志',
-              icon: 'carbon:license-draft',
-            },
-          },
-        ],
-      },
+      // {
+      //   name: 'Log',
+      //   path: 'log',
+      //   meta: {
+      //     title: '日志管理',
+      //     icon: 'carbon:license-draft',
+      //     hidden: true,
+      //   },
+      //   children: [
+      //     {
+      //       name: 'SystemLog',
+      //       path: 'system',
+      //       component: () => import('@/pages/system/log/sys-log/index.vue'),
+      //       meta: {
+      //         title: '系统日志',
+      //         icon: 'carbon:license-draft',
+      //       },
+      //     },
+      //     {
+      //       name: 'LoginLog',
+      //       path: 'login',
+      //       component: () => import('@/pages/system/log/login-log/index.vue'),
+      //       meta: {
+      //         title: '登录日志',
+      //         icon: 'carbon:license-draft',
+      //       },
+      //     },
+      //   ],
+      // },
     ],
   },
-  {
-    name: 'Monitor',
-    path: '/monitor',
-    component: Layout,
-    meta: {
-      title: '系统监控',
-      icon: 'carbon:analytics',
-      hidden: true,
-    },
-    children: [
-      {
-        name: 'DataMonitor',
-        path: 'data',
-        component: () => import('@/pages/monitor/data/index.vue'),
-        meta: {
-          title: '数据监控',
-          icon: 'carbon:analytics',
-        },
-      },
-      {
-        name: 'ServerMonitor',
-        path: 'server',
-        component: () => import('@/pages/monitor/server/index.vue'),
-        meta: {
-          title: '服务监控',
-          icon: 'carbon:analytics',
-        },
-      },
-    ],
-  },
+  // {
+  //   name: 'Monitor',
+  //   path: '/monitor',
+  //   component: Layout,
+  //   meta: {
+  //     title: '系统监控',
+  //     icon: 'carbon:analytics',
+  //     hidden: true,
+  //   },
+  //   children: [
+  //     {
+  //       name: 'DataMonitor',
+  //       path: 'data',
+  //       component: () => import('@/pages/monitor/data/index.vue'),
+  //       meta: {
+  //         title: '数据监控',
+  //         icon: 'carbon:analytics',
+  //       },
+  //     },
+  //     {
+  //       name: 'ServerMonitor',
+  //       path: 'server',
+  //       component: () => import('@/pages/monitor/server/index.vue'),
+  //       meta: {
+  //         title: '服务监控',
+  //         icon: 'carbon:analytics',
+  //       },
+  //     },
+  //   ],
+  // },
   // {
   //   name: 'Demo',
   //   path: '/demo',
@@ -167,7 +169,7 @@ export const dynamicRoutes: RouteRecordRaw[] = [
   // },
 ]
 
-export const subRoutes = [
+export const subRoutes: RouteRecordRaw[] = [
   // ------ sub page
   {
     path: '/system/user/assign-role',
@@ -179,7 +181,13 @@ export const subRoutes = [
         //
         path: ':userId(\\w{8}-\\w{4}-\\w{4}-\\w{4}-\\w{12})',
         component: () => import('@/pages/system/user/AssignRole.vue'),
-        meta: { title: '分配角色', activeMenu: 'SystemUser', noCache: true, noTag: true },
+        meta: {
+          title: '分配角色',
+          perms: ['sys:user:assignRoles'],
+          activeMenu: 'SystemUser',
+          noCache: true,
+          noTag: true,
+        },
       },
     ],
   },
@@ -192,13 +200,3 @@ export const errorRoutes: RouteRecordRaw[] = [
     redirect: '/404',
   },
 ]
-
-// 读取pages目录下的所有.vue文件，排除 components 目录
-const pageModules = import.meta.glob('@/pages/**/*.vue', { eager: true })
-const componentsModules = import.meta.glob('@/pages/**/components/**/*.vue')
-const filterModules = pickBy(pageModules, (_, key) => !componentsModules[key])
-
-export const routeComponents = [
-  Layout,
-  ...Object.keys(filterModules).map(key => (filterModules[key] as any).default),
-].sort((a, b) => (a.name || a.__name)!.toLowerCase() <= (b.name || b.__name)!.toLowerCase() ? -1 : 1)
