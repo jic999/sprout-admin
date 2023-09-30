@@ -15,6 +15,12 @@ export function removeToken() {
   lStorage.remove(TOKEN_CODE)
 }
 
-export function hasPerm(needPerms: string[], perms: string[]) {
-  return needPerms.every(perm => perms.includes(perm))
+export function hasPerm(needPerms: string | string[], perms: string[]) {
+  return normalizePerms(needPerms).every(perm => perms.includes(perm))
+}
+export function hasSomePerm(needPerms: string | string[], perms: string[]) {
+  return normalizePerms(needPerms).some(perm => perms.includes(perm))
+}
+export function normalizePerms(perms: string | string[]): string[] {
+  return Array.isArray(perms) ? perms : [perms]
 }

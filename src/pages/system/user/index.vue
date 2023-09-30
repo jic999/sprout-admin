@@ -158,8 +158,8 @@ onBeforeUpdate(() => {
       <div flex gap-x-2>
         <IconButton icon="ant-design:redo-outlined" :icon-size="16" size="small" secondary @click="() => $table?.handleReset()" />
         <IconButton icon="ant-design:search-outlined" type="info" :icon-size="16" size="small" secondary @click="() => $table?.handleSearch()" />
-        <IconButton icon="ant-design:delete-outlined" type="error" :icon-size="16" size="small" secondary @click="handleBatchDelete" />
-        <IconButton icon="ant-design:plus-outlined" type="primary" :icon-size="16" size="small" secondary @click="handleCreate" />
+        <IconButton v-perm="['sys:user:delete']" icon="ant-design:delete-outlined" type="error" :icon-size="16" size="small" secondary @click="handleBatchDelete" />
+        <IconButton v-perm="['sys:user:create']" icon="ant-design:plus-outlined" type="primary" :icon-size="16" size="small" secondary @click="handleCreate" />
       </div>
     </section>
     <section sp-section>
