@@ -16,12 +16,14 @@ const $form = ref()
 const form = reactive({
   id: null,
   name: '',
+  code: '',
   desc: '',
   createTime: '',
 })
 
 const rules: FormRules = {
   name: [{ required: true, message: '请输入权限名称', trigger: 'blur' }],
+  code: [{ required: true, message: '请输入权限标识', trigger: 'blur' }],
 }
 
 const {
@@ -54,6 +56,7 @@ const {
 const columns: DataTableColumns = [
   { title: 'id', key: 'id' },
   { title: '权限名称', key: 'name' },
+  { title: '权限标识', key: 'code' },
   { title: '描述', key: 'desc' },
   { title: '创建时间', key: 'createTime' },
   {
@@ -104,6 +107,9 @@ const columns: DataTableColumns = [
           </n-form-item-gi>
           <n-form-item-gi :span="12" label="权限名称" path="name" required>
             <n-input v-model:value="form.name" placeholder="请输入权限名称" />
+          </n-form-item-gi>
+          <n-form-item-gi :span="12" label="权限标识" path="code" required>
+            <n-input v-model:value="form.code" placeholder="请输入权限名称" />
           </n-form-item-gi>
           <n-form-item-gi :span="12" label="权限描述" path="desc">
             <n-input v-model:value="form.desc" type="textarea" placeholder="请输入描述" autosize />

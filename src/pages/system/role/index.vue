@@ -14,6 +14,7 @@ const $form = ref()
 const form = reactive({
   id: null,
   name: '',
+  code: '',
   desc: '',
   permIds: [],
   createTime: '',
@@ -45,13 +46,14 @@ const {
 })
 
 const queryParams = ref({
-  roleName: '',
-  roleCode: '',
+  name: '',
+  code: '',
 })
 const columns: DataTableColumns = [
   { type: 'selection' },
   { title: 'id', key: 'id' },
   { title: '角色名称', key: 'name' },
+  { title: '角色标识', key: 'code' },
   { title: '角色描述', key: 'desc' },
   { title: '创建时间', key: 'createTime' },
   {
@@ -75,6 +77,7 @@ const columns: DataTableColumns = [
 ]
 const rules = {
   name: [{ required: true, message: '请输入角色名称', trigger: 'blur' }],
+  code: [{ required: true, message: '请输入角色标识', trigger: 'blur' }],
 }
 
 function tableVoHandler(data: any[]) {
@@ -104,11 +107,11 @@ getPermData()
     <section mb-8px flex items-end justify-between sp-section>
       <n-form :model="queryParams" label-placement="left" label-width="auto" label-align="right" :show-feedback="false">
         <n-space>
-          <n-form-item label="角色名">
-            <n-input v-model:value="queryParams.roleName" placeholder="搜索用户名" />
+          <n-form-item label="角色名称">
+            <n-input v-model:value="queryParams.name" placeholder="角色名称" />
           </n-form-item>
           <n-form-item label="角色标识">
-            <n-input v-model:value="queryParams.roleCode" placeholder="搜索昵称" />
+            <n-input v-model:value="queryParams.code" placeholder="角色标识" />
           </n-form-item>
         </n-space>
       </n-form>
@@ -146,6 +149,9 @@ getPermData()
             <n-form-item label="角色名称" required path="name">
               <n-input v-model:value="form.name" placeholder="请输入角色名称" />
             </n-form-item>
+            <n-form-item label="角色标识" required path="code">
+              <n-input v-model:value="form.code" placeholder="请输入角色标识" />
+            </n-form-item>
           </n-gi>
           <n-gi :span="12">
             <n-form-item label="角色描述" path="desc">
@@ -164,7 +170,6 @@ getPermData()
             value-field="id"
             placeholder="分配权限"
             :show-path="false"
-            :cascade="false"
             clearable multiple
           />
         </n-form-item>
