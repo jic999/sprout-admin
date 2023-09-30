@@ -48,10 +48,6 @@ const {
   getCheckedKeys: () => $table.value.getCheckedKeys(),
 })
 
-const dropdownOptions = [
-  { label: '分配角色', key: 'AssignRole' },
-  { label: '重置密码', key: 'ResetPassword' },
-]
 function handleDropdownSelect(row: any, _: number, key: string) {
   const callback = {
     AssignRole: () => {
@@ -104,9 +100,14 @@ const columns: DataTableColumns = [
       {
         row,
         index,
-        dropdownOptions,
-        onEdit: handleUpdate,
-        onDelete: () => handleDelete(row.id as number),
+        options: {
+          edit: { perm: 'sys:user:update', onClick: handleUpdate },
+          delete: { perm: 'sys:user:delete', onClick: () => handleDelete(row.id as number) },
+        },
+        dropdownOptions: [
+          { label: '分配角色', key: 'AssignRole', perm: 'sys:user:assignRoles' },
+          { label: '重置密码', key: 'ResetPassword' },
+        ],
         onSelect: handleDropdownSelect,
       },
     ),

@@ -65,8 +65,10 @@ const columns: DataTableColumns = [
       {
         row,
         index,
-        onEdit: handleUpdate,
-        onDelete: () => handleDelete(row.id as number),
+        options: {
+          edit: { perm: 'sys:perm:update', onClick: handleUpdate },
+          delete: { perm: 'sys:perm:delete', onClick: () => handleDelete(row.id as number) },
+        },
       },
     ),
   },
@@ -80,7 +82,7 @@ const columns: DataTableColumns = [
       <div />
       <div flex gap-x-2>
         <IconButton icon="ant-design:redo-outlined" :icon-size="16" size="small" secondary @click="() => $table?.handleReset()" />
-        <IconButton icon="ant-design:plus-outlined" type="primary" :icon-size="16" size="small" secondary @click="handleCreate" />
+        <IconButton v-perm="['sys:perm:create']" icon="ant-design:plus-outlined" type="primary" :icon-size="16" size="small" secondary @click="handleCreate" />
       </div>
     </section>
     <!-- Table -->

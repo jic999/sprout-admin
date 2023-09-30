@@ -1,8 +1,8 @@
 import type { TableColumn, TableColumns } from 'naive-ui/es/data-table/src/interface'
 import { dataTableProps } from 'naive-ui/es/data-table/src/interface'
-import type { DropdownProps } from 'naive-ui'
 import type { ExtractPublicPropTypes } from 'naive-ui/es/_utils'
 import type { PropType } from 'vue'
+import type { DropdownMixedOption } from 'naive-ui/es/dropdown/src/interface'
 
 export type SpTableColumn = TableColumn
 export type SpTableColumns = TableColumns
@@ -10,7 +10,16 @@ export type SpTableColumns = TableColumns
 export interface TableRowActionsProps {
   row: any
   index: number
-  dropdownOptions?: DropdownProps['options']
+  options: TableRowActionOptions
+  dropdownOptions?: (DropdownMixedOption & { perm?: string })[]
+}
+export interface TableRowActionOption {
+  perm: string
+  onClick: Function
+}
+export interface TableRowActionOptions {
+  edit: TableRowActionOption
+  delete: TableRowActionOption
 }
 
 export const spTableProps = {
