@@ -5,14 +5,14 @@ import { techStackList } from '@/utils'
 <template>
   <div flex gap-x-8px>
     <!-- left -->
-    <section shadow-section flex-center flex-col gap-y-sm>
+    <section flex-center flex-col gap-y-sm shadow-section>
       <div class="rotate-animation" border="2 primary!" rounded-full p-8>
         <div class="i-carbon:sprout" text="24 primary" />
       </div>
       <i text="lg primary">Sprout Admin Pro</i>
     </section>
     <!-- right -->
-    <section shadow-section w-full self-stretch>
+    <section w-full self-stretch shadow-section>
       <h3>主要技术栈</h3>
       <div grid grid-cols-4 gap-sm>
         <a

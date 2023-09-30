@@ -19,13 +19,13 @@ import { todoList } from '@/utils'
           <span i-carbon:sprout text-24px />
           正如它的名字一样，该项目还处于萌芽阶段。
         </p>
-        <p flex items-center gap-x-xs text-yellow-500>
-          <span i-carbon:face-activated text-24px />
+        <p flex items-center gap-x-xs text-orange-400>
+          <span i-carbon:face-cool text-24px />
           但我会不断完善它~
         </p>
       </div>
     </section>
-    <section shadow-section flex flex-1 flex-col p-6>
+    <section flex flex-1 flex-col shadow-section p-6>
       <h3>TODO</h3>
       <div h-180px flex flex-col flex-wrap gap-8px overflow-auto>
         <li

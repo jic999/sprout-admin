@@ -23,7 +23,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <section shadow-section flex justify-between>
+  <section flex justify-between shadow-section>
     <div v-if="userStore.userInfo" flex items-center gap-x-sm>
       <Avatar :url="userStore.userInfo.avatar" :size="36" />
       <div flex flex-col gap-y-2>

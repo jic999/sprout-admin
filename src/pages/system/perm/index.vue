@@ -85,7 +85,7 @@ const columns: DataTableColumns = [
     </section>
     <!-- Table -->
     <section sp-section>
-      <SpTable ref="$table" :get-data="sysPermApi.list" :columns="columns" default-expand-all lazy-show />
+      <SpTable ref="$table" :get-data="sysPermApi.list" :columns="columns" lazy-show default-expand-all />
     </section>
     <!-- Form -->
     <n-modal
