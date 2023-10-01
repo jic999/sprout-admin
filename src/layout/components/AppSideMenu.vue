@@ -21,6 +21,7 @@ function getMenuOptions(routes: RouteRecordRaw[]) {
   return routes
     .filter(route => !route.meta?.hidden)
     .map((route: RouteRecordRaw) => getMenuItem(route))
+    .filter((item: any) => !item.children || item.children.length)
     .sort((a, b) => a.order - b.order)
 }
 function getMenuItem(route: RouteRecordRaw) {

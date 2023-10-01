@@ -76,4 +76,10 @@ export const techStackList = [
     desc: '符合直觉的 Vue.js 状态管理库',
     url: 'https://pinia.vuejs.org/',
   },
+  {
+    name: 'Eslint',
+    img: 'https://eslint.org/favicon.ico',
+    desc: 'Find and fix problems in your JavaScript code',
+    url: 'https://eslint.org/',
+  },
 ]

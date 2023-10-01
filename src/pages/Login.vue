@@ -115,7 +115,7 @@ onMounted(async () => {
           记住我
         </n-checkbox>
       </n-form>
-      <n-button type="primary" :loading="loading" w-full @click="handleLogin">
+      <n-button v-throttle="handleLogin" type="primary" w-full>
         登录
       </n-button>
     </section>
