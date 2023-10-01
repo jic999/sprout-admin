@@ -146,27 +146,27 @@ export const dynamicRoutes: RouteRecordRaw[] = [
   //     },
   //   ],
   // },
-  // {
-  //   name: 'Demo',
-  //   path: '/demo',
-  //   redirect: 'sp-crud-user',
-  //   component: Layout,
-  //   meta: {
-  //     title: '演示',
-  //     icon: 'carbon:code',
-  //   },
-  //   children: [
-  //     {
-  //       name: 'SpCrudUser',
-  //       path: 'sp-crud-user',
-  //       component: () => import('@/pages/demo/SpCrudUser.vue'),
-  //       meta: {
-  //         title: 'SpCrud',
-  //         icon: 'carbon:table',
-  //       },
-  //     },
-  //   ],
-  // },
+  {
+    name: 'Demo',
+    path: '/demo',
+    redirect: 'sp-crud-user',
+    component: Layout,
+    meta: {
+      title: '演示',
+      icon: 'carbon:code',
+    },
+    children: [
+      {
+        name: 'Functions',
+        path: 'functions',
+        component: () => import('@/pages/demo/Functions.vue'),
+        meta: {
+          title: '功能',
+          icon: 'carbon:data-enrichment',
+        },
+      },
+    ],
+  },
 ]
 
 export const subRoutes: RouteRecordRaw[] = [
