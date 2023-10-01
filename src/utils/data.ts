@@ -1,10 +1,10 @@
 export const todoList = [
-  { content: '防抖节流', completed: false },
   { content: '日志管理', completed: false },
   { content: '系统监控', completed: false },
   { content: '响应式布局', completed: false },
   { content: '文档编写', completed: false },
   { content: '打包体积优化', completed: false },
+  { content: '防抖节流', completed: true },
   { content: 'Permission 鉴权', completed: true },
   { content: '404 page', completed: true },
   { content: 'CRUD组件类型完善', completed: true },

@@ -15,7 +15,3 @@ defineOptions({
     <TodoList mt-8px />
   </PageMain>
 </template>
-
-<style lang="scss" scoped>
-
-</style>

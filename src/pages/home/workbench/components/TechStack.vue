@@ -9,7 +9,7 @@ import { techStackList } from '@/utils'
       <div class="rotate-animation" border="2 primary!" rounded-full p-8>
         <div class="i-carbon:sprout" text="24 primary" />
       </div>
-      <i text="lg primary">Sprout Admin Pro</i>
+      <i text="lg primary">Sprout Admin</i>
     </section>
     <!-- right -->
     <section w-full self-stretch shadow-section>
