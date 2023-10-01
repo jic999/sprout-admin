@@ -15,6 +15,7 @@ const $form = ref()
 
 const form = reactive({
   id: null,
+  parentId: '',
   name: '',
   code: '',
   desc: '',
@@ -104,6 +105,9 @@ const columns: DataTableColumns = [
         <n-grid x-gap="24">
           <n-form-item-gi :span="12" label="id" path="id">
             <n-input-number v-model:value="form.id" placeholder="自动" disabled />
+          </n-form-item-gi>
+          <n-form-item-gi :span="12" label="父级权限" path="parentId">
+            <n-cascader v-model:value="form.parentId" :options="permData" label-field="name" value-field="id" placeholder="请选择父级权限" />
           </n-form-item-gi>
           <n-form-item-gi :span="12" label="权限名称" path="name" required>
             <n-input v-model:value="form.name" placeholder="请输入权限名称" />
