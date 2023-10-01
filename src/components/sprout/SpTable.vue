@@ -83,7 +83,8 @@ function handleUpdateCheckedRowKeys(
   meta: {
     row: InternalRowData | undefined
     action: 'check' | 'uncheck' | 'checkAll' | 'uncheckAll'
-  }) {
+  },
+) {
   checkedKeys.value = keys
   if (props.onUpdateCheckedRowKeys) {
     if (isArray(props.onUpdateCheckedRowKeys))

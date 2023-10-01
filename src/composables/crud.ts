@@ -58,7 +58,7 @@ export function useCrud<T extends Record<string, any> = any>({
     Object.assign(form, defaultFormData)
     setFormData(defaultFormData)
   }
-  function handleDelete(id: Number | String) {
+  function handleDelete(id: number | string) {
     hooks.before && hooks.before({ form })
 
     window.$dialog.warning({

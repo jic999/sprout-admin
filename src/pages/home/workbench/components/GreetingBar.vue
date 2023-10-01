@@ -30,13 +30,19 @@ onMounted(() => {
         <div text-lg>
           {{ `${greetMsg}，${userStore.userInfo.nickname || userStore.userInfo.username}，又是充满希望的一天~` }}
         </div>
-        <div text="sm $sp-text-c-1">欢迎体验 <i>Sprout Admin</i> !</div>
+        <div text="sm $sp-text-c-1">
+          欢迎体验 <i>Sprout Admin</i> !
+        </div>
       </div>
     </div>
     <div flex gap-x-lg>
       <div v-for="item in greetingBarInfoList" :key="item.title" flex flex-col gap-y-xs text-center>
-        <div text="$sp-text-c-1">{{ item.title }}</div>
-        <div text-xl>{{ item.content }}</div>
+        <div text="$sp-text-c-1">
+          {{ item.title }}
+        </div>
+        <div text-xl>
+          {{ item.content }}
+        </div>
       </div>
     </div>
   </section>

@@ -80,8 +80,12 @@ onBeforeMount(() => {
       />
       <n-empty v-else description="暂无数据" />
       <div mt-xl flex-center gap-x-lg>
-        <n-button v-throttle="handleCommit" type="primary" :loading="loading">提交</n-button>
-        <n-button @click="router.back">返回</n-button>
+        <n-button v-throttle="handleCommit" type="primary" :loading="loading">
+          提交
+        </n-button>
+        <n-button @click="router.back">
+          返回
+        </n-button>
       </div>
     </section>
   </PageMain>

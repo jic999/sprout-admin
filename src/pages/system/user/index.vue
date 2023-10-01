@@ -88,7 +88,8 @@ const columns: DataTableColumns = [
     render: ({ status }) => h(
       NTag,
       { type: status ? 'error' : 'success' },
-      () => status ? '禁用' : '启用'),
+      () => status ? '禁用' : '启用',
+    ),
   },
   { title: '创建时间', key: 'createTime' },
   {
@@ -213,8 +214,12 @@ onBeforeUpdate(() => {
       </n-form>
       <template #footer>
         <div flex justify-end gap-x-sm>
-          <n-button type="primary" :loading="formLoading" @click="handleCommit">提交</n-button>
-          <n-button @click="handleCancel">取消</n-button>
+          <n-button type="primary" :loading="formLoading" @click="handleCommit">
+            提交
+          </n-button>
+          <n-button @click="handleCancel">
+            取消
+          </n-button>
         </div>
       </template>
     </n-modal>

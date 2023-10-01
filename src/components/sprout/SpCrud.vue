@@ -6,7 +6,7 @@ import type { SpFormItem, SpTableColumn, SpTableColumns, UseCrudApis } from '@/t
 import type { SpCrudProps } from '@/types/sprout/crud'
 import { renderIcon } from '@/utils'
 
-// TODO 只是一个设想 目前只能应用于较为简单的场景 且有诸多限制
+// TODO 一个设想 目前只能应用于较为简单的场景 且有诸多限制
 
 const props = withDefaults(defineProps<SpCrudProps>(), {
   isCustomActions: false,

@@ -1,5 +1,6 @@
 {
   "name": "sprout-admin",
+  "type": "module",
   "version": "0.0.0",
   "private": true,
   "author": "jic999",
@@ -21,16 +22,17 @@
     "vue-router": "^4.1.6"
   },
   "devDependencies": {
-    "@antfu/eslint-config": "0.38.4",
+    "@antfu/eslint-config": "1.0.0-beta.18",
     "@iconify-json/ant-design": "^1.1.10",
     "@iconify-json/carbon": "^1.1.21",
     "@iconify/utils": "^2.1.5",
     "@iconify/vue": "^4.1.1",
     "@types/node": "^18.15.11",
-    "@unocss/eslint-config": "^0.51.8",
+    "@unocss/eslint-config": "^0.56.4",
+    "@unocss/eslint-plugin": "^0.56.4",
     "@vitejs/plugin-vue": "^4.0.0",
     "@vitejs/plugin-vue-jsx": "^3.0.0",
-    "eslint": "^8.37.0",
+    "eslint": "^8.50.0",
     "eslint-plugin-vue": "^9.10.0",
     "naive-ui": "^2.34.3",
     "rollup-plugin-visualizer": "^5.9.2",

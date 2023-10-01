@@ -23,7 +23,9 @@ defineOptions({
       <div class="buttons-con">
         <div class="action-link-wrap">
           <a class="link-button link-back-button" @click="$router.back">返回上一页</a>
-          <RouterLink to="/">去首页</RouterLink>
+          <RouterLink to="/">
+            去首页
+          </RouterLink>
         </div>
       </div>
     </div>

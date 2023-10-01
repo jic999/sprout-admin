@@ -125,8 +125,12 @@ const columns: DataTableColumns = [
       </n-form>
       <template #footer>
         <div flex justify-end gap-x-sm>
-          <n-button type="primary" :loading="formLoading" @click="handleCommit">提交</n-button>
-          <n-button @click="handleCancel">取消</n-button>
+          <n-button type="primary" :loading="formLoading" @click="handleCommit">
+            提交
+          </n-button>
+          <n-button @click="handleCancel">
+            取消
+          </n-button>
         </div>
       </template>
     </n-modal>

@@ -1,5 +1,4 @@
-import { LoadingBarProviderInst, DialogProviderInst, MessageProviderInst, NotificationProviderInst } from 'naive-ui';
-import { HTMLAttributes } from 'vue'
+import type { DialogProviderInst, LoadingBarProviderInst, MessageProviderInst, NotificationProviderInst } from 'naive-ui'
 import 'vue-router'
 
 export {}
