@@ -48,19 +48,6 @@ const {
   getCheckedKeys: () => $table.value.getCheckedKeys(),
 })
 
-function handleDropdownSelect(row: any, _: number, key: string) {
-  const callback = {
-    AssignRole: () => {
-      router.push(`/system/user/assign-role/${row.id}`)
-    },
-    ResetPassword: () => {
-      window.$message.info('重置密码')
-    },
-  }[key]!
-  callback()
-}
-
-// TODO 分配角色后更新数据
 const columns: DataTableColumns = [
   { type: 'selection' },
   { title: 'id', key: 'id' },
@@ -101,15 +88,14 @@ const columns: DataTableColumns = [
       {
         row,
         index,
-        options: {
-          edit: { perm: 'sys:user:update', onClick: handleUpdate },
-          delete: { perm: 'sys:user:delete', onClick: () => handleDelete(row.id as number) },
-        },
-        dropdownOptions: [
-          { label: '分配角色', key: 'AssignRole', perm: 'sys:user:assignRoles' },
-          { label: '重置密码', key: 'ResetPassword' },
+        options: [
+          { label: '编辑', type: 'info', perm: 'sys:user:update', callback: () => handleUpdate(row) },
+          { label: '删除', type: 'error', perm: 'sys:user:delete', callback: () => handleDelete(row.id as string) },
         ],
-        onSelect: handleDropdownSelect,
+        dropdownOptions: [
+          { label: '分配角色', perm: 'sys:user:assignRoles', callback: () => router.push(`/system/user/assign-role/${row.id}`) },
+          { label: '重置密码', callback: () => window.$message.info('重置密码') },
+        ],
       },
     ),
   },

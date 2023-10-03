@@ -6,7 +6,10 @@ defineProps<IconButtonProps>()
 </script>
 
 <template>
-  <n-button :render-icon="renderIcon($props.icon, { size: $props.iconSize || 14 })" v-bind="$props">
+  <n-button
+    :render-icon="$props.icon ? renderIcon($props.icon, { size: $props.iconSize || 14 }) : undefined"
+    v-bind="$props"
+  >
     <slot />
   </n-button>
 </template>

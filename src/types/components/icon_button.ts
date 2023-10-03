@@ -1,7 +1,7 @@
 import type { ButtonProps } from 'naive-ui'
 
 interface ExtendProps {
-  icon: string
+  icon?: string
   iconSize?: number
 }
 

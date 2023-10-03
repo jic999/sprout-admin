@@ -66,10 +66,10 @@ const columns: DataTableColumns = [
         {
           row,
           index,
-          options: {
-            edit: { perm: 'sys:role:update', onClick: handleUpdate },
-            delete: { perm: 'sys:role:delete', onClick: () => handleDelete(row.id as number) },
-          },
+          options: [
+            { label: '编辑', type: 'info', perm: 'sys:role:update', callback: () => handleUpdate(row) },
+            { label: '删除', type: 'error', perm: 'sys:role:delete', callback: () => handleDelete(row.id as string) },
+          ],
         },
       )
     },

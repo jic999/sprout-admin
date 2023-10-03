@@ -179,7 +179,7 @@ export const subRoutes: RouteRecordRaw[] = [
       {
         name: 'AssignRole',
         //
-        path: ':userId(\\w{8}-\\w{4}-\\w{4}-\\w{4}-\\w{12})',
+        path: ':userId(\\d+)',
         component: () => import('@/pages/system/user/AssignRole.vue'),
         meta: {
           title: '分配角色',

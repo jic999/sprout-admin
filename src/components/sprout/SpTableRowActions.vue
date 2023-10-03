@@ -3,27 +3,37 @@ import type { TableRowActionsProps } from '@/types'
 import { hasPerm } from '@/utils'
 
 const props = defineProps<TableRowActionsProps>()
-defineEmits(['edit', 'delete', 'select'])
 
-const dropdownOptions = computed(() => props.dropdownOptions?.filter(
-  option => !option.perm || hasPerm(option.perm, useUserStore().userInfo?.perms ?? []),
-))
+const dropdownOptions = computed(
+  () => props.dropdownOptions
+    ?.filter(option => !option.perm || hasPerm(option.perm, useUserStore().userInfo?.perms ?? []))
+    .map((option) => {
+      option.key = option.key ?? option.label as string
+      return option
+    }),
+)
 </script>
 
 <template>
   <div flex gap-x-1>
-    <IconButton v-perm="options?.edit.perm" type="info" size="tiny" secondary icon="ant-design:edit-outlined" @click="() => options.edit.onClick(row, index)">
-      编辑
-    </IconButton>
-    <IconButton v-perm="options?.delete.perm" type="error" size="tiny" secondary icon="ant-design:delete-outlined" @click="() => options.delete.onClick(row, index)">
-      删除
+    <IconButton
+      v-for="(option, i) in options"
+      :key="i"
+      v-perm="option.perm"
+      :type="option.type"
+      size="tiny"
+      secondary
+      :icon="option.icon"
+      @click="() => option.callback(row, index)"
+    >
+      {{ option.label }}
     </IconButton>
     <n-dropdown
       v-if="dropdownOptions?.length"
       trigger="hover"
       size="small"
       :options="dropdownOptions"
-      @select="(key, option) => $emit('select', row, index, key, option)"
+      @select="(_, option) => (option as any).callback(row, index, option)"
     >
       <IconButton size="tiny" secondary icon="ant-design:down-outlined">
         更多
