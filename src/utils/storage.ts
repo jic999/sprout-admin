@@ -1,6 +1,6 @@
 import { isNil } from 'lodash-es'
 
-const DEFAULT_PREFIX = 'SPROUT_ADMIN_PRO_'
+const DEFAULT_PREFIX = 'SPROUT_ADMIN'
 
 class CustomStorage {
   constructor(

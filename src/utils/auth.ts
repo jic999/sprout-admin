@@ -1,18 +1,29 @@
 import { lStorage } from '@/utils'
 
 const TOKEN_CODE = 'access_token'
+const REFRESH_TOKEN_CODE = 'refresh_token'
 const DURATION = 10 * 3600
+const REFRESH_DURATION = 7 * 24 * 3600
 
 export function getToken() {
   return lStorage.get(TOKEN_CODE)
+}
+
+export function getRefreshToken() {
+  return lStorage.get(REFRESH_TOKEN_CODE)
 }
 
 export function setToken(token: string) {
   lStorage.set(TOKEN_CODE, token, DURATION)
 }
 
+export function setRefreshToken(token: string) {
+  lStorage.set(REFRESH_TOKEN_CODE, token, REFRESH_DURATION)
+}
+
 export function removeToken() {
   lStorage.remove(TOKEN_CODE)
+  lStorage.remove(REFRESH_TOKEN_CODE)
 }
 
 export function hasPerm(needPerms: string | string[], perms: string[]) {
