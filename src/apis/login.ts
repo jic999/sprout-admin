@@ -9,3 +9,6 @@ export function reqUserInfo() {
 export function reqLogout() {
   return req('post', '/logout')
 }
+export function reqRefreshToken(data: any) {
+  return req('get', '/refreshToken', data)
+}

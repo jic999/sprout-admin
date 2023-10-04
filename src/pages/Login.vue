@@ -2,7 +2,7 @@
 import type { FormRules } from 'naive-ui'
 import type { VueCookies } from 'vue-cookies'
 import { reqLogin } from '@/apis/login'
-import { setToken } from '@/utils'
+import { setRefreshToken, setToken } from '@/utils'
 import { addDynamicRoutes } from '@/router'
 
 const $cookies = inject<VueCookies>('$cookies')
@@ -60,6 +60,7 @@ function handleLogin() {
     userStore.setUserInfo(data.user)
     // 存储 token
     setToken(data.accessToken)
+    setRefreshToken(data.refreshToken)
     await addDynamicRoutes()
     router.push('/')
   })
@@ -86,7 +87,7 @@ onMounted(async () => {
     <section mb="10%" mx-auto w-360px flex flex-col gap-y-sm rounded-lg bg="$sp-main-bg-c" p-lg op-90 shadow>
       <div flex-center gap-x-xs text-xl font-600 text-primary>
         <span i-carbon:sprout text-28px />
-        <span>Sprout Admin Pro</span>
+        <span>Sprout Admin</span>
       </div>
       <n-form ref="$form" :model="loginParams" label-placement="left" :rules="rules">
         <n-form-item path="username">

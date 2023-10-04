@@ -3,7 +3,7 @@ import type { App } from 'vue'
 import { createRouter, createWebHistory } from 'vue-router'
 import { dynamicRoutes, errorRoutes, staticRoutes, subRoutes } from './routes'
 import { setupRouteGuard } from './guards'
-import { getToken, hasPerm, isExternalLink } from '@/utils'
+import { getRefreshToken, getToken, hasPerm, isExternalLink } from '@/utils'
 
 export * from './routes'
 
@@ -14,9 +14,13 @@ const router = createRouter({
 
 export async function addDynamicRoutes() {
   const token = getToken()
-  if (!token) {
+  const refreshToken = getRefreshToken()
+  if (!token && !refreshToken) {
     console.error('no token')
     return
+  }
+  else if (!token && refreshToken) {
+    await refreshToken(refreshToken)
   }
   const userStore = useUserStore()
   !userStore.userInfo && (await userStore.getUserInfo())

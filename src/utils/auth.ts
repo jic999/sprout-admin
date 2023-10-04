@@ -1,3 +1,4 @@
+import { reqRefreshToken } from '@/apis/login'
 import { lStorage } from '@/utils'
 
 const TOKEN_CODE = 'access_token'
@@ -24,6 +25,16 @@ export function setRefreshToken(token: string) {
 export function removeToken() {
   lStorage.remove(TOKEN_CODE)
   lStorage.remove(REFRESH_TOKEN_CODE)
+}
+
+export async function refreshToken(refreshToken: string) {
+  const { err, data } = await reqRefreshToken({ token: refreshToken })
+  if (err) {
+    console.error(err)
+    return
+  }
+  setToken(data.access_token)
+  setRefreshToken(data.refresh_token)
 }
 
 export function hasPerm(needPerms: string | string[], perms: string[]) {

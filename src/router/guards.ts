@@ -1,12 +1,17 @@
 import type { Router } from 'vue-router'
-import { getToken } from '@/utils'
+import { getRefreshToken, getToken } from '@/utils'
 
 const WHITE_LIST_PAGE = ['/login']
 
 /* 鉴权 */
 function authGuard(router: Router) {
-  router.beforeEach((to, from) => {
-    const token = getToken()
+  router.beforeEach(async (to, from) => {
+    let token = getToken()
+    const refreshToken = getRefreshToken()
+    if (!token && refreshToken) {
+      await refreshToken(refreshToken)
+      token = getToken()
+    }
     if (token) {
       if (to.path === '/login')
         return { path: from.path }
