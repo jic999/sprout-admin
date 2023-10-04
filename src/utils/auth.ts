@@ -27,14 +27,14 @@ export function removeToken() {
   lStorage.remove(REFRESH_TOKEN_CODE)
 }
 
-export async function refreshToken(refreshToken: string) {
+export async function refreshUserToken(refreshToken: string) {
   const { err, data } = await reqRefreshToken({ token: refreshToken })
   if (err) {
     console.error(err)
     return
   }
-  setToken(data.access_token)
-  setRefreshToken(data.refresh_token)
+  setToken(data.accessToken)
+  setRefreshToken(data.refreshToken)
 }
 
 export function hasPerm(needPerms: string | string[], perms: string[]) {

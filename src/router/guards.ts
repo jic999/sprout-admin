@@ -1,5 +1,5 @@
 import type { Router } from 'vue-router'
-import { getRefreshToken, getToken } from '@/utils'
+import { getRefreshToken, getToken, refreshUserToken } from '@/utils'
 
 const WHITE_LIST_PAGE = ['/login']
 
@@ -9,7 +9,7 @@ function authGuard(router: Router) {
     let token = getToken()
     const refreshToken = getRefreshToken()
     if (!token && refreshToken) {
-      await refreshToken(refreshToken)
+      await refreshUserToken(refreshToken)
       token = getToken()
     }
     if (token) {
@@ -30,7 +30,7 @@ function changeTitleGuard(router: Router) {
     const title = to.meta?.title
     if (title)
       document.title = title as string
-    else document.title = 'Sprout Admin Pro'
+    else document.title = 'Sprout Admin'
   })
 }
 
