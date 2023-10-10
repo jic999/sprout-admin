@@ -165,6 +165,33 @@ export const dynamicRoutes: RouteRecordRaw[] = [
           icon: 'carbon:data-enrichment',
         },
       },
+      {
+        name: 'MultiMenu',
+        path: 'multi-menu',
+        meta: {
+          title: '多级菜单',
+        },
+        children: [
+          {
+            name: 'MenuA',
+            path: 'menu-a',
+            component: () => import('@/pages/demo/menus/MenuA.vue'),
+            meta: {
+              title: '菜单 A',
+              icon: 'carbon:bookmark',
+            },
+          },
+          {
+            name: 'MenuB',
+            path: 'menu-b',
+            component: () => import('@/pages/demo/menus/MenuB.vue'),
+            meta: {
+              title: '菜单 B',
+              icon: 'carbon:bookmark',
+            },
+          },
+        ],
+      },
     ],
   },
 ]
