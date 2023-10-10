@@ -35,6 +35,7 @@ export default {
       path: 'multi-menu',
       meta: {
         title: '多级菜单',
+        icon: 'carbon:menu',
       },
       children: [
         {

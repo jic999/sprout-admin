@@ -18,7 +18,7 @@ function handleBreadClick(path: string) {
   router.push(path)
 }
 function getIcon(meta: RouteMeta) {
-  return renderIcon(meta?.icon || 'ant-design:tag-outlined', { size: 16 })
+  return renderIcon(meta?.icon || 'carbon:bookmark', { size: 16 })
 }
 
 const userOptions = [

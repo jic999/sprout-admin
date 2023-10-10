@@ -51,7 +51,7 @@ export default {
       component: () => import('./perm/index.vue'),
       meta: {
         title: '权限管理',
-        icon: 'carbon:menu',
+        icon: 'carbon:load-balancer-classic',
         perms: ['sys:perm:read'],
       },
     },

@@ -22,6 +22,7 @@ export const freeRoutes: RouteRecordRaw[] = [
     meta: {
       title: '个人中心',
       hidden: true,
+      icon: 'carbon:user-avatar',
     },
     children: [
       {
