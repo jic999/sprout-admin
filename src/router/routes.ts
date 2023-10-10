@@ -14,6 +14,46 @@ export const staticRoutes: RouteRecordRaw[] = [
   },
 ]
 
+export const freeRoutes: RouteRecordRaw[] = [
+  {
+    name: 'ExternalLink',
+    path: '/external-link',
+    meta: {
+      title: '外部链接',
+      icon: 'carbon:link',
+    },
+    children: [
+      {
+        name: 'Github',
+        redirect: '',
+        path: 'https://github.com/jic999/sprout-admin',
+        meta: {
+          title: '仓库地址',
+          icon: 'carbon:logo-github',
+        },
+      },
+      {
+        name: 'Document',
+        redirect: '',
+        path: 'https://github.com/jic999/sprout-admin',
+        meta: {
+          title: '文档地址',
+          icon: 'carbon:document',
+        },
+      },
+      {
+        name: 'MyBlog',
+        redirect: '',
+        path: 'https://jic999.netlify.app',
+        meta: {
+          title: '我的博客',
+          icon: 'carbon:pen-fountain',
+        },
+      },
+    ],
+  },
+]
+
 export const errorRoutes: RouteRecordRaw[] = [
   {
     name: 'NotFound',
@@ -23,5 +63,8 @@ export const errorRoutes: RouteRecordRaw[] = [
 ]
 
 const routeModules = import.meta.glob(['/src/pages/**/routes.ts'], { eager: true })
-export const dynamicRoutes = Object.entries(routeModules)
-  .map(([_, module]) => (module as any).default as RouteRecordRaw)
+
+export const dynamicRoutes = [
+  ...Object.entries(routeModules).map(([_, module]) => (module as any).default as RouteRecordRaw),
+  ...freeRoutes,
+]

@@ -22,6 +22,15 @@ export default {
       },
     },
     {
+      name: '404',
+      path: '404',
+      component: () => import('@/pages/error/404.vue'),
+      meta: {
+        title: '404页',
+        icon: 'carbon:number-4',
+      },
+    },
+    {
       name: 'MultiMenu',
       path: 'multi-menu',
       meta: {

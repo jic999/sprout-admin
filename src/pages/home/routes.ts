@@ -21,14 +21,5 @@ export default {
         icon: 'carbon:screen',
       },
     },
-    {
-      path: 'https://github.com/jic999/sprout-admin',
-      redirect: '',
-      meta: {
-        title: '仓库地址',
-        icon: 'carbon:logo-github',
-      },
-    },
-
   ],
 } as RouteRecordRaw
