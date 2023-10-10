@@ -22,17 +22,9 @@ function getIcon(meta: RouteMeta) {
 }
 
 const userOptions = [
-  { label: '退出登录', key: 'logout' },
+  { label: '个人中心', key: 'profile', cb: () => router.push('/profile') },
+  { label: '退出登录', key: 'logout', cb: () => userStore.logout() },
 ]
-function handleSelect(key: string) {
-  const handler = {
-    async logout() {
-      await userStore.logout()
-      router.push('/login')
-    },
-  }
-  handler[key as keyof typeof handler]()
-}
 </script>
 
 <template>
@@ -59,19 +51,19 @@ function handleSelect(key: string) {
       </div>
     </div>
     <!-- Right -->
-    <div flex items-center gap-x-sm>
+    <div flex items-center gap-x-lg>
       <div flex items-center gap-x-xs>
-        <div i-carbon:moon dark:i-carbon:sun icon-btn @click="e => toggleDark(e)" />
         <a href="https://github.com/jic999/sprout-admin" target="_blank" i-carbon:logo-github icon-btn />
         <div :class="isFullscreen ? `i-ant-design:fullscreen-exit-outlined` : 'i-ant-design:fullscreen-outlined'" icon-btn @click="toggleFullscreen" />
+        <div i-carbon:moon dark:i-carbon:sun icon-btn @click="e => toggleDark(e)" />
       </div>
       <n-dropdown
         trigger="hover"
         :options="userOptions"
-        @select="handleSelect"
+        @select="(_, option) => (option as any).cb()"
       >
         <div flex-center cursor-pointer gap-x-xs>
-          <span>{{ userStore.userInfo?.username }}</span>
+          <span text-secondary>{{ userStore.userInfo?.nickname || userStore.userInfo?.username }}</span>
           <img v-if="userStore.userInfo?.avatar" :src="userStore.userInfo?.avatar" circle h-32 w-32>
           <div v-else i-carbon:user-avatar-filled-alt text="28px gray-500" />
         </div>

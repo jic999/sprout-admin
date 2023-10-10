@@ -1,4 +1,5 @@
 import type { RouteRecordRaw } from 'vue-router'
+import Layout from '@/layout/index.vue'
 
 export const staticRoutes: RouteRecordRaw[] = [
   {
@@ -15,6 +16,25 @@ export const staticRoutes: RouteRecordRaw[] = [
 ]
 
 export const freeRoutes: RouteRecordRaw[] = [
+  {
+    path: '/profile',
+    component: Layout,
+    meta: {
+      title: '个人中心',
+      hidden: true,
+    },
+    children: [
+      {
+        name: 'Profile',
+        path: '',
+        component: () => import('@/pages/Profile.vue'),
+        meta: {
+          title: '个人中心',
+          icon: 'carbon:user-avatar',
+        },
+      },
+    ],
+  },
   {
     name: 'ExternalLink',
     path: '/external-link',

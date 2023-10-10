@@ -12,3 +12,6 @@ export function reqLogout() {
 export function reqRefreshToken(data: any) {
   return req('get', '/refreshToken', data)
 }
+export function reqEditUserInfo(data: any) {
+  return req('post', '/editUserInfo', data)
+}

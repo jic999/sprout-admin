@@ -20,6 +20,7 @@ export default defineConfig({
     'icon-btn': 'inline-block cursor-pointer select-none opacity-75 transition duration-200 ease-in-out hover:opacity-100 hover:text-teal-600',
     'sp-section': 'rounded bg-$sp-main-bg-c p-sm',
     'shadow-section': 'sp-section shadow',
+    'text-secondary': 'text-$sp-text-c-1',
   },
   rules: [
     [
