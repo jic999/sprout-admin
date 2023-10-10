@@ -61,7 +61,7 @@ function handleSelect(key: string) {
     <!-- Right -->
     <div flex items-center gap-x-sm>
       <div flex items-center gap-x-xs>
-        <div i-carbon:moon dark:i-carbon:sun icon-btn @click="toggleDark()" />
+        <div i-carbon:moon dark:i-carbon:sun icon-btn @click="e => toggleDark(e)" />
         <a href="https://github.com/jic999/sprout-admin" target="_blank" i-carbon:logo-github icon-btn />
         <div :class="isFullscreen ? `i-ant-design:fullscreen-exit-outlined` : 'i-ant-design:fullscreen-outlined'" icon-btn @click="toggleFullscreen" />
       </div>
