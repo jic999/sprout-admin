@@ -17,26 +17,30 @@ const directives: Record<string, Directive> = {
   },
   debounce: {
     mounted(el, binding) {
+      if (!Array.isArray(binding.value))
+        binding.value = [binding.value, 600]
       let timer: any
       el.addEventListener('click', () => {
         if (timer)
           clearTimeout(timer)
         timer = setTimeout(() => {
-          binding.value()
-        }, 600)
+          binding.value[0]()
+        }, binding.value[1])
       })
     },
   },
   throttle: {
     mounted(el, binding) {
+      if (!Array.isArray(binding.value))
+        binding.value = [binding.value, 600]
       let timer: any
       el.addEventListener('click', () => {
         if (timer)
           return
-        binding.value()
+        binding.value[0]()
         timer = setTimeout(() => {
           timer = null
-        }, 600)
+        }, binding.value[1])
       })
     },
   },
