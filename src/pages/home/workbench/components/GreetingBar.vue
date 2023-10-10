@@ -3,32 +3,41 @@ import { greetingBarInfoList } from '@/utils'
 
 const userStore = useUserStore()
 
-const greetMsg = ref('')
+const greetIndex = ref(0)
+
+getGreeting()
+
+const greetMsgs = [
+  { msg: '早上好', more: '一日之计在于晨!' },
+  { msg: '中午好', more: '午间休息一下吧~' },
+  { msg: '下午好', more: '下午茶时间到了!' },
+  { msg: '晚上好', more: '早睡身体好~' },
+  { msg: '凌晨好', more: '这个点还不睡，不要命了？' },
+]
+const greetMsg = computed(() => greetMsgs[greetIndex.value])
 
 function getGreeting() {
   const currentHour = new Date().getHours()
   if (currentHour >= 4 && currentHour < 12)
-    greetMsg.value = '早上好'
+    greetIndex.value = 0
   else if (currentHour >= 12 && currentHour < 14)
-    greetMsg.value = '中午好'
+    greetIndex.value = 1
   else if (currentHour >= 14 && currentHour < 18)
-    greetMsg.value = '下午好'
+    greetIndex.value = 2
+  else if ((currentHour >= 18 && currentHour < 24) || (currentHour >= 0 && currentHour < 1))
+    greetIndex.value = 3
   else
-    greetMsg.value = '晚上好'
+    greetIndex.value = 4
 }
-
-onMounted(() => {
-  getGreeting()
-})
 </script>
 
 <template>
   <section flex justify-between shadow-section>
     <div v-if="userStore.userInfo" flex items-center gap-x-sm>
-      <Avatar :url="userStore.userInfo.avatar" :size="36" />
+      <Avatar :url="userStore.userInfo.avatar" :size="42" />
       <div flex flex-col gap-y-2>
         <div text-lg>
-          {{ `${greetMsg}，${userStore.userInfo.nickname || userStore.userInfo.username}，又是充满希望的一天~` }}
+          {{ `${greetMsg.msg}，${userStore.userInfo.nickname || userStore.userInfo.username}，${greetMsg.more}` }}
         </div>
         <div text="sm $sp-text-c-1">
           欢迎体验 <i>Sprout Admin</i> !

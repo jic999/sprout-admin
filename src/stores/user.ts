@@ -27,12 +27,12 @@ export const useUserStore = defineStore('user', () => {
     setUserInfo(data)
   }
   async function logout() {
-    const { err, msg } = await reqLogout()
+    const { err } = await reqLogout()
     if (err) {
       window.$message.error(err.message)
       return
     }
-    window.$notification.success({ content: msg, duration: 2000 })
+    window.$notification.success({ content: '已退出登录', duration: 2000 })
     removeToken()
     userInfo.value = null
     removeTabBarData()

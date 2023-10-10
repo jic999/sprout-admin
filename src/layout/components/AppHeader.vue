@@ -23,7 +23,14 @@ function getIcon(meta: RouteMeta) {
 
 const userOptions = [
   { label: '个人中心', key: 'profile', cb: () => router.push('/profile') },
-  { label: '退出登录', key: 'logout', cb: () => userStore.logout() },
+  {
+    label: '退出登录',
+    key: 'logout',
+    cb: async () => {
+      await userStore.logout()
+      router.replace('/login')
+    },
+  },
 ]
 </script>
 
@@ -64,8 +71,7 @@ const userOptions = [
       >
         <div flex-center cursor-pointer gap-x-xs>
           <span text-secondary>{{ userStore.userInfo?.nickname || userStore.userInfo?.username }}</span>
-          <img v-if="userStore.userInfo?.avatar" :src="userStore.userInfo?.avatar" circle h-32px w-32px rounded-full>
-          <div v-else i-carbon:user-avatar-filled-alt text="28px gray-500" />
+          <Avatar :url="userStore.userInfo?.avatar" :size="36" />
         </div>
       </n-dropdown>
     </div>

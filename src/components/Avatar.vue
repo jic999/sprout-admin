@@ -12,8 +12,6 @@ defineProps({
 </script>
 
 <template>
-  <div inline-block overflow-hidden rounded-full>
-    <img v-if="$props.url" :src="url" :style="{ width: `${$props.size}px`, height: `${$props.size}` }">
-    <div i-ant-design:user-outlined :style="{ fontSize: `${$props.size}px` }" />
-  </div>
+  <img v-if="$props.url" :src="url" :style="{ width: `${$props.size}px`, height: `${$props.size}` }" rounded-full>
+  <div v-else i-carbon:user-avatar :style="{ fontSize: `${$props.size! * 0.8}px` }" text-hex-888 />
 </template>
