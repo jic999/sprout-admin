@@ -17,6 +17,7 @@ export const staticRoutes: RouteRecordRaw[] = [
 
 export const freeRoutes: RouteRecordRaw[] = [
   {
+    name: 'Profile',
     path: '/profile',
     component: Layout,
     meta: {
@@ -26,7 +27,7 @@ export const freeRoutes: RouteRecordRaw[] = [
     },
     children: [
       {
-        name: 'Profile',
+        name: 'ProfileCenter',
         path: '',
         component: () => import('@/pages/Profile.vue'),
         meta: {

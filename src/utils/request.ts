@@ -13,6 +13,7 @@ axios.interceptors.request.use((config) => {
   // 拼接query参数
   if (config.data && ['get', 'GET'].includes(config.method!))
     config.url += `?${objToQueryStr(config.data)}`
+  // eslint-disable-next-line no-console
   console.log('Request: config.data ==> ', config.data)
   return config
 })
@@ -23,12 +24,14 @@ axios.interceptors.response.use(
     const r = res.data
     if (r.code !== 200)
       return { ...r, err: new Error(r.message) }
+    // eslint-disable-next-line no-console
     console.log('Response: res.data ==> ', r.data)
     return r
   },
   (error) => {
     if (error.response?.data)
       return { ...error.response.data, err: new Error(error.response.data.message) }
+    // eslint-disable-next-line no-console
     console.log('Response: error ==> ', error)
     return { code: error.response?.status, msg: error.message, err: error }
   },

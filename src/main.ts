@@ -1,10 +1,12 @@
+import 'uno.css'
+import '@/styles/index.scss'
+import 'cropperjs/dist/cropper.css'
+
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 import VueCookies from 'vue-cookies'
 import App from './App.vue'
 import { setupRouter } from './router'
-import 'uno.css'
-import '@/styles/index.scss'
 import { setupDirectives } from './utils'
 
 const meta = document.createElement('meta')

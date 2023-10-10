@@ -15,3 +15,9 @@ export function reqRefreshToken(data: any) {
 export function reqEditUserInfo(data: any) {
   return req('post', '/editUserInfo', data)
 }
+
+export const UPLOAD_AVATAR_TARGET = '/api/file/avatar'
+
+export function getAvatarUrl(filename: string) {
+  return `/static/images/avatar/${filename}`
+}

@@ -41,7 +41,7 @@ const userOptions = [
         <n-breadcrumb>
           <n-breadcrumb-item
             v-for="item in breadCrumbList"
-            :key="item.path"
+            :key="item.name"
             @click="handleBreadClick(item.path)"
           >
             <component :is="getIcon(item.meta)" />
@@ -64,7 +64,7 @@ const userOptions = [
       >
         <div flex-center cursor-pointer gap-x-xs>
           <span text-secondary>{{ userStore.userInfo?.nickname || userStore.userInfo?.username }}</span>
-          <img v-if="userStore.userInfo?.avatar" :src="userStore.userInfo?.avatar" circle h-32 w-32>
+          <img v-if="userStore.userInfo?.avatar" :src="userStore.userInfo?.avatar" circle h-32px w-32px rounded-full>
           <div v-else i-carbon:user-avatar-filled-alt text="28px gray-500" />
         </div>
       </n-dropdown>
