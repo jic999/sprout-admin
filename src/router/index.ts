@@ -1,7 +1,7 @@
 import type { RouteRecordRaw } from 'vue-router'
 import type { App } from 'vue'
 import { createRouter, createWebHistory } from 'vue-router'
-import { dynamicRoutes, errorRoutes, staticRoutes, subRoutes } from './routes'
+import { dynamicRoutes, errorRoutes, staticRoutes } from './routes'
 import { setupRouteGuard } from './guards'
 import { getRefreshToken, getToken, hasPerm, isExternalLink, refreshUserToken } from '@/utils'
 
@@ -26,7 +26,7 @@ export async function addDynamicRoutes() {
   !userStore.userInfo && (await userStore.getUserInfo())
   if (userStore.userInfo) {
     const availableRoutes = getAvailableRoutes(
-      [...dynamicRoutes, ...subRoutes],
+      dynamicRoutes,
       userStore.userInfo.perms,
     )
     addRoutes(availableRoutes)
