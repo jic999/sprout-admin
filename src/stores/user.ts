@@ -21,7 +21,8 @@ export const useUserStore = defineStore('user', () => {
     const { err, data } = await reqUserInfo()
     if (err) {
       window.$message?.error(err?.message || '获取用户信息失败')
-      // TODO 若token过期 跳转登录页
+      // clearLoginInfo()
+      // useRouter().push('/login')
       return
     }
     setUserInfo(data)
@@ -33,6 +34,9 @@ export const useUserStore = defineStore('user', () => {
       return
     }
     window.$notification.success({ content: '已退出登录', duration: 2000 })
+    clearLoginInfo()
+  }
+  function clearLoginInfo() {
     removeToken()
     userInfo.value = null
     removeTabBarData()

@@ -41,7 +41,7 @@ export function req<T = any>(method: Method, url: string, data?: any, config?: A
   return axios({
     // default config
     baseURL: '/api/admin',
-    timeout: 5000,
+    timeout: 30000,
     // Custom
     method,
     url,
