@@ -40,8 +40,8 @@
     "typescript": "^5.0.4",
     "unocss": "^0.56.5",
     "unocss-preset-scalpel": "^1.2.6",
-    "unplugin-auto-import": "^0.15.2",
-    "unplugin-vue-components": "^0.24.1",
+    "unplugin-auto-import": "^0.16.6",
+    "unplugin-vue-components": "^0.25.2",
     "unplugin-vue-macros": "^2.4.14",
     "vite": "^4.4.9"
   }
