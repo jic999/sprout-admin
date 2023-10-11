@@ -46,6 +46,7 @@ export function req<T = any>(method: Method, url: string, data?: any, config?: A
     method,
     url,
     data,
+    withCredentials: true,
     ...config,
   }) as Promise<RequestResult<T>>
 }
