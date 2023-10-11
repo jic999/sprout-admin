@@ -28,7 +28,7 @@ const loginSettings = reactive({
 
 const checkCodeUrl = ref('')
 function getCheckCode() {
-  checkCodeUrl.value = `/api/user/getCheckCode?time=${Date.now()}`
+  checkCodeUrl.value = `${REQ_BASE_URL}/user/getCheckCode?time=${Date.now()}`
 }
 function handleLogin() {
   $form.value.validate(async (errs: any) => {
@@ -73,6 +73,8 @@ function initForm() {
     loginSettings.rememberMe = loginInfo.rememberMe
   }
 }
+
+const BG_URL = 'https://cdn.jsdelivr.net/gh/jic999/images/blog/sprout_admin_login_bg.jpg'
 onMounted(async () => {
   initForm()
   getCheckCode()
@@ -81,7 +83,7 @@ onMounted(async () => {
 
 <template>
   <div
-    :style="{ background: `left bottom/cover url('/imgs/login_bg.jpg')`, filter: isDark ? 'brightness(0.7)' : undefined }"
+    :style="{ background: `left bottom/cover url(${BG_URL})`, filter: isDark ? 'brightness(0.7)' : undefined }"
     h-100vh w-full flex-center
   >
     <section mb="10%" mx-auto w-360px flex flex-col gap-y-sm rounded-lg bg="$sp-main-bg-c" p-lg op-90 shadow>
