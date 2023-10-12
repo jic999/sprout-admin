@@ -15,8 +15,9 @@
 
 ## 介绍
 
-[Sprout Admin](https://github.com/jic999/sprout-admin), 一个基于 MIT 协议开源的轻量级 [RBAC](https://en.wikipedia.org/wiki/Role-based_access_control) 后台管理模版。
+[Sprout Admin](https://github.com/jic999/sprout-admin), 一个开源的轻量级 [RBAC](https://en.wikipedia.org/wiki/Role-based_access_control) 后台管理模版，基于 MIT 协议。
 
+后端接口部分见 [Sprout Admin Api](https://github.com/jic999/sprout-admin-api)。
 
 ## 特性
 
