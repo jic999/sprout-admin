@@ -28,7 +28,7 @@ function getMenuItem(route: RouteRecordRaw) {
   const menuItem = {
     label: route.meta?.title || route.name,
     key: route.name || route.path,
-    order: isNumber(route.meta?.order) ? route.meta.order : 9999,
+    order: isNumber(route.meta?.order) ? route.meta!.order : 9999,
     icon: renderIcon(route.meta?.icon || 'carbon:bookmark', { size: 18 }),
     path: route.path,
   }
@@ -46,7 +46,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <RouterLink class="flex-center gap-x-xs py-xs italic text-primary" :to="{ path: '/' }">
+  <RouterLink class="flex-center gap-x-xs py-xs italic text-primary" to="/workbench">
     <TheIcon icon="carbon:sprout" :size="24" />
     <span v-if="!appStore.sidebarCollapsed" whitespace-nowrap>Sprout Admin</span>
   </RouterLink>

@@ -40,7 +40,7 @@ axios.interceptors.response.use(
 export function req<T = any>(method: Method, url: string, data?: any, config?: AxiosRequestConfig<any>) {
   return axios({
     // default config
-    baseURL: `${REQ_BASE_URL}/admin/`,
+    baseURL: '/api/admin/',
     timeout: 30000,
     // Custom
     method,

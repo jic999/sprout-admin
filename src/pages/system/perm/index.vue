@@ -54,6 +54,21 @@ const {
   },
 })
 
+function _handleDelete(row: any) {
+  if (!(row.code as string).includes('sys'))
+    return handleDelete(row.id)
+  window.$dialog.create({
+    title: '警告',
+    content: '删除系统权限可能会导致异常，请谨慎操作！',
+    type: 'warning',
+    autoFocus: false,
+    positiveText: '继续删除',
+    negativeText: '取消',
+    onPositiveClick: () => handleDelete(row.id),
+
+  })
+}
+
 const columns: DataTableColumns = [
   { title: 'id', key: 'id' },
   { title: '权限名称', key: 'name' },
@@ -71,7 +86,7 @@ const columns: DataTableColumns = [
         index,
         options: [
           { label: '编辑', type: 'info', perm: 'sys:user:update', callback: () => handleUpdate(row) },
-          { label: '删除', type: 'error', perm: 'sys:user:delete', callback: () => handleDelete(row.id as string) },
+          { label: '删除', type: 'error', perm: 'sys:user:delete', callback: () => _handleDelete(row) },
         ],
       },
     ),
@@ -91,7 +106,7 @@ const columns: DataTableColumns = [
     </section>
     <!-- Table -->
     <section sp-section>
-      <SpTable ref="$table" :get-data="sysPermApi.list" :columns="columns" lazy-show default-expand-all />
+      <SpTable ref="$table" :get-data="sysPermApi.list" :columns="columns" default-expand-all />
     </section>
     <!-- Form -->
     <n-modal
