@@ -15,9 +15,9 @@
 
 ## 介绍
 
-[Sprout Admin](https://github.com/jic999/sprout-admin), 一个开源的轻量级 [RBAC](https://en.wikipedia.org/wiki/Role-based_access_control) 后台管理模版，基于 MIT 协议。
+[Sprout Admin](https://github.com/jic999/sprout-admin), 一个开源的轻量级 [RBAC](https://en.wikipedia.org/wiki/Role-based_access_control) 后台管理模版，基于 MIT 协议。部分参考了 [Vue Naive Admin](https://github.com/zclzone/vue-naive-admin)。
 
-后端接口部分见 [Sprout Admin Api](https://github.com/jic999/sprout-admin-api)。
+后端接口 [Sprout Admin Api](https://github.com/jic999/sprout-admin-api) 使用 Nestjs + TypeORM + Mysql 开发。
 
 ## 特性
 
