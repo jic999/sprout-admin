@@ -8,14 +8,14 @@ import { todoList } from '@/utils'
       <h3>特性</h3>
       <div leading-8>
         <ul px-lg>
-          <li>- ⚡️ Vite 4 + Vue 3 + pnpm, - 速度飞快</li>
-          <li>- 🎨 Unocss - 高性能且极具灵活性的即时原子化 CSS 引擎</li>
-          <li>- 🍎 NaiveUI - Evan You 推荐的 Vue3 UI 组件库</li>
-          <li>- 😃 Unocss + Icon组件封装，简单而优雅地引用海量图标</li>
-          <li>- 🦾 TypeScript, 安全的类型检查，更加 STRONG 的代码</li>
-          <li>- ⚙️ Eslint - 规范的代码风格，支持一键修复代码</li>
-          <li>- 📦 unplugin 自动导入插件，组件&API 自动化加载</li>
-          <li>- 🍒 Nestjs + TypeORM + MySQL 后端服务支持</li>
+          <li>⚡️ Vite 4 + Vue 3 + pnpm, - 速度飞快</li>
+          <li>🎨 Unocss - 高性能且极具灵活性的即时原子化 CSS 引擎</li>
+          <li>🍎 NaiveUI - Evan You 推荐的 Vue3 UI 组件库</li>
+          <li>😃 Unocss + Icon组件封装，简单而优雅地引用海量图标</li>
+          <li>🦾 TypeScript, 安全的类型检查，更加 STRONG 的代码</li>
+          <li>⚙️ Eslint - 规范的代码风格，支持一键修复代码</li>
+          <li>📦 unplugin 自动导入插件，组件&API 自动化加载</li>
+          <li>🍒 Nestjs + TypeORM + MySQL 后端服务支持</li>
         </ul>
       </div>
     </section>
