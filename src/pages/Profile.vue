@@ -38,6 +38,10 @@ const defaultFileList = computed<UploadFileInfo[]>(() => userInfo.avatar
 )
 
 const onBeforeUploadAvatar: NUploadBefore = ({ file }) => {
+  if (file.file!.size! > 1024 * 1024) {
+    window.$message.error('上传头像大小不能超过1MB')
+    return false
+  }
   return new Promise((resolve) => {
     // 创建临时图片链接
     const url = URL.createObjectURL(file.file!)
@@ -127,6 +131,7 @@ const onUploadAvatarError: NUploadError = ({ event }) => {
               :default-file-list="defaultFileList"
               list-type="image-card"
               response-type="json"
+              accept=".png, .jpeg, .jpg"
               :max="1"
               @before-upload="onBeforeUploadAvatar"
               @finish="onUploadAvatarFinish"
