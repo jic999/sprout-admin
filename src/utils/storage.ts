@@ -30,13 +30,17 @@ class CustomStorage {
   }
 
   get(key: string) {
-    return this.getItem(key)?.value || null
+    const data = this.getItem(key)
+    return data?.value || data
   }
 
+  /**
+   * 未定义返回 undefined 过期返回 null
+   */
   getItem(key: string) {
     const val = this.storage.getItem(this.getKey(key))
     if (!val)
-      return null
+      return undefined
     try {
       const data = JSON.parse(val)
       const { value, time, expire } = data
@@ -49,7 +53,7 @@ class CustomStorage {
     }
     catch (error) {
       this.remove(key)
-      return null
+      return undefined
     }
   }
 
