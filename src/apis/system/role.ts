@@ -20,6 +20,6 @@ export const sysRoleApi = {
     return req('get', '/sys-role/page', data)
   },
   batchDelete(ids: number[]) {
-    return req('post', '/sys-role/batch-remove', { ids })
+    return req('post', '/sys-role/batchRemove', { ids })
   },
 }

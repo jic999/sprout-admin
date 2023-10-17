@@ -20,7 +20,7 @@ export const sysUserApi = {
     return req('get', '/sys-user/page', data)
   },
   batchDelete(ids: number[]) {
-    return req('post', '/sys-user/batch-remove', { ids })
+    return req('post', '/sys-user/batchRemove', { ids })
   },
   getWithRoles(id: any) {
     return req('get', `/sys-user/withRoles/${id}`)
