@@ -1,3 +1,4 @@
+import Cropper from 'cropperjs'
 import { isEmpty, isNull, isString, isUndefined, pickBy } from 'lodash-es'
 import type { FilterNegativeQueryOptions } from '@/types'
 
@@ -28,4 +29,45 @@ export function filterNegativeQuery<T extends Record<string, any>>(obj: T, optio
   if (options.undef || options.empty)
     newObj = pickBy(newObj, (val, k) => options!.excludes?.includes(k) || !isUndefined(val)) as Partial<T>
   return newObj
+}
+
+/* 裁剪图片 */
+export function cropImage(file: File): Promise<File | null> {
+  return new Promise((resolve) => {
+    const url = URL.createObjectURL(file)
+    const img = new Image()
+    img.src = url
+    img.onload = async () => {
+      window.$dialog.create({
+        title: '裁剪头像',
+        showIcon: false,
+        autoFocus: false,
+        content: () => h('div', { class: 'image__cropper w-420px h-420px' }),
+        style: { width: 'auto' },
+        negativeText: '取消',
+        positiveText: '确认',
+        onPositiveClick: handleCommitCrop,
+        onNegativeClick: () => resolve(null),
+      })
+      await nextTick()
+      const el = document.querySelector('.image__cropper')
+      el?.appendChild(img)
+      const cropper = new Cropper(img, {
+        aspectRatio: 1,
+        viewMode: 1,
+        dragMode: 'move',
+        autoCropArea: 1,
+        background: false,
+        movable: false,
+        zoomable: false,
+        minCropBoxWidth: 60,
+        minCropBoxHeight: 60,
+      })
+      function handleCommitCrop() {
+        cropper.getCroppedCanvas().toBlob((blob) => {
+          resolve(new File([blob!], file!.name, { ...file, type: blob!.type }))
+        })
+      }
+    }
+  })
 }

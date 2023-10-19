@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import type { FormInst, FormRules, UploadFileInfo } from 'naive-ui'
-import Cropper from 'cropperjs'
 import type { NUploadBefore, NUploadError, NUploadFinish } from '@/types'
 
 import { UPLOAD_AVATAR_TARGET, getAvatarUrl, reqEditUserInfo } from '@/apis/login'
+import { cropImage } from '@/utils'
 
 const userStore = useUserStore()
 
@@ -37,69 +37,15 @@ const defaultFileList = computed<UploadFileInfo[]>(() => userInfo.avatar
   : [],
 )
 
-const onBeforeUploadAvatar: NUploadBefore = ({ file }) => {
+const onBeforeUploadAvatar: NUploadBefore = async ({ file }) => {
   if (file.file!.size! > 1024 * 1024) {
     window.$message.error('上传头像大小不能超过1MB')
     return false
   }
-  return new Promise((resolve) => {
-    // 创建临时图片链接
-    const url = URL.createObjectURL(file.file!)
-    // 创建图片元素
-    const img = new Image()
-    img.src = url
-    img.style.display = 'none'
-    // 创建裁剪器 比例 1:1
-    img.onload = async () => {
-      // 若图片比例为 1:1 询问是否裁剪
-      if (img.width === img.height) {
-        return window.$dialog.create({
-          title: '裁剪头像',
-          content: '当前上传头像比例为 1:1，是否需要进行裁剪？',
-          showIcon: false,
-          autoFocus: false,
-          negativeText: '直接上传',
-          positiveText: '裁剪后上传',
-          onNegativeClick: () => resolve(true),
-          onPositiveClick: handleCrop,
-        })
-      }
-      handleCrop()
-
-      async function handleCrop() {
-        window.$dialog.create({
-          title: '裁剪头像',
-          showIcon: false,
-          autoFocus: false,
-          content: () => h('div', { class: 'profile-edit__cropper w-420px h-420px' }),
-          style: { width: 'auto' },
-          negativeText: '取消',
-          positiveText: '确认',
-          onPositiveClick: handleCommitCrop,
-        })
-        await nextTick()
-        const el = document.querySelector('.profile-edit__cropper')
-        el?.appendChild(img)
-        const cropper = new Cropper(img, {
-          aspectRatio: 1,
-          viewMode: 1,
-          dragMode: 'move',
-          autoCropArea: 1,
-          background: false,
-          movable: false,
-          zoomable: false,
-          minCropBoxWidth: 60,
-          minCropBoxHeight: 60,
-        })
-        function handleCommitCrop() {
-          cropper.getCroppedCanvas().toBlob((blob) => {
-            file.file = new File([blob!], file.file!.name, { ...file.file, type: blob!.type })
-            resolve(true)
-          })
-        }
-      }
-    }
-  })
+  const result = await cropImage(file.file!)
+  if (!result)
+    return false
+  file.file = result
 }
 const onUploadAvatarFinish: NUploadFinish = ({ file, event }) => {
   const res = (event!.target as XMLHttpRequest).response
