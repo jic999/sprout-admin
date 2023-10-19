@@ -19,5 +19,5 @@ export function reqEditUserInfo(data: any) {
 export const UPLOAD_AVATAR_TARGET = '/api/file/avatar'
 
 export function getAvatarUrl(filename: string) {
-  return `/static/images/avatar/${filename}`
+  return `/images/avatar/${filename}`
 }
