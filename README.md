@@ -16,7 +16,7 @@
 
 ## 介绍
 
-[Sprout Admin](https://github.com/jic999/sprout-admin), 一个开源的轻量级 [RBAC](https://en.wikipedia.org/wiki/Role-based_access_control) 后台管理模版，基于 MIT 协议。部分参考了 [Vue Naive Admin](https://github.com/zclzone/vue-naive-admin)。
+[Sprout Admin](https://github.com/jic999/sprout-admin), 一个开源的轻量级 [RBAC](https://en.wikipedia.org/wiki/Role-based_access_control) 后台管理模版，旨在为个人及中小型项目提供快速易用的后台管理方案。
 
 后端接口 [Sprout Admin Api](https://github.com/jic999/sprout-admin-api) 使用 Nestjs + TypeORM + Mysql 开发。
 
@@ -53,3 +53,7 @@ pnpm install
 # 启动项目
 pnpm dev
 ```
+
+## 感谢
+
+- [Vue Naive Admin](https://github.com/zclzone/vue-naive-admin)，为本项目提供了许多思路。
