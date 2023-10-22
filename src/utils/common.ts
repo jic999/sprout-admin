@@ -32,7 +32,7 @@ export function filterNegativeQuery<T extends Record<string, any>>(obj: T, optio
 }
 
 /* 裁剪图片 */
-export function cropImage(file: File): Promise<File | null> {
+export function cropImage(file: File, options?: { style: Partial<CSSStyleDeclaration> }): Promise<File | null> {
   return new Promise((resolve) => {
     const url = URL.createObjectURL(file)
     const img = new Image()
@@ -42,7 +42,10 @@ export function cropImage(file: File): Promise<File | null> {
         title: '裁剪头像',
         showIcon: false,
         autoFocus: false,
-        content: () => h('div', { class: 'image__cropper w-420px h-420px' }),
+        content: () => h(
+          'div',
+          { class: 'image__cropper', style: { width: '420px', height: '420px', ...options?.style } as CSSStyleDeclaration },
+        ),
         style: { width: 'auto' },
         negativeText: '取消',
         positiveText: '确认',
