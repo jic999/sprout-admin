@@ -9,12 +9,14 @@ const genderOptions = [
   { label: '女', value: 0 },
   { label: '未知', value: 2 },
 ]
+
 const crudItems = defineCrudItems({
   id: {
     title: 'id',
     formItem: {
-      type: 'NumberInput',
-      value: 0,
+      type: 'Input',
+      value: '自动',
+      props: { disabled: true },
     },
   },
   username: {
@@ -22,6 +24,7 @@ const crudItems = defineCrudItems({
     formItem: {
       type: 'Input',
       value: '',
+      rule: [{ type: 'string', required: true, min: 5, max: 20, message: '昵称长度应在5-20之间' }],
     },
   },
   nickname: {
@@ -29,6 +32,7 @@ const crudItems = defineCrudItems({
     formItem: {
       type: 'Input',
       value: '',
+      rule: [{ type: 'string', min: 5, max: 20, message: '昵称长度应在5-20之间' }],
     },
   },
   gender: {
@@ -37,6 +41,7 @@ const crudItems = defineCrudItems({
       type: 'Select',
       value: 2,
       options: genderOptions,
+      rule: [{ type: 'enum', enum: [0, 1, 2], message: '非法的数据' }],
     },
     tableColumn: {
       render(row) {
@@ -49,6 +54,7 @@ const crudItems = defineCrudItems({
     formItem: {
       type: 'Input',
       value: '',
+      rule: [{ type: 'email', message: '请输入正确的邮箱' }],
     },
   },
   phone: {
@@ -56,6 +62,7 @@ const crudItems = defineCrudItems({
     formItem: {
       type: 'Input',
       value: '',
+      rule: [{ type: 'string', message: '请输入正确的手机号', pattern: /^(13[0-9]|14[01456879]|15[0-35-9]|16[2567]|17[0-8]|18[0-9]|19[0-35-9])\d{8}$/ }],
     },
   },
   roles: {
@@ -77,7 +84,9 @@ const crudItems = defineCrudItems({
     title: '状态',
     formItem: {
       type: 'Switch',
-      value: false,
+      value: 0,
+      props: { checkedValue: 0, uncheckedValue: 1 },
+      rule: [{ type: 'enum', enum: [0, 1], message: '非法的数据' }],
     },
     tableColumn: {
       render: ({ status }) => h(
@@ -91,7 +100,8 @@ const crudItems = defineCrudItems({
     title: '创建时间',
     formItem: {
       type: 'Input',
-      value: '',
+      value: '自动',
+      props: { disabled: true },
     },
   },
 })

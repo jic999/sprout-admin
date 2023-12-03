@@ -1,4 +1,4 @@
-import type { FormItemRule } from 'naive-ui'
+import type { FormItemRule, FormRules } from 'naive-ui'
 import type { InternalRowData, TableColumn } from 'naive-ui/es/data-table/src/interface'
 import type { VNode } from 'vue'
 import type { ApiRequest, SpFormItemType, SpFormProps, SpFormTypeOptionMap, SpFormTypePropMap, SpTableProps, UseCrudParams } from '@/types'
@@ -18,7 +18,7 @@ export interface SpCrudItemFormItem<T extends SpFormItemType> {
   value: unknown
   type: T
   props?: SpFormTypePropMap[T]
-  rule?: FormItemRule
+  rule?: FormRules | FormItemRule | FormItemRule[]
   options?: SpFormTypeOptionMap[T][]
 }
 
