@@ -1,12 +1,10 @@
 <script setup lang="ts">
-import { mapValues } from 'lodash-es'
+import { mapValues, pickBy } from 'lodash-es'
 import type { DataTableProps } from 'naive-ui'
 import { NButton } from 'naive-ui'
 import type { SpFormItem, SpTableColumn, SpTableColumns, UseCrudApis } from '@/types'
 import type { SpCrudProps } from '@/types/sprout/crud'
 import { renderIcon } from '@/utils'
-
-// TODO 一个设想 目前只能应用于较为简单的场景 且有诸多限制
 
 const props = withDefaults(defineProps<SpCrudProps>(), {
   isCustomActions: false,
@@ -18,7 +16,11 @@ const props = withDefaults(defineProps<SpCrudProps>(), {
 const emits = defineEmits(['update:queryParams'])
 
 const formItems = computed(
-  () => mapValues(props.crudItems, item => ({ label: item.title, ...item.formItem } as SpFormItem<any>)),
+  () => mapValues(
+    // filter(props.crudItems, item => !!item.formItem) as any,
+    pickBy(props.crudItems, item => !!item.formItem),
+    item => ({ label: item.title, ...item.formItem } as SpFormItem<any>),
+  ),
 )
 const tableColumns = computed(
   () => Object.keys(props.crudItems).map(key => ({
@@ -67,11 +69,11 @@ const defaultColumns: SpTableColumns = [
     render(row: any, i: number) {
       return h('div', { class: 'flex gap-x-1' }, [
         ...(props.extendActions?.before ? props.extendActions.before(row, i) : []),
-        h(
-          NButton,
-          { type: 'primary', size: 'tiny', secondary: true, onClick: () => handleView(row) },
-          { icon: renderIcon('carbon:view', { size: 14 }), default: () => '查看' },
-        ),
+        // h(
+        //   NButton,
+        //   { type: 'primary', size: 'tiny', secondary: true, onClick: () => handleView(row) },
+        //   { icon: renderIcon('carbon:view', { size: 14 }), default: () => '查看' },
+        // ),
         h(
           NButton,
           { type: 'default', size: 'tiny', secondary: true, onClick: () => handleUpdate(row) },
@@ -170,8 +172,8 @@ defineExpose({
         v-model:query-params="queryParams"
         :columns="_columns"
         :is-pagination="isPagination"
-        :n-attrs="tableAttrs"
         :get-data="(isPagination ? apis.page : apis.list)!"
+        v-bind="tableAttrs"
       />
     </div>
     <n-modal

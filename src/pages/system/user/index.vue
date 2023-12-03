@@ -18,15 +18,22 @@ const form = reactive({
   username: '',
   nickname: '',
   email: '',
+  gender: 2,
   phone: '',
   status: 0,
   createTime: '',
 })
 
+const genderOptions = [
+  { label: '男', value: 1 },
+  { label: '女', value: 0 },
+  { label: '未知', value: 2 },
+]
+
 const queryParams = ref({
   username: '',
   nickname: '',
-  sex: null,
+  gender: null,
 })
 
 const {
@@ -53,6 +60,13 @@ const columns: DataTableColumns = [
   { title: 'id', key: 'id' },
   { title: '用户名', key: 'username' },
   { title: '昵称', key: 'nickname' },
+  {
+    title: '性别',
+    key: 'gender',
+    render(row) {
+      return h('div', {}, genderOptions.find(item => item.value === row.gender)!.label)
+    },
+  },
   { title: '邮箱', key: 'email' },
   { title: '手机号', key: 'phone' },
   {
@@ -131,12 +145,12 @@ onBeforeUpdate(() => {
               <n-input v-model:value="queryParams.nickname" placeholder="搜索昵称" />
             </n-form-item>
             <n-form-item label="性别">
-              <n-radio-group v-model:value="queryParams.sex">
+              <n-radio-group v-model:value="queryParams.gender">
                 <div flex items-center gap-x-xs>
                   <n-radio label="男" :value="1" />
                   <n-radio label="女" :value="0" />
                   <n-radio label="未知" :value="2" />
-                  <IconButton icon="ant-design:close-outlined" size="tiny" circle quaternary @click="queryParams.sex = null" />
+                  <IconButton icon="ant-design:close-outlined" size="tiny" circle quaternary @click="queryParams.gender = null" />
                 </div>
               </n-radio-group>
             </n-form-item>
@@ -172,7 +186,7 @@ onBeforeUpdate(() => {
       <n-form ref="$form" :model="form" :rules="rules" label-placement="left" label-width="auto" label-align="right">
         <n-grid :x-gap="24">
           <n-gi :span="12">
-            <n-form-item label="用户名" path="id">
+            <n-form-item label="id" path="id">
               <n-input v-model:value="form.id" placeholder="自动" disabled />
             </n-form-item>
             <n-form-item label="用户名" path="username">
@@ -186,6 +200,9 @@ onBeforeUpdate(() => {
             </n-form-item>
           </n-gi>
           <n-gi :span="12">
+            <n-form-item label="性别" path="gender">
+              <n-select v-model:value="form.gender" placeholder="请选择性别" :options="genderOptions" />
+            </n-form-item>
             <n-form-item label="手机号" path="phone">
               <n-input v-model:value="form.phone" placeholder="请输入手机号" />
             </n-form-item>

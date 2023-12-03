@@ -31,6 +31,15 @@ export default {
       },
     },
     {
+      name: 'CrudDemo',
+      path: 'crud-demo',
+      component: () => import('./table/CrudDemo.vue'),
+      meta: {
+        title: '表单示例',
+        icon: 'carbon:table',
+      },
+    },
+    {
       name: 'MultiMenu',
       path: 'multi-menu',
       meta: {
