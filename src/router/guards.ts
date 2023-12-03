@@ -20,7 +20,7 @@ function authGuard(router: Router) {
     if (WHITE_LIST_PAGE.includes(to.path))
       return true
     if (token === null)
-      window.$notification.error({ content: '身份验证过期，请重新登录', duration: 2000 })
+      $notification.error({ content: '身份验证过期，请重新登录', duration: 2000 })
     return { path: '/login' }
   })
 }
@@ -38,17 +38,17 @@ function changeTitleGuard(router: Router) {
 /* loading bar */
 function loadingBarGuard(router: Router) {
   router.beforeEach(() => {
-    window.$loadingBar?.start()
+    $loadingBar?.start()
   })
 
   router.afterEach(() => {
     setTimeout(() => {
-      window.$loadingBar?.finish()
+      $loadingBar?.finish()
     }, 200)
   })
 
   router.onError(() => {
-    window.$loadingBar?.error()
+    $loadingBar?.error()
   })
 }
 

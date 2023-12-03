@@ -57,7 +57,7 @@ const {
 function _handleDelete(row: any) {
   if (!(row.code as string).includes('sys'))
     return handleDelete(row.id)
-  window.$dialog.create({
+  $dialog.create({
     title: '警告',
     content: '删除系统权限可能会导致异常，请谨慎操作！',
     type: 'warning',

@@ -27,7 +27,7 @@ async function getData() {
   // 获取用户信息
   const { err, data } = await sysUserApi.getWithRoles(route.params.userId)
   if (err) {
-    window.$message.error(err.message)
+    $message.error(err.message)
     return
   }
   form.value = data
@@ -39,10 +39,10 @@ async function handleCommit() {
   const { err } = await sysUserApi.assignRoles({ id: form.value.id, roleIds })
   loading.value = false
   if (err) {
-    window.$message.error(err.message)
+    $message.error(err.message)
     return
   }
-  window.$message.success('操作成功')
+  $message.success('操作成功')
   refreshSS.set(true)
   router.back()
 }

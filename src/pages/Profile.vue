@@ -23,11 +23,11 @@ function handleCommit() {
     const { err, data } = await reqEditUserInfo(userInfo)
     loading.value = false
     if (err) {
-      window.$message.error(err.message)
+      $message.error(err.message)
       return
     }
     userStore.setUserInfo(data)
-    window.$message.success('提交成功')
+    $message.success('提交成功')
   })
 }
 
@@ -39,7 +39,7 @@ const defaultFileList = computed<UploadFileInfo[]>(() => userInfo.avatar
 
 const onBeforeUploadAvatar: NUploadBefore = async ({ file }) => {
   if (file.file!.size! > 1024 * 1024) {
-    window.$message.error('上传头像大小不能超过1MB')
+    $message.error('上传头像大小不能超过1MB')
     return false
   }
   const result = await cropImage(file.file!)
@@ -55,7 +55,7 @@ const onUploadAvatarFinish: NUploadFinish = ({ file, event }) => {
 }
 const onUploadAvatarError: NUploadError = ({ event }) => {
   const res = (event!.target as XMLHttpRequest).response
-  window.$message.error(res.message)
+  $message.error(res.message)
 }
 </script>
 

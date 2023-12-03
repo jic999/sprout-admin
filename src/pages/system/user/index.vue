@@ -94,7 +94,7 @@ const columns: DataTableColumns = [
         ],
         dropdownOptions: [
           { label: '分配角色', perm: 'sys:user:assignRoles', callback: () => router.push(`/system/user/assign-role/${row.id}`) },
-          { label: '重置密码', callback: () => window.$message.info('重置密码') },
+          { label: '重置密码', callback: () => $message.info('重置密码') },
         ],
       },
     ),

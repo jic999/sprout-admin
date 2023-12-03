@@ -38,7 +38,7 @@ export function cropImage(file: File, options?: { style: Partial<CSSStyleDeclara
     const img = new Image()
     img.src = url
     img.onload = async () => {
-      window.$dialog.create({
+      $dialog.create({
         title: '裁剪头像',
         showIcon: false,
         autoFocus: false,

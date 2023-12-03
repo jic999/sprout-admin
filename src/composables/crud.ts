@@ -61,21 +61,21 @@ export function useCrud<T extends Record<string, any> = any>({
   function handleDelete(id: number | string) {
     hooks.before && hooks.before({ form })
 
-    window.$dialog.warning({
+    $dialog.warning({
       title: `删除${title}`,
       content: '确认删除？',
       positiveText: '确认',
       negativeText: '取消',
       autoFocus: false,
       onPositiveClick: async () => {
-        const msgLoading = window.$message.loading('删除中', { duration: 0 })
+        const msgLoading = $message.loading('删除中', { duration: 0 })
         const { err } = await apis.delete(id)
         msgLoading.destroy()
         if (err) {
-          window.$message.error(err.message || '删除失败，请稍后再试')
+          $message.error(err.message || '删除失败，请稍后再试')
           return
         }
-        window.$message.success('删除成功')
+        $message.success('删除成功')
         refresh()
       },
     })
@@ -84,24 +84,24 @@ export function useCrud<T extends Record<string, any> = any>({
     ? async (data?: any) => {
       // 若未传入 getCheckedKeys 和 data 或者 getCheckedKeys 和 data 都为空，则提示
       if ((!getCheckedKeys || !getCheckedKeys().length) && (!data || !data.length)) {
-        window.$message.warning(`请选择需要删除的${title || '数据'}`)
+        $message.warning(`请选择需要删除的${title || '数据'}`)
         return
       }
-      window.$dialog.warning({
+      $dialog.warning({
         title: `批量删除${title}`,
         content: title ? `确认要删除选中的${title}？` : '确认要删除所有已选中项？',
         positiveText: '确认',
         negativeText: '取消',
         autoFocus: false,
         onPositiveClick: async () => {
-          const msgLoading = window.$message.loading('删除中', { duration: 0 })
+          const msgLoading = $message.loading('删除中', { duration: 0 })
           const { err } = await apis.batchDelete!(getCheckedKeys!())
           msgLoading.destroy()
           if (err) {
-            window.$message.error(err.message || '删除失败，请稍后再试')
+            $message.error(err.message || '删除失败，请稍后再试')
             return
           }
-          window.$message.success('删除成功')
+          $message.success('删除成功')
           refresh()
         },
       })
@@ -132,11 +132,11 @@ export function useCrud<T extends Record<string, any> = any>({
     const { err } = await handler[formAction.value]()
     formSwitch.stop()
     if (err) {
-      window.$message.error(err.message || '提交失败')
+      $message.error(err.message || '提交失败')
       return
     }
     refresh()
-    window.$message.success('提交成功')
+    $message.success('提交成功')
     handleCancel()
   }
   function handleCancel() {

@@ -20,10 +20,10 @@ const themeOverrides = {
 }
 
 function setupNaiveTools() {
-  window.$loadingBar = useLoadingBar()
-  window.$dialog = useDialog()
-  window.$message = useMessage()
-  window.$notification = useNotification()
+  $loadingBar = useLoadingBar()
+  $dialog = useDialog()
+  $message = useMessage()
+  $notification = useNotification()
 }
 
 const NaiveProviderContent = defineComponent({

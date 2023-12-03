@@ -23,6 +23,11 @@ declare module 'vue-router' {
 }
 
 declare global {
+  const $loadingBar: LoadingBarProviderInst
+  const $dialog: DialogProviderInst
+  const $message: MessageProviderInst
+  const $notification: NotificationProviderInst
+  
   interface Window {
     $loadingBar: LoadingBarProviderInst
     $dialog: DialogProviderInst

@@ -20,7 +20,7 @@ export const useUserStore = defineStore('user', () => {
   async function getUserInfo() {
     const { err, data } = await reqUserInfo()
     if (err) {
-      window.$message?.error(err?.message || '获取用户信息失败')
+      $message?.error(err?.message || '获取用户信息失败')
       // clearLoginInfo()
       // useRouter().push('/login')
       return
@@ -30,10 +30,10 @@ export const useUserStore = defineStore('user', () => {
   async function logout() {
     const { err } = await reqLogout()
     if (err) {
-      window.$message.error(err.message)
+      $message.error(err.message)
       return
     }
-    window.$notification.success({ content: '已退出登录', duration: 2000 })
+    $notification.success({ content: '已退出登录', duration: 2000 })
     clearLoginInfo()
   }
   function clearLoginInfo() {

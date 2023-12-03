@@ -52,7 +52,7 @@ async function handleQuery() {
   const { err, data } = await props.getData!(query)
   loading.value = false
   if (err) {
-    window.$message.error(err.message)
+    $message.error(err.message)
     return
   }
   if (props.isPagination) {

@@ -3,12 +3,12 @@ import type { NUploadBefore } from '@/types'
 import { cropImage } from '@/utils'
 
 function hello() {
-  window.$message.success('hello')
+  $message.success('hello')
 }
 
 const onBeforeUploadAvatar: NUploadBefore = async ({ file }) => {
   if (file.file!.size! > 1024 * 1024) {
-    window.$message.error('上传头像大小不能超过1MB')
+    $message.error('上传头像大小不能超过1MB')
     return false
   }
   const result = await cropImage(file.file!)

@@ -40,10 +40,10 @@ function handleLogin() {
     if (err) {
       getCheckCode()
       loginParams.checkCode = ''
-      window.$message.error(err.message)
+      $message.error(err.message)
       return
     }
-    window.$message.success('登录成功')
+    $message.success('登录成功')
     // 若记住密码 信息存入cookie 否则清空cookie
     if (loginSettings.rememberMe) {
       const loginInfo = {
