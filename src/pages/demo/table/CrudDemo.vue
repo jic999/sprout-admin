@@ -110,7 +110,7 @@ const crudItems = defineCrudItems({
 <template>
   <PageMain>
     <SpCrud
-      title="用户"
+      entity-name="用户"
       :apis="sysUserApi"
       :crud-items="crudItems"
       is-pagination
