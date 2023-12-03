@@ -3,6 +3,7 @@ import { NTag } from 'naive-ui'
 import type { DataTableColumns, FormRules } from 'naive-ui'
 import { sysUserApi } from '@/apis/system/user'
 import SpTableRowActions from '@/components/sprout/SpTableRowActions.vue'
+import { GENDER_OPTIONS } from '@/utils'
 
 defineOptions({
   name: 'SystemUser',
@@ -23,12 +24,6 @@ const form = reactive({
   status: 0,
   createTime: '',
 })
-
-const genderOptions = [
-  { label: '男', value: 1 },
-  { label: '女', value: 0 },
-  { label: '未知', value: 2 },
-]
 
 const queryParams = ref({
   username: '',
@@ -64,7 +59,7 @@ const columns: DataTableColumns = [
     title: '性别',
     key: 'gender',
     render(row) {
-      return h('div', {}, genderOptions.find(item => item.value === row.gender)!.label)
+      return h('div', {}, GENDER_OPTIONS.find(item => item.value === row.gender)!.label)
     },
   },
   { title: '邮箱', key: 'email' },
@@ -202,7 +197,7 @@ onBeforeUpdate(() => {
           </n-gi>
           <n-gi :span="12">
             <n-form-item label="性别" path="gender">
-              <n-select v-model:value="form.gender" placeholder="请选择性别" :options="genderOptions" />
+              <n-select v-model:value="form.gender" placeholder="请选择性别" :options="GENDER_OPTIONS" />
             </n-form-item>
             <n-form-item label="手机号" path="phone">
               <n-input v-model:value="form.phone" placeholder="请输入手机号" />

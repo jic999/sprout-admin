@@ -3,12 +3,7 @@ import { NTag } from 'naive-ui'
 import { sysUserApi } from '@/apis/system/user'
 import SpCrud from '@/components/sprout/SpCrud.vue'
 import { defineCrudItems } from '@/types'
-
-const genderOptions = [
-  { label: '男', value: 1 },
-  { label: '女', value: 0 },
-  { label: '未知', value: 2 },
-]
+import { GENDER_OPTIONS } from '@/utils'
 
 const crudItems = defineCrudItems({
   id: {
@@ -40,12 +35,12 @@ const crudItems = defineCrudItems({
     formItem: {
       type: 'Select',
       value: 2,
-      options: genderOptions,
+      options: GENDER_OPTIONS,
       rule: [{ type: 'enum', enum: [0, 1, 2], message: '非法的数据' }],
     },
     tableColumn: {
       render(row) {
-        return h('div', {}, genderOptions.find(item => item.value === row.gender)!.label)
+        return h('div', {}, GENDER_OPTIONS.find(item => item.value === row.gender)!.label)
       },
     },
   },
