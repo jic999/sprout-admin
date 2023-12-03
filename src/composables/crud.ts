@@ -83,7 +83,7 @@ export function useCrud<T extends Record<string, any> = any>({
   const handleBatchDelete = apis.batchDelete
     ? async (data?: any) => {
       // 若未传入 getCheckedKeys 和 data 或者 getCheckedKeys 和 data 都为空，则提示
-      if ((!getCheckedKeys || !getCheckedKeys().length) && (!data || !data.length)) {
+      if ((!getCheckedKeys || !getCheckedKeys()?.length) && (!data || !data.length)) {
         $message.warning(`请选择需要删除的${title || '数据'}`)
         return
       }
