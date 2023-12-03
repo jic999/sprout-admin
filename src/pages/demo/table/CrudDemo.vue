@@ -32,7 +32,7 @@ const crudItems = defineCrudItems({
     formItem: {
       type: 'Input',
       value: '',
-      rule: [{ type: 'string', min: 5, max: 20, message: '昵称长度应在5-20之间' }],
+      rule: [{ type: 'string', min: 1, max: 20, message: '昵称长度应在1-20之间' }],
     },
   },
   gender: {

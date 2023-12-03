@@ -117,7 +117,7 @@ const columns: DataTableColumns = [
 
 const rules: FormRules = {
   username: [{ type: 'string', required: true, min: 5, max: 20, message: '昵称长度应在5-20之间' }],
-  nickname: [{ type: 'string', min: 5, max: 20, message: '昵称长度应在5-20之间' }],
+  nickname: [{ type: 'string', min: 1, max: 20, message: '昵称长度应在1-20之间' }],
   gender: [{ type: 'enum', enum: [0, 1, 2], message: '非法的数据' }],
   email: [{ type: 'email', message: '请输入正确的邮箱' }],
   phone: [{ type: 'string', message: '请输入正确的手机号', pattern: /^(13[0-9]|14[01456879]|15[0-35-9]|16[2567]|17[0-8]|18[0-9]|19[0-35-9])\d{8}$/ }],
