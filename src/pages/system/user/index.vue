@@ -59,7 +59,7 @@ const columns: DataTableColumns = [
     title: '性别',
     key: 'gender',
     render(row) {
-      return h('div', {}, GENDER_OPTIONS.find(item => item.value === row.gender)!.label)
+      return h('div', {}, GENDER_OPTIONS.find(item => item.value === row.gender)?.label)
     },
   },
   { title: '邮箱', key: 'email' },
