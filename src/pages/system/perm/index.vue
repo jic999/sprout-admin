@@ -15,7 +15,7 @@ const $form = ref()
 
 const form = reactive({
   id: null,
-  parentId: '',
+  parentId: null,
   name: '',
   code: '',
   desc: '',
@@ -106,7 +106,7 @@ const columns: DataTableColumns = [
     </section>
     <!-- Table -->
     <section sp-section>
-      <SpTable ref="$table" :get-data="sysPermApi.list" :columns="columns" default-expand-all />
+      <SpTable ref="$table" :get-data="sysPermApi.list" :columns="columns" :row-key="row => row.id" default-expand-all lazy-show />
     </section>
     <!-- Form -->
     <n-modal
@@ -122,7 +122,7 @@ const columns: DataTableColumns = [
             <n-input-number v-model:value="form.id" placeholder="自动" disabled />
           </n-form-item-gi>
           <n-form-item-gi :span="12" label="父级权限" path="parentId">
-            <n-cascader v-model:value="form.parentId" :options="permData" label-field="name" value-field="id" placeholder="请选择父级权限" />
+            <n-cascader v-model:value="form.parentId" :options="permData" label-field="name" value-field="id" placeholder="默认为一级权限" clearable />
           </n-form-item-gi>
           <n-form-item-gi :span="12" label="权限名称" path="name" required>
             <n-input v-model:value="form.name" placeholder="请输入权限名称" />

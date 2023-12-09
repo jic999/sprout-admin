@@ -124,10 +124,15 @@ defineExpose({
 </script>
 
 <template>
-  <div v-if="!props.lazyShow || tableData.length">
-    <n-data-table v-bind="_tableAttrs" :loading="isLoading" />
-    <div v-if="paginationAttrs" mt-lg flex justify-end>
-      <n-pagination v-bind="paginationAttrs" />
+  <div>
+    <div v-if="!props.lazyShow || tableData.length">
+      <n-data-table v-bind="_tableAttrs" :loading="isLoading" />
+      <div v-if="paginationAttrs" mt-lg flex justify-end>
+        <n-pagination v-bind="paginationAttrs" />
+      </div>
+    </div>
+    <div v-else flex-center p-sm>
+      <n-spin size="medium" />
     </div>
   </div>
 </template>
