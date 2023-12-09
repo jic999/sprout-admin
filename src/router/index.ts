@@ -7,6 +7,8 @@ import { getRefreshToken, getToken, hasPerm, isExternalLink, refreshUserToken } 
 
 export * from './routes'
 
+// TODO 切换不同权限用户时 路由会丢失
+
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [...staticRoutes, ...errorRoutes],
