@@ -218,7 +218,7 @@ getPermData()
         placeholder="分配权限"
         check-strategy="child"
         :selectable="false"
-        :expanded-keys="permTreeExpandedKeys"
+        :default-expanded-keys="permTreeExpandedKeys"
         multiple checkable cascade expand-on-click show-line
       />
       <template #footer>
