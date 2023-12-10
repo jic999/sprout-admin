@@ -115,6 +115,7 @@ onMounted(() => {
 })
 
 defineExpose({
+  data: tableData,
   refresh: () => handleQuery(),
   handleSearch,
   handleReset,

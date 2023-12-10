@@ -92,6 +92,8 @@ const columns: DataTableColumns = [
     ),
   },
 ]
+
+const defaultExpandKeys = computed(() => $table.value?.data.map((perm: any) => perm.id) || [])
 </script>
 
 <template>
@@ -106,7 +108,7 @@ const columns: DataTableColumns = [
     </section>
     <!-- Table -->
     <section sp-section>
-      <SpTable ref="$table" :get-data="sysPermApi.list" :columns="columns" :row-key="row => row.id" default-expand-all lazy-show />
+      <SpTable ref="$table" :get-data="sysPermApi.list" :columns="columns" :row-key="row => row.id" :default-expanded-row-keys="defaultExpandKeys" lazy-show />
     </section>
     <!-- Form -->
     <n-modal
