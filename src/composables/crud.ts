@@ -34,7 +34,9 @@ export function useCrud<T extends Record<string, any> = any>({
     stop: () => formLoading.value = false,
   }
   function setFormData(data: any) {
-    Object.assign(form, data)
+    Object.keys(form).forEach((key) => {
+      form[key as keyof T] = data[key]
+    })
   }
   function handleView(row: any) {
     hooks.before && hooks.before({ form, row })

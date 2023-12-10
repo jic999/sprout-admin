@@ -16,7 +16,6 @@ const form = reactive({
   name: '',
   code: '',
   desc: '',
-  permIds: [],
   createTime: '',
 })
 
@@ -37,13 +36,41 @@ const {
   refresh: () => $table.value.refresh(),
   validator: { validate: () => $form.value.validate() },
   getCheckedKeys: () => $table.value.getCheckedKeys(),
-  hooks: {
-    before: ({ row }) => {
-      if (row)
-        form.permIds = row.permIds || []
-    },
-  },
 })
+
+// <--- Assign perms
+const permModalVisible = ref(false)
+const assignPermsLoading = ref(false)
+const defaultParams = {
+  id: 0,
+  permIds: [],
+}
+const assignPermsParams = reactive(defaultParams)
+
+function handleAssignPerms(row: any) {
+  permModalVisible.value = true
+  assignPermsParams.id = row.id
+  assignPermsParams.permIds = row.permIds || []
+}
+function handleAssignPermsCancel() {
+  permModalVisible.value = false
+}
+function handleAssignPermsLeave() {
+  Object.assign(assignPermsParams, defaultParams)
+}
+async function handleAssignPermsCommit() {
+  assignPermsLoading.value = true
+  const { err } = await sysRoleApi.assignPerms(assignPermsParams)
+  assignPermsLoading.value = false
+  if (err) {
+    $message.error(err.message || '分配权限失败')
+    return
+  }
+  $message.success('分配权限成功')
+  $table.value.refresh()
+  handleAssignPermsCancel()
+}
+// --->
 
 const queryParams = ref({
   name: '',
@@ -69,6 +96,7 @@ const columns: DataTableColumns = [
           options: [
             { label: '编辑', type: 'info', perm: 'sys:role:update', callback: () => handleUpdate(row) },
             { label: '删除', type: 'error', perm: 'sys:role:delete', callback: () => handleDelete(row.id as string) },
+            { label: '分配权限', perm: 'sys:role:assignPerms', callback: () => handleAssignPerms(row) },
           ],
         },
       )
@@ -88,6 +116,10 @@ function tableVoHandler(data: any[]) {
 }
 
 const permTree = ref()
+const permTreeExpandedKeys = computed(() => permTree.value
+  ? permTree.value.map((perm: any) => perm.id)
+  : [],
+)
 
 async function getPermData() {
   const { err, data } = await sysPermApi.list()
@@ -142,37 +174,22 @@ getPermData()
     >
       <n-form ref="$form" :model="form" :rules="rules" label-placement="left" label-width="auto" label-align="right">
         <n-grid :x-gap="24">
-          <n-gi :span="12">
-            <n-form-item label="角色id" path="id">
-              <n-input-number v-model:value="form.id" disabled placeholder="自动" />
-            </n-form-item>
-            <n-form-item label="角色名称" required path="name">
-              <n-input v-model:value="form.name" placeholder="请输入角色名称" />
-            </n-form-item>
-            <n-form-item label="角色标识" required path="code">
-              <n-input v-model:value="form.code" placeholder="请输入角色标识" />
-            </n-form-item>
-          </n-gi>
-          <n-gi :span="12">
-            <n-form-item label="角色描述" path="desc">
-              <n-input v-model:value="form.desc" type="textarea" placeholder="请输入角色描述" autosize />
-            </n-form-item>
-            <n-form-item label="创建时间" path="createTime">
-              <n-input v-model:value="form.createTime" disabled placeholder="自动" />
-            </n-form-item>
-          </n-gi>
+          <n-form-item-gi :span="12" label="角色id" path="id">
+            <n-input-number v-model:value="form.id" disabled placeholder="自动" />
+          </n-form-item-gi>
+          <n-form-item-gi :span="12" label="角色名称" required path="name">
+            <n-input v-model:value="form.name" placeholder="请输入角色名称" />
+          </n-form-item-gi>
+          <n-form-item-gi :span="12" label="角色标识" required path="code">
+            <n-input v-model:value="form.code" placeholder="请输入角色标识" />
+          </n-form-item-gi>
+          <n-form-item-gi :span="12" label="角色描述" path="desc">
+            <n-input v-model:value="form.desc" type="textarea" placeholder="请输入角色描述" autosize />
+          </n-form-item-gi>
+          <n-form-item-gi :span="12" label="创建时间" path="createTime">
+            <n-input v-model:value="form.createTime" disabled placeholder="自动" />
+          </n-form-item-gi>
         </n-grid>
-        <n-form-item label="分配权限">
-          <n-cascader
-            v-model:value="form.permIds"
-            :options="permTree"
-            label-field="name"
-            value-field="id"
-            placeholder="分配权限"
-            :show-path="false"
-            clearable multiple
-          />
-        </n-form-item>
       </n-form>
       <template #footer>
         <div flex justify-end gap-x-sm>
@@ -180,6 +197,36 @@ getPermData()
             提交
           </n-button>
           <n-button @click="handleCancel">
+            取消
+          </n-button>
+        </div>
+      </template>
+    </n-modal>
+    <n-modal
+      v-model:show="permModalVisible"
+      :style="{ width: '480px' }"
+      :auto-focus="false"
+      title="分配权限"
+      preset="card"
+      @after-leave="handleAssignPermsLeave"
+    >
+      <n-tree
+        v-model:checked-keys="assignPermsParams.permIds"
+        :data="permTree"
+        label-field="name"
+        key-field="id"
+        placeholder="分配权限"
+        check-strategy="child"
+        :selectable="false"
+        :expanded-keys="permTreeExpandedKeys"
+        multiple checkable cascade expand-on-click show-line
+      />
+      <template #footer>
+        <div flex justify-end gap-x-sm>
+          <n-button type="primary" :loading="assignPermsLoading" @click="handleAssignPermsCommit">
+            提交
+          </n-button>
+          <n-button @click="handleAssignPermsCancel">
             取消
           </n-button>
         </div>

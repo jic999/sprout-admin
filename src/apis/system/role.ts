@@ -22,4 +22,7 @@ export const sysRoleApi = {
   batchDelete(ids: number[]) {
     return req('post', '/sys-role/batchRemove', { ids })
   },
+  assignPerms(data: any) {
+    return req('post', '/sys-role/assignPerms', data)
+  },
 }
